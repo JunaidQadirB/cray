@@ -148,6 +148,7 @@ class ControllerMakeCommand extends GeneratorCommand
         }
 
         $label     = str_to_words(class_basename($modelClass));
+
         $modelSlug = Str::slug(Str::plural($label, 2));
 
         return array_merge($replace, [
