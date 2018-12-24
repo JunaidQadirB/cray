@@ -31,6 +31,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
+        $this->publishes([__DIR__ . '/resources/stubs' => resource_path('stubs')], 'stubs');
+
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
         }
