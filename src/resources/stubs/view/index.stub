@@ -1,0 +1,66 @@
+@extends('layouts.app')
+@section('sidebar')
+    @if(auth()->check())
+        @include('partials.sidebars.management.human-resource')
+    @endif
+@endsection
+@section('title')
+    $label$
+@endsection
+@section('content')
+    <div class="row">
+        <div class="col-12 text-right">
+            <a href="{{route('$modelSlug$.create')}}" class="btn btn-outline-primary pull-right mb-3">Add $label$</a>
+        </div>
+
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>EMIS ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($rows$ as $row$)
+                <tr>
+                    <td>{{$row$->emis_id}}</td>
+                    <td>{{$row$->name}}</td>
+                    <td>{{$row$->description}}</td>
+                    <td>{{$row$->status}}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <a href="{{route('$modelSlug$.edit', $row$->id)}}" type="button"
+                               class="btn btn-primary">Edit</a>
+                            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <button type="submit" class="dropdown-item text-danger"
+                                        data-toggle="modal" data-target="#delete{{className($row$)}}Modal"
+                                        data-id="{{$row$->id}}"
+                                        href="{{route('$modelSlug$.edit', $row$->id)}}">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5"><p class="text-center">No $label$ to show. <a
+                                    class="btn btn-primary btn-sm rounded-0"
+                                    href="{{route('$modelSlug$.create')}}">Add One</a></p></td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+    {{ $rows$->links() }}
+    @include('$modelSlug$.modals.delete',['id' => "delete$model$Modal"])
+@endsection
+

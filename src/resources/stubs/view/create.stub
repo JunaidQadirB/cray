@@ -1,0 +1,27 @@
+@extends('layouts.app')
+@section('sidebar')
+    @if(auth()->check())
+        @include('partials.sidebars.management.human-resource')
+    @endif
+@endsection
+
+@section('title')
+    Add $label$
+@endsection
+
+@section('content')
+    <form action="{{route('$modelSlug$.store')}}" method="post">
+        <div class="row">
+            {{csrf_field()}}
+            <div class="col-md-8">
+                @include('$modelSlug$._form')
+                <div class="form-group row">
+                    <div class="col-sm-6"></div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-block btn-primary ml-auto">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+@endsection

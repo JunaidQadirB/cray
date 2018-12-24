@@ -1,0 +1,25 @@
+{
+    "name": "moonbear/laravel-crud-scaffold",
+    "description": "A Laravel 5 package to help you generate nearly complete CRUD pages like crazy!",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Junaid Qadir Shekhanzai",
+            "email": "shekhanzai.baloch@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MoonBear\\LaravelCrudScaffold\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MoonBear\\LaravelCrudScaffold\\ServiceProvider"
+            ]
+        }
+    }
+}
