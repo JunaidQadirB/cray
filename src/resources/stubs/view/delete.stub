@@ -10,16 +10,17 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     @endslot
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                jQuery(document).ready(function ($) {
-                    $('#{{$id}}').on('show.bs.modal', function (event) {
-                        const id = $(event.relatedTarget).data('id');
-                        $('#{{$id}}').find('form').attr('action', `{{route('$modelSlug$.index')}}/${id}`);
-                    });
+@endmodal
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            jQuery(document).ready(function ($) {
+                $('#{{$id}}').on('show.bs.modal', function (event) {
+                    const id = $(event.relatedTarget).data('id');
+                    $('#{{$id}}').find('form').attr('action', `{{route('$modelSlug$.index')}}/${id}`);
                 });
             });
-        </script>
-    @endpush
-@endmodal
+        });
+    </script>
+@endpush
