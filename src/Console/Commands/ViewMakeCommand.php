@@ -5,9 +5,9 @@ namespace MoonBear\LaravelCrudScaffold\Console\Commands;
 
 use Config;
 use Illuminate\Support\Str;
+use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
 
 class ViewMakeCommand extends GeneratorCommand
 {
@@ -116,6 +116,7 @@ class ViewMakeCommand extends GeneratorCommand
         $stub           = $this->replacePlaceholders($stub, $name, $path);
         $target         = $path . '/' . $type . '.blade.php';
 
+
         if ($dir = $this->option('dir')) {
             if ( ! file_exists($path . '/' . $dir)) {
                 mkdir($path . '/' . $dir . '/', 0777, true);
@@ -128,6 +129,18 @@ class ViewMakeCommand extends GeneratorCommand
         } else {
             file_put_contents($target, $stub);
             $this->info("View successfully created in {$target}");
+        }
+        /**
+         * Create the _form partial form the stub
+         */
+        $formPartial = $path . '/_form.blade.php';
+        $formStub = $this->files->get($this->getStub('_form'));
+
+        if (file_exists($formPartial) && !$this->option('force')) {
+            $this->error("File already exists. Cannot overwrite {$formPartial}.");
+        } else {
+            file_put_contents($formPartial, $formStub);
+            $this->info("View successfully created in {$formPartial}");
         }
     }
 
@@ -166,10 +179,14 @@ class ViewMakeCommand extends GeneratorCommand
     /**
      * Get the stub file for the generator.
      *
+     * @param null|string $fileName
      * @return string
      */
-    protected function getStub()
+    protected function getStub($fileName = null)
     {
+        if (isset($fileName)) {
+            $this->fileName = $fileName;
+        }
         return resource_path("stubs/view/{$this->fileName}.stub");
     }
 
