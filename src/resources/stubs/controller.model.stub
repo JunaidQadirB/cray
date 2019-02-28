@@ -6,7 +6,7 @@ use DummyFullModelClass;
 use DummyRootNamespaceHttp\Controllers\Controller;
 use App\Http\Requests\DummyModelClassUpdateRequest;
 use App\Http\Requests\DummyModelClassStoreRequest;
-use App\Traits\RedirectsWithFlash;
+use MoonBear\LaravelCrudScaffold\Traits\RedirectsWithFlash;
 
 class DummyClass extends Controller
 {

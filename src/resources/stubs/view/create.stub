@@ -6,7 +6,7 @@
         // include sidebar here
     @endif
 @endsection
--}}
+--}}
 
 @section('title')
     Add $label$
