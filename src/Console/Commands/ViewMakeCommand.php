@@ -70,6 +70,7 @@ class ViewMakeCommand extends GeneratorCommand
             $this->input->setOption('index', true);
             $this->input->setOption('create', true);
             $this->input->setOption('edit', true);
+            $this->input->setOption('show', true);
         }
 
         if ($this->option('index')) {
@@ -79,14 +80,15 @@ class ViewMakeCommand extends GeneratorCommand
 
         if ($this->option('create')) {
             $this->buildView('create', $path);
-            $this->createFormView($path);
         }
 
         if ($this->option('edit')) {
             $this->buildView('edit', $path);
         }
 
-
+        if ($this->option('show')) {
+            $this->buildView('show', $path);
+        }
     }
 
     /**
@@ -144,6 +146,9 @@ class ViewMakeCommand extends GeneratorCommand
 
         $viewLabel = str_to_words($name);
         $stub      = str_replace('$label$', $viewLabel, $stub);
+
+        $viewLabelPlural = str_plural(str_to_words($name));
+        $stub = str_replace('$labelPlural$', $viewLabelPlural, $stub);
 
         $viewName = Str::camel($name);
         $stub     = str_replace('$name$', $viewName, $stub);
@@ -208,6 +213,8 @@ class ViewMakeCommand extends GeneratorCommand
 
             ['edit', 'e', InputOption::VALUE_NONE, 'Create only the edit view for the model'],
 
+            ['show', 's', InputOption::VALUE_NONE, 'Create only the show view for the model'],
+
             ['force', 'f', InputOption::VALUE_NONE, 'Create the file even if the file already exists.'],
 
             ['dir', 'd', InputOption::VALUE_OPTIONAL, 'Create the file inside this directory within the view.'],
@@ -219,10 +226,5 @@ class ViewMakeCommand extends GeneratorCommand
         $this->input->setOption('dir', 'modals');
         $this->buildView('delete', $path);
         $this->input->setOption('dir', false);
-    }
-
-    public function createFormView($path)
-    {
-        $this->buildView('_form', $path);
     }
 }

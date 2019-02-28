@@ -1,4 +1,4 @@
-@modal(['id' => $id])
+@component('components.modal', ['id' => $id])
     Are you sure you wish to delete this $label$?
     @slot('footer')
         <div class="modal-footer">
@@ -10,7 +10,7 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     @endslot
-@endmodal
+@endcomponent
 
 @push('scripts')
     <script>

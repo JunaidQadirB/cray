@@ -1,24 +1,28 @@
 @extends('layouts.app')
+
+{{--
 @section('sidebar')
     @if(auth()->check())
-        @include('partials.sidebars.management.human-resource')
+        // include sidebar here
     @endif
 @endsection
+--}}
+
 @section('title')
     $label$
 @endsection
+
 @section('content')
     <div class="row">
         <div class="col-12 text-right">
             <a href="{{route('$modelSlug$.create')}}" class="btn btn-outline-primary pull-right mb-3">Add $label$</a>
         </div>
-
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>EMIS ID</th>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Status</th>
@@ -28,12 +32,12 @@
             <tbody>
             @forelse($rows$ as $row$)
                 <tr>
-                    <td>{{$row$->emis_id}}</td>
+                    <td>{{$row$->id}}</td>
                     <td>{{$row$->name}}</td>
                     <td>{{$row$->description}}</td>
                     <td>{{$row$->status}}</td>
                     <td class="text-right">
-                        <div class="btn-group">
+                        <div class="btn-group btn-group-sm">
                             <a href="{{route('$modelSlug$.edit', $row$->id)}}" type="button"
                                class="btn btn-primary">Edit</a>
                             <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"

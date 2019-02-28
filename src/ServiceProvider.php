@@ -4,7 +4,6 @@ namespace MoonBear\LaravelCrudScaffold;
 
 use MoonBear\LaravelCrudScaffold\Console\Commands\ControllerMakeCommand;
 use MoonBear\LaravelCrudScaffold\Console\Commands\FactoryMakeCommand;
-use MoonBear\LaravelCrudScaffold\Console\Commands\GeneratorCommand;
 use MoonBear\LaravelCrudScaffold\Console\Commands\MakeScaffold;
 use MoonBear\LaravelCrudScaffold\Console\Commands\MigrateMakeCommand;
 use MoonBear\LaravelCrudScaffold\Console\Commands\ModelMakeCommand;
@@ -31,7 +30,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([__DIR__ . '/resources/stubs' => resource_path('stubs')], 'stubs');
+        $this->publishes([__DIR__ . '/resources/stubs' => resource_path('stubs')], 'laravel-crud-scaffold');
 
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);

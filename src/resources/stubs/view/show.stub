@@ -1,9 +1,12 @@
 @extends('layouts.app')
+
+{{--
 @section('sidebar')
     @if(auth()->check())
-        @include('partials.sidebars.management.human-resource')
+        // include sidebar here
     @endif
 @endsection
+--}}
 
 @section('content')
     @component('components.record-navigator', [
@@ -66,5 +69,4 @@
         </tr>
         </tbody>
     </table>
-
 @endsection
