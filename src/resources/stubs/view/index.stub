@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('common.layouts.narrow')
 
 {{--
 @section('sidebar')
@@ -14,7 +14,10 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12 text-right">
+        <div class="col text-left">
+            <h2>$label$</h2>
+        </div>
+        <div class="col text-right">
             <a href="{{route('$modelSlug$.create')}}" class="btn btn-outline-primary pull-right mb-3">Add $label$</a>
         </div>
     </div>
@@ -56,7 +59,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5"><p class="text-center">No $label$ to show. <a
+                    <td colspan="5"><p class="text-center mb-0">No $label$ to show. <a
                                     class="btn btn-primary btn-sm rounded-0"
                                     href="{{route('$modelSlug$.create')}}">Add One</a></p></td>
                 </tr>
@@ -65,6 +68,6 @@
         </table>
     </div>
     {{ $rows$->links() }}
-    @include('$modelSlug$.modals.delete',['id' => "delete$model$Modal"])
+    @include('$dir$$modelSlug$.modals.delete',['id' => "delete$model$Modal"])
 @endsection
 

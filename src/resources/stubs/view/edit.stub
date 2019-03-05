@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('common.layouts.narrow')
 
 {{--
 @section('sidebar')
@@ -13,12 +13,20 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        <div class="col text-left">
+            <h2>Edit $label$</h2>
+        </div>
+        <div class="col text-right">
+            {{-- Add context buttons --}}
+        </div>
+    </div>
     <form action="{{route('$modelSlug$.update', $row$->id)}}" method="post">
         <div class="row">
             {{csrf_field()}}
             {{method_field('patch')}}
             <div class="col-md-8">
-                @include('$modelSlug$._form')
+                @include('$dir$$modelSlug$._form')
                 <div class="form-group row">
                     <div class="col-sm-6"></div>
                     <div class="col-sm-6">
