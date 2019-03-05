@@ -3,10 +3,10 @@
 namespace DummyNamespace;
 
 use DummyFullModelClass;
-use DummyRootNamespaceHttp\Controllers\Controller;
 use App\Http\Requests\DummyModelClassUpdateRequest;
 use App\Http\Requests\DummyModelClassStoreRequest;
 use MoonBear\LaravelCrudScaffold\Traits\RedirectsWithFlash;
+use Illuminate\Routing\Controller;
 
 class DummyClass extends Controller
 {
@@ -19,8 +19,8 @@ class DummyClass extends Controller
      */
     public function index()
     {
-        $$rows$ = DummyModelVariable::paginate(15);
-        return view('$modelSlug$.index', compact('$rows$'));
+        $$rows$ = DummyModelClass::paginate(15);
+        return view('ViewsDir$modelSlug$.index', compact('$rows$'));
     }
 
     /**
@@ -30,8 +30,8 @@ class DummyClass extends Controller
      */
     public function create()
     {
-        $DummyModelVariable = new \DummyFullModelClass();
-        return view('$modelSlug$.create', compact('DummyModelVariable'));
+        $DummyModelVariable = new DummyModelClass();
+        return view('ViewsDir$modelSlug$.create', compact('DummyModelVariable'));
     }
 
     /**
@@ -42,7 +42,7 @@ class DummyClass extends Controller
      */
     public function store(DummyModelClassStoreRequest $request)
     {
-        \DummyFullModelClass::create($request->except('_token'));
+        DummyModelClass::create($request->except('_token'));
         return $this->success('$label$ added successfully!', '$modelSlug$.index');
     }
 
@@ -54,7 +54,12 @@ class DummyClass extends Controller
      */
     public function show(\DummyFullModelClass $DummyModelVariable)
     {
-        return view('$modelSlug$.show', compact('DummyModelVariable'));
+        $previous = $DummyModelVariable->where('id', '<', $DummyModelVariable->id)->max('id');
+        $next = $DummyModelVariable->where('id', '>', $DummyModelVariable->id)->min('id');
+
+        return view('ViewsDir$modelSlug$.show', compact('DummyModelVariable'))
+            ->with('next', $next)
+            ->with('previous', $previous);
     }
 
     /**
@@ -65,7 +70,7 @@ class DummyClass extends Controller
      */
     public function edit(\DummyFullModelClass $DummyModelVariable)
     {
-        return view('$modelSlug$.edit', compact('DummyModelVariable'));
+        return view('ViewsDir$modelSlug$.edit', compact('DummyModelVariable'));
     }
 
     /**
