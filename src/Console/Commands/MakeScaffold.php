@@ -20,7 +20,9 @@ class MakeScaffold extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'mbt:scaffold {name : Model name. Controller, factory, migration, views will be based on this name.}';
+    protected $signature = 'mbt:scaffold 
+    {name : Model name. Controller, factory, migration, views will be based on this name.}
+    {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}';
 
     /**
      * The console command description.
@@ -126,10 +128,17 @@ class MakeScaffold extends GeneratorCommand
 
         $modelName = $this->qualifyClass($this->getNameInput());
 
-        $this->call('mbt:controller', [
+        $args = [
             'name'    => "{$controller}Controller",
             '--model' => $modelName,
-        ]);
+        ];
+
+        $dir = $this->option('views-dir');
+        if ($dir) {
+            $args['--views-dir'] = $dir;
+        }
+
+        $this->call('mbt:controller', $args);
     }
 
     /**
@@ -153,11 +162,16 @@ class MakeScaffold extends GeneratorCommand
     protected function createViews()
     {
         $name = $this->argument('name');
-
-        $this->call('mbt:view', [
+        $args = [
             'name'  => $name,
             '--all' => true,
-        ]);
+        ];
+
+        $dir = $this->option('views-dir');
+        if ($dir) {
+            $args['--dir'] = $dir;
+        }
+        $this->call('mbt:view', $args);
 
 
     }
@@ -178,5 +192,4 @@ class MakeScaffold extends GeneratorCommand
 
         return $rootNamespace;
     }
-
 }

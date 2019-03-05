@@ -60,7 +60,15 @@ class ViewMakeCommand extends GeneratorCommand
     protected function createView()
     {
         $viewDirSlug = Str::slug(Str::plural(str_to_words($this->argument('name')), 2));
-        $path        = Config::get('view.paths')[0] . '/' . $viewDirSlug;
+
+        $viewPath = Config::get('view.paths')[0];
+        $dir = $this->option('dir');
+        $path = $viewPath . '/' . $viewDirSlug;
+
+        if ($dir) {
+            $path = $viewPath . '/' . $dir . '/' . $viewDirSlug;
+        }
+
 
         $this->createViewDirectory();
 
@@ -98,9 +106,16 @@ class ViewMakeCommand extends GeneratorCommand
     {
         $name        = $this->argument('name');
         $viewDirSlug = Str::slug(Str::plural(str_to_words($name), 2));
-        $path        = Config::get('view.paths')[0] . '/' . $viewDirSlug;
+        $viewPath = Config::get('view.paths')[0];
+        $dir = $this->option('dir');
+        $path = $viewPath . '/' . $viewDirSlug;
+
+        if ($dir) {
+            $path = $viewPath . '/' . $dir . '/' . $viewDirSlug;
+        }
+
         if ( ! file_exists($path)) {
-            mkdir($path, 0777);
+            mkdir($path, 0777, true);
         } else {
             $this->warn($viewDirSlug . ' exists. Ignoring');
         }
@@ -116,31 +131,25 @@ class ViewMakeCommand extends GeneratorCommand
         $stub           = $this->replacePlaceholders($stub, $name, $path);
         $target         = $path . '/' . $type . '.blade.php';
 
-
-        if ($dir = $this->option('dir')) {
-            if ( ! file_exists($path . '/' . $dir)) {
-                mkdir($path . '/' . $dir . '/', 0777, true);
-            }
-            $target = $path . '/' . $dir . '/' . $type . '.blade.php';
-        }
-
         if (file_exists($target) && ! $this->option('force')) {
             $this->error("File already exists. Cannot overwrite {$target}.");
         } else {
             file_put_contents($target, $stub);
             $this->info("View successfully created in {$target}");
         }
-        /**
-         * Create the _form partial form the stub
-         */
-        $formPartial = $path . '/_form.blade.php';
-        $formStub = $this->files->get($this->getStub('_form'));
+        if ($type == 'index') {
+            /**
+             * Create the _form partial form the stub
+             */
+            $formPartial = $path . '/_form.blade.php';
+            $formStub = $this->files->get($this->getStub('_form'));
 
-        if (file_exists($formPartial) && !$this->option('force')) {
-            $this->error("File already exists. Cannot overwrite {$formPartial}.");
-        } else {
-            file_put_contents($formPartial, $formStub);
-            $this->info("View successfully created in {$formPartial}");
+            if (file_exists($formPartial) && !$this->option('force')) {
+//            $this->error("File already exists. Cannot overwrite {$formPartial}.");
+            } else {
+                file_put_contents($formPartial, $formStub);
+                $this->info("View successfully created in {$formPartial}");
+            }
         }
     }
 
@@ -169,6 +178,13 @@ class ViewMakeCommand extends GeneratorCommand
         $stub = str_replace('$model$', $name, $stub);
         $stub = str_replace('$modelSlug$', $modelSlug, $stub);
 
+        $dir = $this->option('dir');
+        if ($dir) {
+            $dir = str_replace('/', '.', $dir);
+            $stub = str_replace('$dir$', $dir . '.', $stub);
+        } else {
+            $stub = str_replace('$dir$', '', $stub);
+        }
         $stub = str_replace('$rows$', '$' . camel_case(str_plural($name, 2)), $stub);
         $stub = str_replace('$row$', '$' . camel_case($name), $stub);
 
@@ -240,8 +256,9 @@ class ViewMakeCommand extends GeneratorCommand
 
     protected function createDeleteView($path)
     {
-        $this->input->setOption('dir', 'modals');
-        $this->buildView('delete', $path);
-        $this->input->setOption('dir', false);
+        if (!file_exists($path . '/modals')) {
+            mkdir($path . '/modals');
+        }
+        $this->buildView('delete', $path . '/modals');
     }
 }

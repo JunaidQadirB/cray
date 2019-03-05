@@ -43,16 +43,22 @@ class ControllerMakeCommand extends GeneratorCommand
 
         if ($this->option('parent')) {
             $stub = 'stubs/controller.nested.stub';
-        } else if ($this->option('model')) {
-            $stub = 'stubs/controller.model.stub';
-        } else if ($this->option('resource')) {
-            $stub = 'stubs/controller.stub';
+        } else {
+            if ($this->option('model')) {
+                $stub = 'stubs/controller.model.stub';
+            } else {
+                if ($this->option('resource')) {
+                    $stub = 'stubs/controller.stub';
+                }
+            }
         }
 
         if ($this->option('api') && is_null($stub)) {
             $stub = 'stubs/controller.api.stub';
-        } else if ($this->option('api') && ! is_null($stub)) {
-            $stub = str_replace('.stub', '.api.stub', $stub);
+        } else {
+            if ($this->option('api') && !is_null($stub)) {
+                $stub = str_replace('.stub', '.api.stub', $stub);
+            }
         }
 
         $stub = $stub ?? 'stubs/controller.plain.stub';
@@ -116,7 +122,7 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $parentModelClass = $this->parseModel($this->option('parent'));
 
-        if ( ! class_exists($parentModelClass)) {
+        if (!class_exists($parentModelClass)) {
             if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?", true)) {
                 $this->call('mbt:model', ['name' => $parentModelClass]);
             }
@@ -124,8 +130,8 @@ class ControllerMakeCommand extends GeneratorCommand
 
         return [
             'ParentDummyFullModelClass' => $parentModelClass,
-            'ParentDummyModelClass'     => class_basename($parentModelClass),
-            'ParentDummyModelVariable'  => lcfirst(class_basename($parentModelClass)),
+            'ParentDummyModelClass' => class_basename($parentModelClass),
+            'ParentDummyModelVariable' => lcfirst(class_basename($parentModelClass)),
         ];
     }
 
@@ -140,24 +146,28 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $modelClass = $this->parseModel($this->option('model'));
 
-        if ( ! class_exists($modelClass)) {
+        if (!class_exists($modelClass)) {
             /*if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
 
             }*/
             $this->call('mbt:model', ['name' => $modelClass]);
         }
 
-        $label     = str_to_words(class_basename($modelClass));
+        $label = str_to_words(class_basename($modelClass));
 
         $modelSlug = Str::slug(Str::plural($label, 2));
-
+        $viewsDir = '';
+        if ($viewsDir = $this->option('views-dir')) {
+            $viewsDir = $viewsDir . '.';
+        }
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
-            'DummyModelClass'     => class_basename($modelClass),
-            'DummyModelVariable'  => lcfirst(class_basename($modelClass)),
-            '$modelSlug$'         => $modelSlug,
-            '$label$'             => $label,
-            '$rows$'              => str_plural(lcfirst(class_basename($modelClass)), 2),
+            'DummyModelClass' => class_basename($modelClass),
+            'DummyModelVariable' => lcfirst(class_basename($modelClass)),
+            '$modelSlug$' => $modelSlug,
+            '$label$' => $label,
+            '$rows$' => str_plural(lcfirst(class_basename($modelClass)), 2),
+            'ViewsDir' => $viewsDir
         ]);
     }
 
@@ -176,7 +186,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if ( ! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
             $model = $rootNamespace . $model;
         }
 
@@ -198,6 +208,8 @@ class ControllerMakeCommand extends GeneratorCommand
             ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
 
             ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
+
+            ['views-dir', 'vd', InputOption::VALUE_OPTIONAL, 'Specify the view path within the views directory'],
         ];
     }
 }
