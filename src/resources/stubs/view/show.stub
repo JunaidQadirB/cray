@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('common.layouts.narrow')
 
 {{--
 @section('sidebar')
@@ -10,63 +10,14 @@
 
 @section('content')
     @component('components.record-navigator', [
-        'heading'=> $position->name,
-        'route' => 'vacancies.show',
+        'heading'=> $row$->name,
+        'route' => '$modelSlug$.show',
         'previous' => $previous,
         'next' => $next
     ])@endcomponent
 
-    <table class="table table-bordered">
-        <tbody>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Position</th>
-            <td>{{$position->name}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Last Date</th>
-            <td>{{$position->closed_at->diffForHumans()}} ( {{$position->closed_at->format('d-m-Y')}} )</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Description</th>
-            <td>{{$position->description}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Positions</th>
-            <td>{{$position->positions}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Position Type</th>
-            <td>{{$position->type->name}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Expected Salary</th>
-            <td>Rs. {{number_format($position->expected_salary, 2)}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Experience</th>
-            <td>{{$position->experience}} {{str_plural('Year', $position->experience)}} </td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Qualification</th>
-            <td>{{$position->qualification->name}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Skills</th>
-            <td>{{$position->skills}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Department</th>
-            <td>{{$position->department->name}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Campus</th>
-            <td>{{$position->campus->name}}</td>
-        </tr>
-        <tr>
-            <th scope="row" class="bg-secondary text-light w-25">Posted By</th>
-            <td><a href="{{route('users.show',$position->postedBy->id)}}"
-                   target="_blank">{{$position->postedBy->name}}</a></td>
-        </tr>
-        </tbody>
-    </table>
+    <p>Display fields here.</p>
 @endsection
+
+
+
