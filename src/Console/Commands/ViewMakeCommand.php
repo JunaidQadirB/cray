@@ -203,7 +203,13 @@ class ViewMakeCommand extends GeneratorCommand
         if (isset($fileName)) {
             $this->fileName = $fileName;
         }
-        return resource_path("stubs/view/{$this->fileName}.stub");
+        $stubsPath = "stubs/view/{$this->fileName}.stub";
+        $stubs = $this->option('stubs');
+
+        if ($stubs) {
+            $stubsPath = $stubs . '/'. $this->fileName . ".stub";
+        }
+        return resource_path($stubsPath);
     }
 
     /**
@@ -251,6 +257,8 @@ class ViewMakeCommand extends GeneratorCommand
             ['force', 'f', InputOption::VALUE_NONE, 'Create the file even if the file already exists.'],
 
             ['dir', 'd', InputOption::VALUE_OPTIONAL, 'Create the file inside this directory within the view.'],
+
+            ['stubs', 'b', InputOption::VALUE_OPTIONAL, 'Use stubs from the specified directory.'],
         ];
     }
 

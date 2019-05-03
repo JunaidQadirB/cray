@@ -2,7 +2,6 @@
 
 namespace MoonBear\LaravelCrudScaffold\Console\Commands;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
 
@@ -22,7 +21,10 @@ class MakeScaffold extends GeneratorCommand
      */
     protected $signature = 'mbt:scaffold 
     {name : Model name. Controller, factory, migration, views will be based on this name.}
-    {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}';
+    {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}
+    {--stubs-dir= : Specify a custom stubs directory}
+    {--no-migration : Do not create a migration for the model}
+    ';
 
     /**
      * The console command description.
@@ -60,9 +62,9 @@ class MakeScaffold extends GeneratorCommand
         $this->type = 'Model';
 
         $this->createFactory();
-
-        $this->createMigration();
-
+        if (!$this->option('no-migration')) {
+            $this->createMigration();
+        }
         $this->createController();
 
         $this->createViews();
@@ -170,6 +172,11 @@ class MakeScaffold extends GeneratorCommand
         $dir = $this->option('views-dir');
         if ($dir) {
             $args['--dir'] = $dir;
+        }
+
+        $stub = $this->option('stubs-dir');
+        if ($stub) {
+            $args['--stubs'] = $stub;
         }
         $this->call('mbt:view', $args);
 
