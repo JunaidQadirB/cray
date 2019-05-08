@@ -43,7 +43,7 @@ class DummyClass extends Controller
     public function store(DummyModelClassStoreRequest $request)
     {
         DummyModelClass::create($request->except('_token'));
-        return $this->success('$label$ added successfully!', '$modelSlug$.index');
+        return $this->success('$label$ added successfully!', '$dir$$modelSlug$.index');
     }
 
     /**
@@ -83,7 +83,7 @@ class DummyClass extends Controller
     public function update(DummyModelClassUpdateRequest $request, DummyModelClass $DummyModelVariable)
     {
         $DummyModelVariable->update($request->except('_token'));
-        return $this->success('$label$ updated successfully!', '$modelSlug$.index');
+        return $this->success('$label$ updated successfully!', '$dir$$modelSlug$.index');
     }
 
     /**
@@ -95,6 +95,6 @@ class DummyClass extends Controller
     public function destroy(DummyModelClass $DummyModelVariable)
     {
         $DummyModelVariable->delete();
-        return $this->success('$label$ deleted successfully!', '$modelSlug$.index');
+        return $this->success('$label$ deleted successfully!', '$dir$$modelSlug$.index');
     }
 }
