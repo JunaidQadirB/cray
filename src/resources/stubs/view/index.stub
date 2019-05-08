@@ -18,7 +18,11 @@
             <h2>$label$</h2>
         </div>
         <div class="col text-right">
-            <a href="{{route('$dir$$modelSlug$.create')}}" class="btn btn-sm btn-outline-primary pull-right mb-3">Add $label$</a>
+            <div class="btn-toolbar" role="toolbar" aria-label="$modelSlug$ Context Toolbar">
+                <div class="btn-group btn-group-sm ml-auto" role="group" aria-label="">
+                    <a href="{{route('$dir$$modelSlug$.create')}}" class="btn btn-outline-primary">Add</a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="table-responsive">

@@ -9,6 +9,18 @@
 --}}
 
 @section('content')
+    <div class="row">
+        <div class="col text-left">
+            <h2>$label$</h2>
+        </div>
+        <div class="col text-right">
+            <div class="btn-toolbar" role="toolbar" aria-label="$modelSlug$ Context Toolbar">
+               <div class="btn-group btn-group-sm ml-auto" role="group" aria-label="">
+                   <a href="{{route('$dir$$modelSlug$.index')}}" class="btn btn-outline-primary">Back to list</a>
+               </div>
+            </div>
+        </div>
+    </div>
     @component('components.record-navigator', [
         'heading'=> $row$->name,
         'route' => '$dir$$modelSlug$.show',
