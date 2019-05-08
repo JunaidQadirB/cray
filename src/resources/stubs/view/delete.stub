@@ -1,4 +1,4 @@
-@component('common.components.modal', ['id' => $id])
+@component('components.themes.default.modal', ['id' => $id])
     Are you sure you wish to delete this $label$?
     @slot('footer')
         <div class="modal-footer">
