@@ -167,7 +167,7 @@ class ControllerMakeCommand extends GeneratorCommand
             '$modelSlug$' => $modelSlug,
             '$label$' => $label,
             '$rows$' => str_plural(lcfirst(class_basename($modelClass)), 2),
-            'ViewsDir' => $viewsDir
+            '$dir$' => $viewsDir
         ]);
     }
 

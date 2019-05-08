@@ -20,7 +20,7 @@ class DummyClass extends Controller
     public function index()
     {
         $$rows$ = DummyModelClass::paginate(15);
-        return view('ViewsDir$modelSlug$.index', compact('$rows$'));
+        return view('$dir$$modelSlug$.index', compact('$rows$'));
     }
 
     /**
@@ -31,7 +31,7 @@ class DummyClass extends Controller
     public function create()
     {
         $DummyModelVariable = new DummyModelClass();
-        return view('ViewsDir$modelSlug$.create', compact('DummyModelVariable'));
+        return view('$dir$$modelSlug$.create', compact('DummyModelVariable'));
     }
 
     /**
@@ -57,7 +57,7 @@ class DummyClass extends Controller
         $previous = $DummyModelVariable->where('id', '<', $DummyModelVariable->id)->max('id');
         $next = $DummyModelVariable->where('id', '>', $DummyModelVariable->id)->min('id');
 
-        return view('ViewsDir$modelSlug$.show', compact('DummyModelVariable'))
+        return view('$dir$$modelSlug$.show', compact('DummyModelVariable'))
             ->with('next', $next)
             ->with('previous', $previous);
     }
@@ -70,7 +70,7 @@ class DummyClass extends Controller
      */
     public function edit(\DummyFullModelClass $DummyModelVariable)
     {
-        return view('ViewsDir$modelSlug$.edit', compact('DummyModelVariable'));
+        return view('$dir$$modelSlug$.edit', compact('DummyModelVariable'));
     }
 
     /**
