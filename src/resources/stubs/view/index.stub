@@ -18,7 +18,7 @@
             <h2>$label$</h2>
         </div>
         <div class="col text-right">
-            <a href="{{route('$modelSlug$.create')}}" class="btn btn-sm btn-outline-primary pull-right mb-3">Add $label$</a>
+            <a href="{{route('$dir$$modelSlug$.create')}}" class="btn btn-sm btn-outline-primary pull-right mb-3">Add $label$</a>
         </div>
     </div>
     <div class="table-responsive">
@@ -41,7 +41,7 @@
                     <td>{{$row$->status}}</td>
                     <td class="text-right">
                         <div class="btn-group btn-group-sm">
-                            <a href="{{route('$modelSlug$.edit', $row$->id)}}" type="button"
+                            <a href="{{route('$dir$$modelSlug$.edit', $row$->id)}}" type="button"
                                class="btn btn-primary">Edit</a>
                             <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,7 +51,7 @@
                                 <button type="submit" class="dropdown-item text-danger"
                                         data-toggle="modal" data-target="#delete{{className($row$)}}Modal"
                                         data-id="{{$row$->id}}"
-                                        href="{{route('$modelSlug$.edit', $row$->id)}}">Delete
+                                        href="{{route('$dir$$modelSlug$.edit', $row$->id)}}">Delete
                                 </button>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                 <tr>
                     <td colspan="5"><p class="text-center mb-0">No $label$ to show. <a
                                     class="btn btn-primary btn-sm rounded-0"
-                                    href="{{route('$modelSlug$.create')}}">Add One</a></p></td>
+                                    href="{{route('$dir$$modelSlug$.create')}}">Add One</a></p></td>
                 </tr>
             @endforelse
             </tbody>

@@ -21,7 +21,7 @@
             {{-- Add context buttons --}}
         </div>
     </div>
-    <form action="{{route('$modelSlug$.update', $row$->id)}}" method="post">
+    <form action="{{route('$dir$$modelSlug$.update', $row$->id)}}" method="post">
         <div class="row">
             {{csrf_field()}}
             {{method_field('patch')}}

@@ -21,7 +21,7 @@
             {{-- Add context buttons --}}
         </div>
     </div>
-    <form action="{{route('$modelSlug$.store')}}" method="post">
+    <form action="{{route('$dir$$modelSlug$.store')}}" method="post">
         <div class="row">
             {{csrf_field()}}
             <div class="col-md-8">
