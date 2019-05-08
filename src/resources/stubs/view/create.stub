@@ -1,4 +1,4 @@
-@extends('common.layouts.narrow')
+@extends('layouts.app')
 
 {{--
 @section('sidebar')
@@ -14,10 +14,10 @@
 
 @section('content')
     <div class="row">
-        <div class="col text-left">
+        <div class="col text-center">
             <h2>Add $label$</h2>
         </div>
-        <div class="col text-right">
+        <div class="col-auto text-right">
             {{-- Add context buttons --}}
         </div>
     </div>

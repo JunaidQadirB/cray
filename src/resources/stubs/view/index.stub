@@ -1,4 +1,4 @@
-@extends('common.layouts.narrow')
+@extends('layouts.app')
 
 {{--
 @section('sidebar')
@@ -18,14 +18,14 @@
             <h2>$label$</h2>
         </div>
         <div class="col text-right">
-            <a href="{{route('$modelSlug$.create')}}" class="btn btn-outline-primary pull-right mb-3">Add $label$</a>
+            <a href="{{route('$modelSlug$.create')}}" class="btn btn-sm btn-outline-primary pull-right mb-3">Add $label$</a>
         </div>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>ID</th>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Status</th>
