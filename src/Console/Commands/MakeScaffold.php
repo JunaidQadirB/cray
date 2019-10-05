@@ -23,7 +23,9 @@ class MakeScaffold extends GeneratorCommand
     {name : Model name. Controller, factory, migration, views will be based on this name.}
     {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}
     {--stubs-dir= : Specify a custom stubs directory}
+    {--no-views : Do not create view files for the model}
     {--no-migration : Do not create a migration for the model}
+    {--no-factory : Do not create a factory for the model}
     ';
 
     /**
@@ -61,13 +63,18 @@ class MakeScaffold extends GeneratorCommand
          */
         $this->type = 'Model';
 
-        $this->createFactory();
+        if (!$this->option('no-factory')) {
+            $this->createFactory();
+        }
+
         if (!$this->option('no-migration')) {
             $this->createMigration();
         }
         $this->createController();
 
-        $this->createViews();
+        if (!$this->option('no-views')) {
+            $this->createViews();
+        }
 
         $this->type = 'Request';
 
@@ -76,16 +83,6 @@ class MakeScaffold extends GeneratorCommand
         $this->createRequest('Update');
 
 
-    }
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return resource_path('stubs/' . str_slug($this->type) . '.stub');
     }
 
     /**
@@ -98,7 +95,7 @@ class MakeScaffold extends GeneratorCommand
         $factory = Str::studly(class_basename($this->argument('name')));
 
         $this->call('mbt:factory', [
-            'name'    => "{$factory}Factory",
+            'name' => "{$factory}Factory",
             '--model' => $this->argument('name'),
         ]);
     }
@@ -113,7 +110,7 @@ class MakeScaffold extends GeneratorCommand
         $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
 
         $this->call('mbt:migration', [
-            'name'     => "create_{$table}_table",
+            'name' => "create_{$table}_table",
             '--create' => $table,
         ]);
     }
@@ -131,7 +128,7 @@ class MakeScaffold extends GeneratorCommand
         $modelName = $this->qualifyClass($this->getNameInput());
 
         $args = [
-            'name'    => "{$controller}Controller",
+            'name' => "{$controller}Controller",
             '--model' => $modelName,
         ];
 
@@ -143,29 +140,11 @@ class MakeScaffold extends GeneratorCommand
         $this->call('mbt:controller', $args);
     }
 
-    /**
-     * Create a controller for the model.
-     *
-     * @param string $requestType
-     *
-     * @return void
-     */
-    protected function createRequest($requestType = 'Store')
-    {
-        $model = $this->getNameInput();
-        $name  = "{$model}{$requestType}Request";
-        $this->call('mbt:request', [
-            'name'    => $name,
-            '--model' => $model,
-            '--type'  => str_slug($requestType),
-        ]);
-    }
-
     protected function createViews()
     {
         $name = $this->argument('name');
         $args = [
-            'name'  => $name,
+            'name' => $name,
             '--all' => true,
         ];
 
@@ -184,9 +163,37 @@ class MakeScaffold extends GeneratorCommand
     }
 
     /**
+     * Create a controller for the model.
+     *
+     * @param string $requestType
+     *
+     * @return void
+     */
+    protected function createRequest($requestType = 'Store')
+    {
+        $model = $this->getNameInput();
+        $name = "{$model}{$requestType}Request";
+        $this->call('mbt:request', [
+            'name' => $name,
+            '--model' => $model,
+            '--type' => str_slug($requestType),
+        ]);
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        return resource_path('stubs/' . str_slug($this->type) . '.stub');
+    }
+
+    /**
      * Get the default namespace for the class.
      *
-     * @param  string $rootNamespace
+     * @param string $rootNamespace
      *
      * @return string
      */

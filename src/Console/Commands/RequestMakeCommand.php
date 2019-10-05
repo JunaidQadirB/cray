@@ -4,8 +4,8 @@ namespace MoonBear\LaravelCrudScaffold\Console\Commands;
 
 
 use Illuminate\Support\Str;
-use Symfony\Component\Console\Input\InputOption;
 use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
 
 class RequestMakeCommand extends GeneratorCommand
 {
@@ -37,7 +37,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ( ! $this->option('type') || $this->option('type') == 'store') {
+        if (!$this->option('type') || $this->option('type') == 'store') {
             return resource_path('stubs/request.stub');
         }
 
@@ -48,9 +48,9 @@ class RequestMakeCommand extends GeneratorCommand
     {
         $replace = [];
         if ($model = $this->option('model')) {
-            $slug                    = Str::slug(str_to_words($model), '_');
-            $replace['$modelSlug$']  = $slug;
-            $replace['$modelTable$'] = str_plural($slug, 2);
+            $slug = Str::slug(str_to_words($model), '_');
+            $replace['$modelSlug$'] = $slug;
+            $replace['$modelTable$'] = Str::plural($slug, 2);
         }
 
         return str_replace(
@@ -61,7 +61,7 @@ class RequestMakeCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string $rootNamespace
+     * @param string $rootNamespace
      *
      * @return string
      */

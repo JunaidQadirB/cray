@@ -1,6 +1,6 @@
 <?php
 
-if ( ! function_exists('className')) {
+if (!function_exists('className')) {
 
     /**
      * Get instance class name without namespace
@@ -11,15 +11,15 @@ if ( ! function_exists('className')) {
      */
     function className($instance)
     {
-        return (new \ReflectionClass($instance))->getShortName();
+        return (new ReflectionClass($instance))->getShortName();
     }
 
 }
 
-if ( ! function_exists('str_to_words')) {
+if (!function_exists('str_to_words')) {
     function str_to_words($input)
     {
-        $re     = '/(?#! splitCamelCase Rev:20140412)
+        $re = '/(?#! splitCamelCase Rev:20140412)
     # Split camelCase "words". Two global alternatives. Either g1of2:
       (?<=[a-z])      # Position is after a lowercase,
       (?=[A-Z])       # and before an uppercase letter.

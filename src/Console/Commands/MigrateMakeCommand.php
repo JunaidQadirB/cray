@@ -4,10 +4,9 @@ namespace MoonBear\LaravelCrudScaffold\Console\Commands;
 
 
 use Illuminate\Database\Console\Migrations\BaseCommand;
-use Illuminate\Support\Str;
-use Illuminate\Support\Composer;
 use Illuminate\Database\Migrations\MigrationCreator;
-use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
+use Illuminate\Support\Composer;
+use Illuminate\Support\Str;
 
 class MigrateMakeCommand extends BaseCommand
 {
@@ -32,22 +31,22 @@ class MigrateMakeCommand extends BaseCommand
     /**
      * The migration creator instance.
      *
-     * @var \Illuminate\Database\Migrations\MigrationCreator
+     * @var MigrationCreator
      */
     protected $creator;
 
     /**
      * The Composer instance.
      *
-     * @var \Illuminate\Support\Composer
+     * @var Composer
      */
     protected $composer;
 
     /**
      * Create a new migration install command instance.
      *
-     * @param  \Illuminate\Database\Migrations\MigrationCreator $creator
-     * @param  \Illuminate\Support\Composer $composer
+     * @param MigrationCreator $creator
+     * @param Composer $composer
      *
      * @return void
      */
@@ -55,7 +54,7 @@ class MigrateMakeCommand extends BaseCommand
     {
         parent::__construct();
 
-        $this->creator  = $creator;
+        $this->creator = $creator;
         $this->composer = $composer;
     }
 
@@ -78,7 +77,7 @@ class MigrateMakeCommand extends BaseCommand
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-        if ( ! $table && is_string($create)) {
+        if (!$table && is_string($create)) {
             $table = $create;
 
             $create = true;
@@ -87,7 +86,7 @@ class MigrateMakeCommand extends BaseCommand
         // Next, we will attempt to guess the table name if this the migration has
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
-        if ( ! $table) {
+        if (!$table) {
             if (preg_match('/^create_(\w+)_table$/', $name, $matches)) {
                 $table = $matches[1];
 
@@ -106,9 +105,9 @@ class MigrateMakeCommand extends BaseCommand
     /**
      * Write the migration file to disk.
      *
-     * @param  string $name
-     * @param  string $table
-     * @param  bool $create
+     * @param string $name
+     * @param string $table
+     * @param bool $create
      *
      * @return string
      */
@@ -128,8 +127,8 @@ class MigrateMakeCommand extends BaseCommand
      */
     protected function getMigrationPath()
     {
-        if ( ! is_null($targetPath = $this->input->getOption('path'))) {
-            return ! $this->usingRealPath()
+        if (!is_null($targetPath = $this->input->getOption('path'))) {
+            return !$this->usingRealPath()
                 ? $this->laravel->basePath() . '/' . $targetPath
                 : $targetPath;
         }

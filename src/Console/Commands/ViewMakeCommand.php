@@ -45,7 +45,7 @@ class ViewMakeCommand extends GeneratorCommand
         /*  if (parent::handle() === false && ! $this->option('force')) {
               return;
           }*/
-        if ( ! $this->option('index') && ! $this->option('create') && ! $this->option('edit') && ! $this->option('all')) {
+        if (!$this->option('index') && !$this->option('create') && !$this->option('edit') && !$this->option('all')) {
             $this->input->setOption('index', true);
         }
         $this->createView();
@@ -104,7 +104,7 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function createViewDirectory()
     {
-        $name        = $this->argument('name');
+        $name = $this->argument('name');
         $viewDirSlug = Str::slug(Str::plural(str_to_words($name), 2));
         $viewPath = Config::get('view.paths')[0];
         $dir = $this->option('dir');
@@ -114,7 +114,7 @@ class ViewMakeCommand extends GeneratorCommand
             $path = $viewPath . '/' . $dir . '/' . $viewDirSlug;
         }
 
-        if ( ! file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path, 0777, true);
         } else {
             $this->warn($viewDirSlug . ' exists. Ignoring');
@@ -123,15 +123,15 @@ class ViewMakeCommand extends GeneratorCommand
 
     protected function buildView($type, $path)
     {
-        $name           = $this->argument('name');
+        $name = $this->argument('name');
         $this->fileName = $type;
-        $stub           = $this->files->get($this->getStub());
-        $viewLabel      = str_plural(str_to_words($name), 2);
-        $viewName       = Str::camel($viewLabel);
-        $stub           = $this->replacePlaceholders($stub, $name, $path);
-        $target         = $path . '/' . $type . '.blade.php';
+        $stub = $this->files->get($this->getStub());
+        $viewLabel = Str::plural(str_to_words($name), 2);
+        $viewName = Str::camel($viewLabel);
+        $stub = $this->replacePlaceholders($stub, $name, $path);
+        $target = $path . '/' . $type . '.blade.php';
 
-        if (file_exists($target) && ! $this->option('force')) {
+        if (file_exists($target) && !$this->option('force')) {
             $this->error("File already exists. Cannot overwrite {$target}.");
         } else {
             file_put_contents($target, $stub);
@@ -154,45 +154,6 @@ class ViewMakeCommand extends GeneratorCommand
     }
 
     /**
-     * Replace all placeholders
-     *
-     * @param $stub
-     * @param $name
-     * @param null $path
-     *
-     * @return mixed
-     */
-    protected function replacePlaceholders($stub, $name, $path = null)
-    {
-        $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
-
-        $viewLabel = str_to_words($name);
-        $stub      = str_replace('$label$', $viewLabel, $stub);
-
-        $viewLabelPlural = str_plural(str_to_words($name));
-        $stub = str_replace('$labelPlural$', $viewLabelPlural, $stub);
-
-        $viewName = Str::camel($name);
-        $stub     = str_replace('$name$', $viewName, $stub);
-
-        $stub = str_replace('$model$', $name, $stub);
-        $stub = str_replace('$modelSlug$', $modelSlug, $stub);
-
-        $dir = $this->option('dir');
-        if ($dir) {
-            $dir = str_replace('/', '.', $dir);
-            $stub = str_replace('$dir$', $dir . '.', $stub);
-        } else {
-            $stub = str_replace('$dir$', '', $stub);
-        }
-        $stub = str_replace('$rows$', '$' . camel_case(str_plural($name, 2)), $stub);
-        $stub = str_replace('$row$', '$' . camel_case($name), $stub);
-
-        return $stub;
-    }
-
-
-    /**
      * Get the stub file for the generator.
      *
      * @param null|string $fileName
@@ -207,15 +168,61 @@ class ViewMakeCommand extends GeneratorCommand
         $stubs = $this->option('stubs');
 
         if ($stubs) {
-            $stubsPath = $stubs . '/'. $this->fileName . ".stub";
+            $stubsPath = $stubs . '/' . $this->fileName . ".stub";
         }
         return resource_path($stubsPath);
     }
 
     /**
+     * Replace all placeholders
+     *
+     * @param $stub
+     * @param $name
+     * @param null $path
+     *
+     * @return mixed
+     */
+    protected function replacePlaceholders($stub, $name, $path = null)
+    {
+        $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
+
+        $viewLabel = str_to_words($name);
+        $stub = str_replace('$label$', $viewLabel, $stub);
+
+        $viewLabelPlural = Str::plural(str_to_words($name));
+        $stub = str_replace('$labelPlural$', $viewLabelPlural, $stub);
+
+        $viewName = Str::camel($name);
+        $stub = str_replace('$name$', $viewName, $stub);
+
+        $stub = str_replace('$model$', $name, $stub);
+        $stub = str_replace('$modelSlug$', $modelSlug, $stub);
+
+        $dir = $this->option('dir');
+        if ($dir) {
+            $dir = str_replace('/', '.', $dir);
+            $stub = str_replace('$dir$', $dir . '.', $stub);
+        } else {
+            $stub = str_replace('$dir$', '', $stub);
+        }
+        $stub = str_replace('$rows$', '$' . camel_case(Str::plural($name, 2)), $stub);
+        $stub = str_replace('$row$', '$' . camel_case($name), $stub);
+
+        return $stub;
+    }
+
+    protected function createDeleteView($path)
+    {
+        if (!file_exists($path . '/modals')) {
+            mkdir($path . '/modals');
+        }
+        $this->buildView('delete', $path . '/modals');
+    }
+
+    /**
      * Get the default namespace for the class.
      *
-     * @param  string $rootNamespace
+     * @param string $rootNamespace
      *
      * @return string
      */
@@ -260,13 +267,5 @@ class ViewMakeCommand extends GeneratorCommand
 
             ['stubs', 'b', InputOption::VALUE_OPTIONAL, 'Use stubs from the specified directory.'],
         ];
-    }
-
-    protected function createDeleteView($path)
-    {
-        if (!file_exists($path . '/modals')) {
-            mkdir($path . '/modals');
-        }
-        $this->buildView('delete', $path . '/modals');
     }
 }

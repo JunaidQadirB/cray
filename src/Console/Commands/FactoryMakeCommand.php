@@ -2,8 +2,8 @@
 
 namespace MoonBear\LaravelCrudScaffold\Console\Commands;
 
-use Symfony\Component\Console\Input\InputOption;
 use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
 
 class FactoryMakeCommand extends GeneratorCommand
 {
@@ -41,7 +41,7 @@ class FactoryMakeCommand extends GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -59,7 +59,7 @@ class FactoryMakeCommand extends GeneratorCommand
     /**
      * Get the destination class path.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */

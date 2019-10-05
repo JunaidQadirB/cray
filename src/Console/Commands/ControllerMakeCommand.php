@@ -3,7 +3,6 @@
 namespace MoonBear\LaravelCrudScaffold\Console\Commands;
 
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
@@ -69,7 +68,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string $rootNamespace
+     * @param string $rootNamespace
      *
      * @return string
      */
@@ -83,7 +82,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -136,9 +135,31 @@ class ControllerMakeCommand extends GeneratorCommand
     }
 
     /**
+     * Get the fully-qualified model class name.
+     *
+     * @param string $model
+     *
+     * @return string
+     */
+    protected function parseModel($model)
+    {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+            throw new InvalidArgumentException('Model name contains invalid characters.');
+        }
+
+        $model = trim(str_replace('/', '\\', $model), '\\');
+
+        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+            $model = $rootNamespace . $model;
+        }
+
+        return $model;
+    }
+
+    /**
      * Build the model replacement values.
      *
-     * @param  array $replace
+     * @param array $replace
      *
      * @return array
      */
@@ -166,31 +187,9 @@ class ControllerMakeCommand extends GeneratorCommand
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
             '$modelSlug$' => $modelSlug,
             '$label$' => $label,
-            '$rows$' => str_plural(lcfirst(class_basename($modelClass)), 2),
+            '$rows$' => Str::plural(lcfirst(class_basename($modelClass)), 2),
             '$dir$' => $viewsDir
         ]);
-    }
-
-    /**
-     * Get the fully-qualified model class name.
-     *
-     * @param  string $model
-     *
-     * @return string
-     */
-    protected function parseModel($model)
-    {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
-            throw new InvalidArgumentException('Model name contains invalid characters.');
-        }
-
-        $model = trim(str_replace('/', '\\', $model), '\\');
-
-        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace . $model;
-        }
-
-        return $model;
     }
 
     /**

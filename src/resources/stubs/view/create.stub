@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <div class="row">
+    <div class="row my-5">
         <div class="col text-center">
             <h2>Add $label$</h2>
         </div>
