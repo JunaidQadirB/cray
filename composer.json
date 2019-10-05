@@ -10,7 +10,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": [],
+    "require": {},
     "autoload": {
         "files": [
             "src/helpers.php"
