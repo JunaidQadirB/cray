@@ -2,6 +2,7 @@
 
 namespace MoonBear\LaravelCrudScaffold;
 
+use Illuminate\Support\Facades\Blade;
 use MoonBear\LaravelCrudScaffold\Console\Commands\ControllerMakeCommand;
 use MoonBear\LaravelCrudScaffold\Console\Commands\FactoryMakeCommand;
 use MoonBear\LaravelCrudScaffold\Console\Commands\MakeScaffold;
@@ -44,6 +45,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-
+//        Blade::component('components.themes.default.modal', 'modal');
     }
 }
