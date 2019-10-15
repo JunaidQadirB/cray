@@ -208,7 +208,9 @@ class ControllerMakeCommand extends GeneratorCommand
 
             ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
 
-            ['views-dir', 'vd', InputOption::VALUE_OPTIONAL, 'Specify the view path within the views directory'],
+            ['views-dir', 'i', InputOption::VALUE_OPTIONAL, 'Specify the view path within the views directory'],
+
+            ['controller-dir', 'c', InputOption::VALUE_OPTIONAL, 'Specify the controller path within the Http directory'],
         ];
     }
 }

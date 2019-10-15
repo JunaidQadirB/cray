@@ -22,6 +22,7 @@ class MakeScaffold extends GeneratorCommand
     protected $signature = 'mbt:scaffold 
     {name : Model name. Controller, factory, migration, views will be based on this name.}
     {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}
+    {--controller-dir= : Place controller in a sub-directory under the Http/Controllers directory. It can be any nested directory structure}
     {--stubs-dir= : Specify a custom stubs directory}
     {--no-views : Do not create view files for the model}
     {--no-migration : Do not create a migration for the model}
@@ -132,9 +133,14 @@ class MakeScaffold extends GeneratorCommand
             '--model' => $modelName,
         ];
 
-        $dir = $this->option('views-dir');
-        if ($dir) {
-            $args['--views-dir'] = $dir;
+        $viewsDir = $this->option('views-dir');
+        if ($viewsDir) {
+            $args['--views-dir'] = $viewsDir;
+        }
+
+        $controllerDir = $this->option('controller-dir');
+        if ($controllerDir) {
+            $args['--controller-dir'] = $controllerDir;
         }
 
         $this->call('mbt:controller', $args);

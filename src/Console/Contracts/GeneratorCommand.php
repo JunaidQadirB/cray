@@ -37,7 +37,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     public function handle()
     {
         $name = $this->qualifyClass($this->getNameInput());
-
         $path = $this->getPath($name);
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
@@ -58,7 +57,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 
         $this->files->put($path, $this->buildClass($name));
 
-        $this->info($this->type . ' created successfully.');
+        $this->info($this->type . ' created successfully in ' . $path);
     }
 
     /**
@@ -73,13 +72,18 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         $name = ltrim($name, '\\/');
 
         $rootNamespace = $this->rootNamespace();
-
         if (Str::startsWith($name, $rootNamespace)) {
             return $name;
         }
 
         $name = str_replace('/', '\\', $name);
 
+        $dir = $this->hasOption('controller-dir')
+            ? $this->option('controller-dir')
+            : null;
+        if ($dir) {
+            $name = Str::studly(strtolower($dir)) . '\\' . $name;
+        }
         return $this->qualifyClass(
             $this->getDefaultNamespace(trim($rootNamespace, '\\')) . '\\' . $name
         );
@@ -213,9 +217,11 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      */
     protected function replaceNamespace(&$stub, $name)
     {
+        $namespace = $this->getNamespace($name);
+
         $stub = str_replace(
             ['DummyNamespace', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
-            [$this->getNamespace($name), $this->rootNamespace(), config('auth.providers.users.model')],
+            [$namespace, $this->rootNamespace(), config('auth.providers.users.model')],
             $stub
         );
 
