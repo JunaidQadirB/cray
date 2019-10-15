@@ -205,8 +205,8 @@ class ViewMakeCommand extends GeneratorCommand
         } else {
             $stub = str_replace('$dir$', '', $stub);
         }
-        $stub = str_replace('$rows$', '$' . camel_case(Str::plural($name, 2)), $stub);
-        $stub = str_replace('$row$', '$' . camel_case($name), $stub);
+        $stub = str_replace('$rows$', '$' . Str::camel(Str::plural($name, 2)), $stub);
+        $stub = str_replace('$row$', '$' . Str::camel($name), $stub);
 
         return $stub;
     }

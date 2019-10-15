@@ -176,7 +176,7 @@ class MakeScaffold extends GeneratorCommand
         $this->call('mbt:request', [
             'name' => $name,
             '--model' => $model,
-            '--type' => str_slug($requestType),
+            '--type' => Str::slug($requestType),
         ]);
     }
 
@@ -187,7 +187,7 @@ class MakeScaffold extends GeneratorCommand
      */
     protected function getStub()
     {
-        return resource_path('stubs/' . str_slug($this->type) . '.stub');
+        return resource_path('stubs/' . Str::slug($this->type) . '.stub');
     }
 
     /**
