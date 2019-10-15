@@ -2,10 +2,10 @@
 
 A Laravel package to help you generate nearly complete CRUD pages like crazy!
 
-##Install
+## Install
 `composer require moonbear/laravel-crud-scaffold`
 
-##Configure
+## Configure
 `php artisan vendor:publish --tag=laravel-crud-scaffold`
 
 ## Use
@@ -26,9 +26,9 @@ View successfully created in [project path]/resources/views/models/show.blade.ph
 Request created successfully in [project path]/app/Http/Requests/ModelStoreRequest.php
 Request created successfully in [project path]/app/Http/Requests/ModelUpdateRequest.php
 ```
-###Specify Views Directory
+### Specify Views Directory
 `php artisan mbt:scaffold Model --views-dir=dashboard`
 
-###Specify Controller Namespace + Directory
+### Specify Controller Namespace + Directory
 `php artisan mbt:scaffold Model --views-dir=dashboard --controller-dir=Dashboard`
 
