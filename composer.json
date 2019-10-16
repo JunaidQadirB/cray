@@ -1,6 +1,6 @@
 {
     "name": "moonbear/laravel-crud-scaffold",
-    "description": "A Laravel 5 package to help you generate nearly complete CRUD pages like crazy!",
+    "description": "A Laravel package to help you generate nearly complete CRUD pages like crazy!",
     "version": "1.5.3",
     "license": "MIT",
     "authors": [
