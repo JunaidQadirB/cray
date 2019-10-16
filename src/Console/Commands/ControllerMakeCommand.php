@@ -74,6 +74,13 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
+        $dir = $this->hasOption('controller-dir') && trim($this->option('controller-dir')) != ''
+            ? $this->option('controller-dir')
+            : null;
+        if ($dir) {
+            return $rootNamespace . '\Http\Controllers\\' . Str::studly(strtolower($dir));
+        }
+
         return $rootNamespace . '\Http\Controllers';
     }
 

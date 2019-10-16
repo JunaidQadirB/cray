@@ -78,12 +78,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 
         $name = str_replace('/', '\\', $name);
 
-        $dir = $this->hasOption('controller-dir')
-            ? $this->option('controller-dir')
-            : null;
-        if ($dir) {
-            $name = Str::studly(strtolower($dir)) . '\\' . $name;
-        }
         return $this->qualifyClass(
             $this->getDefaultNamespace(trim($rootNamespace, '\\')) . '\\' . $name
         );
