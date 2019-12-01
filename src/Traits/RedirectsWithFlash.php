@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonBear\LaravelCrudScaffold\Traits;
+namespace JunaidQadirB\Cray\Traits;
 
 
 trait RedirectsWithFlash

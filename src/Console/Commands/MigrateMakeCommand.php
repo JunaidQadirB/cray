@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonBear\LaravelCrudScaffold\Console\Commands;
+namespace JunaidQadirB\Cray\Console\Commands;
 
 
 use Illuminate\Database\Console\Migrations\BaseCommand;

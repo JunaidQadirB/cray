@@ -1,4 +1,4 @@
-# Laravel CRUD Scaffold
+# Cray For Laravel
 
 A Laravel package to help you generate nearly complete CRUD pages like crazy!
 
@@ -9,7 +9,7 @@ A Laravel package to help you generate nearly complete CRUD pages like crazy!
 `php artisan vendor:publish --tag=laravel-crud-scaffold`
 
 ## Use
-`php artisan mbt:scaffold Model`
+`php artisan cray:scaffold Model`
 
 If everything goes fine, you should get the following output:
 ```bash
@@ -27,8 +27,8 @@ Request created successfully in [project path]/app/Http/Requests/ModelStoreReque
 Request created successfully in [project path]/app/Http/Requests/ModelUpdateRequest.php
 ```
 ### Specify Views Directory
-`php artisan mbt:scaffold Model --views-dir=dashboard`
+`php artisan cray:scaffold Model --views-dir=dashboard`
 
 ### Specify Controller Namespace + Directory
-`php artisan mbt:scaffold Model --views-dir=dashboard --controller-dir=Dashboard`
+`php artisan cray:scaffold Model --views-dir=dashboard --controller-dir=Dashboard`
 

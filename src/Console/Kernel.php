@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonBear\LaravelCrudScaffold\Console;
+namespace JunaidQadirB\Cray\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -13,14 +13,14 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        "\MoonBear\Make\Console\Commands\ControllerMakeCommand::class",
-        "\MoonBear\Make\Console\Commands\FactoryMakeCommand::class",
-        "\MoonBear\Make\Console\Commands\GeneratorCommand::class",
-        "\MoonBear\Make\Console\Commands\MakeScaffold::class",
-        "\MoonBear\Make\Console\Commands\MigrateMakeCommand::class",
-        "\MoonBear\Make\Console\Commands\ModelMakeCommand::class",
-        "\MoonBear\Make\Console\Commands\RequestMakeCommand::class",
-        "\MoonBear\Make\Console\Commands\ViewMakeCommand::class",
+        "\JunaidQadirB\Make\Console\Commands\ControllerMakeCommand::class",
+        "\JunaidQadirB\Make\Console\Commands\FactoryMakeCommand::class",
+        "\JunaidQadirB\Make\Console\Commands\GeneratorCommand::class",
+        "\JunaidQadirB\Make\Console\Commands\MakeScaffold::class",
+        "\JunaidQadirB\Make\Console\Commands\MigrateMakeCommand::class",
+        "\JunaidQadirB\Make\Console\Commands\ModelMakeCommand::class",
+        "\JunaidQadirB\Make\Console\Commands\RequestMakeCommand::class",
+        "\JunaidQadirB\Make\Console\Commands\ViewMakeCommand::class",
     ];
 
     /**

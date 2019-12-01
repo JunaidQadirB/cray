@@ -1,10 +1,10 @@
 <?php
 
-namespace MoonBear\LaravelCrudScaffold\Console\Commands;
+namespace JunaidQadirB\Cray\Console\Commands;
 
 
 use Illuminate\Support\Str;
-use MoonBear\LaravelCrudScaffold\Console\Contracts\GeneratorCommand;
+use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class RequestMakeCommand extends GeneratorCommand

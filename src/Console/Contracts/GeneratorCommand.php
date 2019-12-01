@@ -1,6 +1,6 @@
 <?php
 
-namespace MoonBear\LaravelCrudScaffold\Console\Contracts;
+namespace JunaidQadirB\Cray\Console\Contracts;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;

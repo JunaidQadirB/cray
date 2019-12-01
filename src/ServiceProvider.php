@@ -1,15 +1,15 @@
 <?php
 
-namespace MoonBear\LaravelCrudScaffold;
+namespace JunaidQadirB\Cray;
 
 use Illuminate\Support\Facades\Blade;
-use MoonBear\LaravelCrudScaffold\Console\Commands\ControllerMakeCommand;
-use MoonBear\LaravelCrudScaffold\Console\Commands\FactoryMakeCommand;
-use MoonBear\LaravelCrudScaffold\Console\Commands\MakeScaffold;
-use MoonBear\LaravelCrudScaffold\Console\Commands\MigrateMakeCommand;
-use MoonBear\LaravelCrudScaffold\Console\Commands\ModelMakeCommand;
-use MoonBear\LaravelCrudScaffold\Console\Commands\RequestMakeCommand;
-use MoonBear\LaravelCrudScaffold\Console\Commands\ViewMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\ControllerMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\MakeScaffold;
+use JunaidQadirB\Cray\Console\Commands\MigrateMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\ModelMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\RequestMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\ViewMakeCommand;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -31,7 +31,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([__DIR__ . '/resources/stubs' => resource_path('stubs')], 'laravel-crud-scaffold');
+        $this->publishes([__DIR__ . '/resources/stubs' => resource_path('stubs')], 'cray');
 
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);

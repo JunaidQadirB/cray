@@ -1,5 +1,5 @@
 {
-    "name": "moonbear/laravel-crud-scaffold",
+    "name": "junaidqadirb/cray",
     "description": "A Laravel package to help you generate nearly complete CRUD pages like crazy!",
     "version": "1.5.4",
     "license": "MIT",
@@ -16,13 +16,13 @@
             "src/helpers.php"
         ],
         "psr-4": {
-            "MoonBear\\LaravelCrudScaffold\\": "src/"
+            "Cray": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "MoonBear\\LaravelCrudScaffold\\ServiceProvider"
+                "JunaidQadir\\LaravelCrudScaffold\\ServiceProvider"
             ]
         }
     }

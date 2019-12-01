@@ -5,7 +5,7 @@ namespace DummyNamespace;
 use DummyFullModelClass;
 use App\Http\Requests\DummyModelClassUpdateRequest;
 use App\Http\Requests\DummyModelClassStoreRequest;
-use MoonBear\LaravelCrudScaffold\Traits\RedirectsWithFlash;
+use JunaidQadirB\Cray\Traits\RedirectsWithFlash;
 use Illuminate\Routing\Controller;
 
 class DummyClass extends Controller
