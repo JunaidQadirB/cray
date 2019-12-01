@@ -3,10 +3,10 @@
 A Laravel package to help you generate nearly complete CRUD pages like crazy!
 
 ## Install
-`composer require moonbear/laravel-crud-scaffold`
+`composer require junaidqadirb/cray`
 
 ## Configure
-`php artisan vendor:publish --tag=laravel-crud-scaffold`
+`php artisan vendor:publish --tag=cray`
 
 ## Use
 `php artisan cray:scaffold Model`
