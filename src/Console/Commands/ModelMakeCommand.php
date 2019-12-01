@@ -14,7 +14,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'mbt:model';
+    protected $name = 'cray:model';
 
     /**
      * The console command description.
@@ -69,7 +69,7 @@ class ModelMakeCommand extends GeneratorCommand
     {
         $factory = Str::studly(class_basename($this->argument('name')));
 
-        $this->call('mbt:factory', [
+        $this->call('cray:factory', [
             'name' => "{$factory}Factory",
             '--model' => $this->argument('name'),
         ]);
@@ -84,7 +84,7 @@ class ModelMakeCommand extends GeneratorCommand
     {
         $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
 
-        $this->call('mbt:migration', [
+        $this->call('cray:migration', [
             'name' => "create_{$table}_table",
             '--create' => $table,
         ]);
@@ -101,7 +101,7 @@ class ModelMakeCommand extends GeneratorCommand
 
         $modelName = $this->qualifyClass($this->getNameInput());
 
-        $this->call('mbt:controller', [
+        $this->call('cray:controller', [
             'name' => "{$controller}Controller",
             '--model' => $this->option('resource') ? $modelName : null,
         ]);

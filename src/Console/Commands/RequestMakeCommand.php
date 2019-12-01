@@ -14,7 +14,7 @@ class RequestMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'mbt:request';
+    protected $name = 'cray:request';
 
     /**
      * The console command description.

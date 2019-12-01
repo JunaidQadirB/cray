@@ -15,7 +15,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'mbt:controller';
+    protected $name = 'cray:controller';
 
     /**
      * The console command description.
@@ -130,7 +130,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
         if (!class_exists($parentModelClass)) {
             if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?", true)) {
-                $this->call('mbt:model', ['name' => $parentModelClass]);
+                $this->call('cray:model', ['name' => $parentModelClass]);
             }
         }
 
@@ -178,7 +178,7 @@ class ControllerMakeCommand extends GeneratorCommand
             /*if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
 
             }*/
-            $this->call('mbt:model', ['name' => $modelClass]);
+            $this->call('cray:model', ['name' => $modelClass]);
         }
 
         $label = str_to_words(class_basename($modelClass));

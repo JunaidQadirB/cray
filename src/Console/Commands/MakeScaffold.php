@@ -13,13 +13,13 @@ class MakeScaffold extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'mbt:scaffold';
+    protected $name = 'cray:scaffold';
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'mbt:scaffold 
+    protected $signature = 'cray:scaffold 
     {name : Model name. Controller, factory, migration, views will be based on this name.}
     {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}
     {--controller-dir= : Place controller in a sub-directory under the Http/Controllers directory. It can be any nested directory structure}
@@ -95,7 +95,7 @@ class MakeScaffold extends GeneratorCommand
     {
         $factory = Str::studly(class_basename($this->argument('name')));
 
-        $this->call('mbt:factory', [
+        $this->call('cray:factory', [
             'name' => "{$factory}Factory",
             '--model' => $this->argument('name'),
         ]);
@@ -110,7 +110,7 @@ class MakeScaffold extends GeneratorCommand
     {
         $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
 
-        $this->call('mbt:migration', [
+        $this->call('cray:migration', [
             'name' => "create_{$table}_table",
             '--create' => $table,
         ]);
@@ -143,7 +143,7 @@ class MakeScaffold extends GeneratorCommand
             $args['--controller-dir'] = $controllerDir;
         }
 
-        $this->call('mbt:controller', $args);
+        $this->call('cray:controller', $args);
     }
 
     protected function createViews()
@@ -163,7 +163,7 @@ class MakeScaffold extends GeneratorCommand
         if ($stub) {
             $args['--stubs'] = $stub;
         }
-        $this->call('mbt:view', $args);
+        $this->call('cray:view', $args);
 
 
     }
@@ -179,7 +179,7 @@ class MakeScaffold extends GeneratorCommand
     {
         $model = $this->getNameInput();
         $name = "{$model}{$requestType}Request";
-        $this->call('mbt:request', [
+        $this->call('cray:request', [
             'name' => $name,
             '--model' => $model,
             '--type' => Str::slug($requestType),

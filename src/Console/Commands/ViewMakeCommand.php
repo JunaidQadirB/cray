@@ -16,7 +16,7 @@ class ViewMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'mbt:view';
+    protected $name = 'cray:view';
 
     /**
      * The console command description.
