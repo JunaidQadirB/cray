@@ -1,7 +1,7 @@
 {
     "name": "junaidqadirb/cray",
     "description": "A Laravel package to help you generate nearly complete CRUD pages like crazy!",
-    "version": "1.5.4",
+    "version": "2.0.0",
     "license": "MIT",
     "authors": [
         {
