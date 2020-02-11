@@ -1,0 +1,56 @@
+{
+    "name": "junaidqadirb/cray",
+    "description": "A Laravel package to help you generate nearly complete CRUD pages like crazy!",
+    "keywords": [
+        "junaidqadirb",
+        "cray"
+    ],
+    "homepage": "https://github.com/junaidqadirb/cray",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Junaid Qadir",
+            "email": "junaidqadirb@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JunaidQadirB\\Cray\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "JunaidQadirB\\Cray\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JunaidQadirB\\Cray\\CrayServiceProvider"
+            ],
+            "aliases": {
+                "Cray": "JunaidQadirB\\Cray\\CrayFacade"
+            }
+        }
+    }
+}

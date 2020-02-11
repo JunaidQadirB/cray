@@ -1,0 +1,100 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use App\Http\Requests\DummyModelClassUpdateRequest;
+use App\Http\Requests\DummyModelClassStoreRequest;
+use JunaidQadirB\Cray\Traits\RedirectsWithFlash;
+use Illuminate\Routing\Controller;
+
+class DummyClass extends Controller
+{
+    use RedirectsWithFlash;
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $$rows$ = DummyModelClass::paginate(15);
+        return view('$dir$$modelSlug$.index', compact('$rows$'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $DummyModelVariable = new DummyModelClass();
+        return view('$dir$$modelSlug$.create', compact('DummyModelVariable'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  DummyModelClassStoreRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(DummyModelClassStoreRequest $request)
+    {
+        DummyModelClass::create($request->except('_token'));
+        return $this->success('$label$ added successfully!', '$dir$$modelSlug$.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function show(\DummyFullModelClass $DummyModelVariable)
+    {
+        $previous = $DummyModelVariable->where('id', '<', $DummyModelVariable->id)->max('id');
+        $next = $DummyModelVariable->where('id', '>', $DummyModelVariable->id)->min('id');
+
+        return view('$dir$$modelSlug$.show', compact('DummyModelVariable'))
+            ->with('next', $next)
+            ->with('previous', $previous);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(\DummyFullModelClass $DummyModelVariable)
+    {
+        return view('$dir$$modelSlug$.edit', compact('DummyModelVariable'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  DummyModelClassUpdateRequest  $request
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function update(DummyModelClassUpdateRequest $request, DummyModelClass $DummyModelVariable)
+    {
+        $DummyModelVariable->update($request->except('_token'));
+        return $this->success('$label$ updated successfully!', '$dir$$modelSlug$.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(DummyModelClass $DummyModelVariable)
+    {
+        $DummyModelVariable->delete();
+        return $this->success('$label$ deleted successfully!', '$dir$$modelSlug$.index');
+    }
+}
