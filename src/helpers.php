@@ -32,3 +32,30 @@ if (!function_exists('str_to_words')) {
     }
 
 }
+
+if (!function_exists('studly_to_words')) {
+    function studly_to_words($text)
+    {
+        $data = preg_split('/(?=[A-Z])/', class_basename($text));
+        return trim(implode(' ', $data));
+    }
+}
+
+if (!function_exists('has_permission')) {
+    function has_permission(\App\User $user, string $ability): bool
+    {
+        $userRoles = $user->roles;
+        $hasPermission = false;
+
+        foreach ($userRoles as $role) {
+            foreach ($role->permissions as $permission) {
+                if ($permission->name == $ability) {
+                    $hasPermission = true;
+                    break;
+                }
+            }
+        }
+
+        return $hasPermission;
+    }
+}

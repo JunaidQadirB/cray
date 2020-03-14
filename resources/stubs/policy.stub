@@ -11,6 +11,19 @@ class DummyClass
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view any DocDummyPluralModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return mixed
+     */
+    public function viewAny(DummyUser $user)
+    {
+       $permission = 'list DummyModelPlural';
+
+        return has_permission($user, $permission) || $user->can('user::view:all');
+    }
+
+    /**
      * Determine whether the user can view the DocDummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
@@ -19,7 +32,15 @@ class DummyClass
      */
     public function view(DummyUser $user, DummyModel $dummyModel)
     {
-        //
+        $permission = sprintf("%s DummyModelPlural", __FUNCTION__);
+
+        $viewAny = $this->viewAny($user);
+
+        if (!is_null($viewAny)) {
+            return $viewAny;
+        }
+
+        return $user->id === $dummyModel->id || has_permission($user, $permission);;
     }
 
     /**
@@ -30,7 +51,9 @@ class DummyClass
      */
     public function create(DummyUser $user)
     {
-        //
+        $permission = sprintf("%s DummyModelPlural", __FUNCTION__);
+
+        return has_permission($user, $permission);
     }
 
     /**
@@ -42,7 +65,9 @@ class DummyClass
      */
     public function update(DummyUser $user, DummyModel $dummyModel)
     {
-        //
+        $permission = sprintf("%s DummyModelPlural", __FUNCTION__);
+
+        return has_permission($user, $permission);
     }
 
     /**
@@ -54,6 +79,36 @@ class DummyClass
      */
     public function delete(DummyUser $user, DummyModel $dummyModel)
     {
-        //
+        $permission = sprintf("%s DummyModelPlural", __FUNCTION__);
+
+        return has_permission($user, $permission);
+    }
+
+    /**
+     * Determine whether the user can restore the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function restore(DummyUser $user, DummyModel $dummyModel)
+    {
+        $permission = sprintf("%s DummyModelPlural", __FUNCTION__);
+
+        return has_permission($user, $permission);
+    }
+
+    /**
+     * Determine whether the user can permanently delete the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function forceDelete(DummyUser $user, DummyModel $dummyModel)
+    {
+        $permission = sprintf("%s DummyModelPlural", __FUNCTION__);
+
+        return has_permission($user, $permission);
     }
 }
