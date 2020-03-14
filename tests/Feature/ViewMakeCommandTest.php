@@ -18,12 +18,12 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryNotExists(resource_path('views/posts'));
         $this->artisan('cray:view Post');
         $output = Artisan::output();
-        $this->assertSame('View successfully created in /resources/views/posts/index.blade.php' . PHP_EOL .
-            'View successfully created in /resources/views/posts/create.blade.php' . PHP_EOL .
-            'View successfully created in /resources/views/posts/_form.blade.php' . PHP_EOL .
-            'View successfully created in /resources/views/posts/edit.blade.php' . PHP_EOL .
-            'View successfully created in /resources/views/posts/show.blade.php' . PHP_EOL .
-            'View successfully created in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
+        $this->assertSame('View created successfully in /resources/views/posts/index.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/create.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/_form.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/edit.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/show.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
             , $output);
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->assertFileExists(resource_path('views/posts/index.blade.php'));
@@ -106,8 +106,8 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -i --force');
         $output = Artisan::output();
-        $this->assertSame('View successfully created in /resources/views/posts/index.blade.php' . PHP_EOL .
-            'View successfully created in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
+        $this->assertSame('View created successfully in /resources/views/posts/index.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
             , $output);
     }
 
@@ -131,8 +131,8 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -c --force');
         $output = Artisan::output();
-        $this->assertSame('View successfully created in /resources/views/posts/create.blade.php' . PHP_EOL .
-            'View successfully created in /resources/views/posts/_form.blade.php' . PHP_EOL
+        $this->assertSame('View created successfully in /resources/views/posts/create.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/_form.blade.php' . PHP_EOL
             , $output);
     }
 

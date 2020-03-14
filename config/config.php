@@ -1,8 +1,4 @@
 <?php
-
-/*
- * You can place your custom package configuration in here.
- */
 return [
-
+    "stubs_dir" => resource_path('stubs'),
 ];

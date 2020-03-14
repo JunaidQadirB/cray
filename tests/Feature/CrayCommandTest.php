@@ -15,6 +15,14 @@ class CrayCommandTest extends TestCase
         $this->removeGeneratedFiles();
     }
 
+    public function test_it_publishes_stubs()
+    {
+        $this->deleteStubs();
+        $this->assertDirectoryNotExists(resource_path('stubs'));
+        $this->artisan('vendor:publish --tag=cray');
+        $this->assertDirectoryExists(resource_path('stubs'));
+    }
+
     public function test_it_scaffolds_crud_artifacts()
     {
         //Make sure no artifact related to Post exists
@@ -46,12 +54,12 @@ class CrayCommandTest extends TestCase
 Created Migration: 2020_03_14_153546_create_posts_table
 Model created successfully in /app/Post.php
 Controller created successfully in /app/Http/Controllers/PostController.php
-View successfully created in /resources/views/posts/index.blade.php
-View successfully created in /resources/views/posts/create.blade.php
-View successfully created in /resources/views/posts/_form.blade.php
-View successfully created in /resources/views/posts/edit.blade.php
-View successfully created in /resources/views/posts/show.blade.php
-View successfully created in /resources/views/posts/modals/delete.blade.php
+View created successfully in /resources/views/posts/index.blade.php
+View created successfully in /resources/views/posts/create.blade.php
+View created successfully in /resources/views/posts/_form.blade.php
+View created successfully in /resources/views/posts/edit.blade.php
+View created successfully in /resources/views/posts/show.blade.php
+View created successfully in /resources/views/posts/modals/delete.blade.php
 Request created successfully in /app/Http/Requests/PostStoreRequest.php
 Request created successfully in /app/Http/Requests/PostUpdateRequest.php" . PHP_EOL;
         $this->assertSame($expectedOutput, $actualOutput);

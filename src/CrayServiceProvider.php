@@ -40,7 +40,7 @@ class CrayServiceProvider extends ServiceProvider
 //        if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('cray.php'),
-            ], 'config');
+            ], 'cray');
 
             // Publishing the views.
             /*$this->publishes([

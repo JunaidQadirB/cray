@@ -140,7 +140,7 @@ class ViewMakeCommand extends GeneratorCommand
             $this->error("File already exists. Cannot overwrite {$displayPath}.");
         } else {
             file_put_contents($target, $stub);
-            $this->info("View successfully created in {$displayPath}");
+            $this->info("View created successfully in {$displayPath}");
         }
         if ($type == 'create' || $type == 'edit') {
             /**
@@ -154,7 +154,7 @@ class ViewMakeCommand extends GeneratorCommand
 //            $this->error("File already exists. Cannot overwrite {$formPartialDisplayPath}.");
             } else {
                 file_put_contents($formPartial, $formStub);
-                $this->info("View successfully created in {$formPartialDisplayPath}");
+                $this->info("View created successfully in {$formPartialDisplayPath}");
             }
         }
     }

@@ -193,7 +193,7 @@ class Cray extends GeneratorCommand
      */
     protected function getStub()
     {
-        return resource_path('stubs/' . Str::slug($this->type) . '.stub');
+        return config('cray.stubs_dir').'/' . Str::slug($this->type) . '.stub';
     }
 
     /**

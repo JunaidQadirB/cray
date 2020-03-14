@@ -115,10 +115,10 @@ class ModelMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         if ($this->option('pivot')) {
-            return resource_path('stubs/pivot.model.stub');
+            return config('cray.stubs_dir').'/pivot.model.stub';
         }
 
-        return resource_path('stubs/model.stub');
+        return config('cray.stubs_dir').'/model.stub';
     }
 
     /**
