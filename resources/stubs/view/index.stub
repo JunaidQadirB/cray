@@ -20,7 +20,7 @@
         <div class="col text-right">
             <div class="btn-toolbar" role="toolbar" aria-label="$modelSlug$ Context Toolbar">
                 <div class="btn-group btn-group-sm ml-auto" role="group" aria-label="">
-                    <a href="{{route('$dir$$modelSlug$.create')}}" class="btn btn-outline-primary">Add</a>
+                    <a href="{{route('$routeBase$.create')}}" class="btn btn-outline-primary">Add</a>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                     <td>{{$row$->status}}</td>
                     <td class="text-right">
                         <div class="btn-group btn-group-sm">
-                            <a href="{{route('$dir$$modelSlug$.edit', $row$->id)}}" type="button"
+                            <a href="{{route('$routeBase$.edit', $row$->id)}}" type="button"
                                class="btn btn-primary">Edit</a>
                             <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,7 +55,7 @@
                                 <button type="submit" class="dropdown-item text-danger"
                                         data-toggle="modal" data-target="#delete{{className($row$)}}Modal"
                                         data-id="{{$row$->id}}"
-                                        href="{{route('$dir$$modelSlug$.edit', $row$->id)}}">Delete
+                                        href="{{route('$routeBase$.edit', $row$->id)}}">Delete
                                 </button>
                             </div>
                         </div>
@@ -65,13 +65,13 @@
                 <tr>
                     <td colspan="5"><p class="text-center mb-0">No $label$ to show. <a
                                     class="btn btn-primary btn-sm rounded-0"
-                                    href="{{route('$dir$$modelSlug$.create')}}">Add One</a></p></td>
+                                    href="{{route('$routeBase$.create')}}">Add One</a></p></td>
                 </tr>
             @endforelse
             </tbody>
         </table>
     </div>
     {{ $rows$->links() }}
-    @include('$dir$$modelSlug$.modals.delete',['id' => "delete$model$Modal"])
+    @include('$viewDir$.modals.delete',['id' => "delete$model$Modal"])
 @endsection
 

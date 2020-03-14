@@ -20,16 +20,16 @@
         <div class="col-auto text-right">
             <div class="btn-toolbar" role="toolbar" aria-label="$modelSlug$ Context Toolbar">
                <div class="btn-group btn-group-sm ml-auto" role="group" aria-label="">
-                   <a href="{{route('$dir$$modelSlug$.index')}}" class="btn btn-outline-primary">Back to list</a>
+                   <a href="{{route('$routeBase$.index')}}" class="btn btn-outline-primary">Back to list</a>
                </div>
             </div>
         </div>
     </div>
-    <form action="{{route('$dir$$modelSlug$.store')}}" method="post">
+    <form action="{{route('$routeBase$.store')}}" method="post">
         <div class="row">
             {{csrf_field()}}
             <div class="col-md-8">
-                @include('$dir$$modelSlug$._form')
+                @include('$viewDir$._form')
                 <div class="form-group row">
                     <div class="col-sm-6"></div>
                     <div class="col-sm-6">

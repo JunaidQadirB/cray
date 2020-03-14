@@ -20,7 +20,7 @@ class DummyClass extends Controller
     public function index()
     {
         $$rows$ = DummyModelClass::paginate(15);
-        return view('$dir$$modelSlug$.index', compact('$rows$'));
+        return view('$viewDir$.index', compact('$rows$'));
     }
 
     /**
@@ -31,7 +31,7 @@ class DummyClass extends Controller
     public function create()
     {
         $DummyModelVariable = new DummyModelClass();
-        return view('$dir$$modelSlug$.create', compact('DummyModelVariable'));
+        return view('$viewDir$.create', compact('DummyModelVariable'));
     }
 
     /**
@@ -43,7 +43,7 @@ class DummyClass extends Controller
     public function store(DummyModelClassStoreRequest $request)
     {
         DummyModelClass::create($request->except('_token'));
-        return $this->success('$label$ added successfully!', '$dir$$modelSlug$.index');
+        return $this->success('$label$ added successfully!', '$routeBase$.index');
     }
 
     /**
@@ -57,7 +57,7 @@ class DummyClass extends Controller
         $previous = $DummyModelVariable->where('id', '<', $DummyModelVariable->id)->max('id');
         $next = $DummyModelVariable->where('id', '>', $DummyModelVariable->id)->min('id');
 
-        return view('$dir$$modelSlug$.show', compact('DummyModelVariable'))
+        return view('$viewDir$.show', compact('DummyModelVariable'))
             ->with('next', $next)
             ->with('previous', $previous);
     }
@@ -70,7 +70,7 @@ class DummyClass extends Controller
      */
     public function edit(\DummyFullModelClass $DummyModelVariable)
     {
-        return view('$dir$$modelSlug$.edit', compact('DummyModelVariable'));
+        return view('$viewDir$.edit', compact('DummyModelVariable'));
     }
 
     /**
@@ -83,7 +83,7 @@ class DummyClass extends Controller
     public function update(DummyModelClassUpdateRequest $request, DummyModelClass $DummyModelVariable)
     {
         $DummyModelVariable->update($request->except('_token'));
-        return $this->success('$label$ updated successfully!', '$dir$$modelSlug$.index');
+        return $this->success('$label$ updated successfully!', '$routeBase$.index');
     }
 
     /**
@@ -95,6 +95,6 @@ class DummyClass extends Controller
     public function destroy(DummyModelClass $DummyModelVariable)
     {
         $DummyModelVariable->delete();
-        return $this->success('$label$ deleted successfully!', '$dir$$modelSlug$.index');
+        return $this->success('$label$ deleted successfully!', '$routeBase$.index');
     }
 }

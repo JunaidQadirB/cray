@@ -184,10 +184,17 @@ class ControllerMakeCommand extends GeneratorCommand
         $label = str_to_words(class_basename($modelClass));
 
         $modelSlug = Str::slug(Str::plural($label, 2));
-        $viewsDir = '';
-        if ($viewsDir = $this->option('views-dir')) {
-            $viewsDir = $viewsDir . '.';
+        $viewDir = $modelSlug;
+        $routeBase = $modelSlug;
+        if ($this->option('views-dir')) {
+            $viewDir = $this->option('views-dir');
+            $viewDir = str_replace('/', '.', $viewDir);
         }
+
+        if ($this->option('route-base')) {
+            $routeBase = $this->option('route-base');
+        }
+
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
@@ -195,7 +202,8 @@ class ControllerMakeCommand extends GeneratorCommand
             '$modelSlug$' => $modelSlug,
             '$label$' => $label,
             '$rows$' => Str::plural(lcfirst(class_basename($modelClass)), 2),
-            '$dir$' => $viewsDir
+            '$viewDir$' => $viewDir,
+            '$routeBase$' => $routeBase,
         ]);
     }
 
@@ -215,9 +223,41 @@ class ControllerMakeCommand extends GeneratorCommand
 
             ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
 
-            ['views-dir', 'i', InputOption::VALUE_OPTIONAL, 'Specify the view path within the views directory'],
+            ['views-dir', 'i', InputOption::VALUE_OPTIONAL, 'Use the specified path in controller actions to return the respective view'],
 
             ['controller-dir', 'c', InputOption::VALUE_OPTIONAL, 'Specify the controller path within the Http directory'],
+
+            ['route-base', 'b', InputOption::VALUE_OPTIONAL, 'Specify the base route to use'],
+
+            ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller']
         ];
+    }
+
+    public function handle()
+    {
+        $name = $this->qualifyClass($this->getNameInput());
+        $path = $this->getPath($name);
+        // First we will check to see if the class already exists. If it does, we don't want
+        // to create the class and overwrite the user's code. So, we will bail out so the
+        // code is untouched. Otherwise, we will continue generating this class' files.
+        if ((!$this->hasOption('force') ||
+                !$this->option('force')) &&
+            $this->alreadyExists($this->getNameInput())
+        ) {
+            $this->error($this->type . ' already exists!');
+
+            return false;
+        }
+
+        // Next, we will generate the path to the location where this class' file should get
+        // written. Then, we will build the class and make the proper replacements on the
+        // stub files so that it gets the correctly formatted namespace and class name.
+        $this->makeDirectory($path);
+
+        $displayPath = str_replace($this->laravel['path'], '/app', $path);
+
+        $this->files->put($path, $this->buildClass($name));
+
+        $this->info($this->type . ' created successfully in ' . $displayPath);
     }
 }

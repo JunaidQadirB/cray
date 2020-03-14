@@ -18,7 +18,7 @@
             jQuery(document).ready(function ($) {
                 $('#{{$id}}').on('show.bs.modal', function (event) {
                     const id = $(event.relatedTarget).data('id');
-                    $('#{{$id}}').find('form').attr('action', `{{route('$dir$$modelSlug$.index')}}/${id}`);
+                    $('#{{$id}}').find('form').attr('action', `{{route('$routeBase$.index')}}/${id}`);
                 });
             });
         });
