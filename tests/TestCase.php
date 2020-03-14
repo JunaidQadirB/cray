@@ -19,8 +19,29 @@ class TestCase extends Testbench
             unlink(app_path('Http/Controllers/Dashboard/PostController.php'));
         }
 
+        if (file_exists(app_path('Http/Requests/PostUpdateRequest.php'))) {
+            unlink(app_path('Http/Requests/PostUpdateRequest.php'));
+        }
+
+        if (file_exists(app_path('Http/Requests/PostStoreRequest.php'))) {
+            unlink(app_path('Http/Requests/PostStoreRequest.php'));
+        }
+
         if (file_exists(app_path('Post.php'))) {
             unlink(app_path('Post.php'));
+        }
+
+        if (file_exists(resource_path('views/posts'))) {
+            unlink(resource_path('views/posts'));
+        }
+
+        if (file_exists(base_path('database/factories/PostFactory.php'))) {
+            unlink(base_path('database/factories/PostFactory.php'));
+        }
+
+        $migrations = glob(base_path('database/migrations/*.php'));
+        foreach ($migrations as $migration) {
+            unlink($migration);
         }
     }
 

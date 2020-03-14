@@ -57,7 +57,9 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 
         $this->files->put($path, $this->buildClass($name));
 
-        $this->info($this->type . ' created successfully in ' . $path);
+        $displayPath = str_replace($this->laravel->basePath(), '', $path);
+
+        $this->info($this->type . ' created successfully in ' . $displayPath);
     }
 
     /**

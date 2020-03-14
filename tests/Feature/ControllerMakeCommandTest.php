@@ -42,7 +42,7 @@ class ControllerMakeCommandTest extends TestCase
     {
         $this->artisan('cray:controller PostController --model=Post');
         $output = Artisan::output();
-        $expected = 'Model created successfully in /media/junaidqadir/Personal/code/cray/vendor/orchestra/testbench-core/laravel/app/Post.php' . PHP_EOL
+        $expected = 'Model created successfully in /app/Post.php' . PHP_EOL
             . 'Controller created successfully in /app/Http/Controllers/PostController.php' . PHP_EOL;
         $this->assertSame($expected, $output);
         $this->assertFileExists(app_path('/Http/Controllers/PostController.php'));
@@ -99,7 +99,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->removeGeneratedFiles();
         $this->artisan('cray:controller PostController --model=Post --controller-dir=Dashboard');
         $output = Artisan::output();
-        $expected = "Model created successfully in /media/junaidqadir/Personal/code/cray/vendor/orchestra/testbench-core/laravel/app/Post.php" . PHP_EOL
+        $expected = "Model created successfully in /app/Post.php" . PHP_EOL
             . "Controller created successfully in /app/Http/Controllers/Dashboard/PostController.php" . PHP_EOL;
         $this->assertSame($expected, $output);
     }
