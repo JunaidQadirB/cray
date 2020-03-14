@@ -9,6 +9,21 @@ use Orchestra\Testbench\TestCase as Testbench;
 
 class TestCase extends Testbench
 {
+    public function removeGeneratedFiles()
+    {
+        if (file_exists(app_path('Http/Controllers/PostController.php'))) {
+            unlink(app_path('Http/Controllers/PostController.php'));
+        }
+
+        if (file_exists(app_path('Http/Controllers/Dashboard/PostController.php'))) {
+            unlink(app_path('Http/Controllers/Dashboard/PostController.php'));
+        }
+
+        if (file_exists(app_path('Post.php'))) {
+            unlink(app_path('Post.php'));
+        }
+    }
+
     protected function getPackageProviders($app)
     {
         return [CrayServiceProvider::class];
@@ -56,6 +71,7 @@ class TestCase extends Testbench
     protected function setUp(): void
     {
         parent::setUp();
+        $this->withoutMockingConsoleOutput();
         if (file_exists(resource_path('views/posts'))) {
             $this->rmdirRecursive(resource_path('views/posts'));
         }
