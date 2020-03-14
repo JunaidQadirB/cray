@@ -5,7 +5,7 @@ namespace JunaidQadirB\Cray\Console\Commands;
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
 
-class MakeScaffold extends GeneratorCommand
+class Cray extends GeneratorCommand
 {
 
     /**
@@ -19,7 +19,7 @@ class MakeScaffold extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'cray 
+    protected $signature = 'cray
     {name : Model name. Controller, factory, migration, views will be based on this name.}
     {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}
     {--controller-dir= : Place controller in a sub-directory under the Http/Controllers directory. It can be any nested directory structure}

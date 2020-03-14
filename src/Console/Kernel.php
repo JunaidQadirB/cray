@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use JunaidQadirB\Cray\Console\Commands\ControllerMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
-use JunaidQadirB\Cray\Console\Commands\MakeScaffold;
+use JunaidQadirB\Cray\Console\Commands\Cray;
 use JunaidQadirB\Cray\Console\Commands\MigrateMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ModelMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\RequestMakeCommand;
@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         ControllerMakeCommand::class,
         FactoryMakeCommand::class,
-        MakeScaffold::class,
+        Cray::class,
         MigrateMakeCommand::class,
         ModelMakeCommand::class,
         RequestMakeCommand::class,
