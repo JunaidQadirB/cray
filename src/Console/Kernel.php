@@ -5,10 +5,11 @@ namespace JunaidQadirB\Cray\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use JunaidQadirB\Cray\Console\Commands\ControllerMakeCommand;
-use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\Cray;
+use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\MigrateMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ModelMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\PolicyMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\RequestMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ViewMakeCommand;
 
@@ -20,11 +21,12 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Cray::class,
         ControllerMakeCommand::class,
         FactoryMakeCommand::class,
-        Cray::class,
         MigrateMakeCommand::class,
         ModelMakeCommand::class,
+        PolicyMakeCommand::class,
         RequestMakeCommand::class,
         ViewMakeCommand::class,
     ];
