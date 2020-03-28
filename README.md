@@ -1,12 +1,5 @@
 # Cray For Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/junaidqadirb/cray.svg?style=flat-square)](https://packagist.org/packages/junaidqadirb/cray)
-[![Build Status](https://img.shields.io/travis/junaidqadirb/cray/master.svg?style=flat-square)](https://travis-ci.org/junaidqadirb/cray)
-[![Quality Score](https://img.shields.io/scrutinizer/g/junaidqadirb/cray.svg?style=flat-square)](https://scrutinizer-ci.com/g/junaidqadirb/cray)
-[![Total Downloads](https://img.shields.io/packagist/dt/junaidqadirb/cray.svg?style=flat-square)](https://packagist.org/packages/junaidqadirb/cray)
-
-
-
 A Laravel package to help you generate nearly complete CRUD pages like crazy!
 
 ## Install
