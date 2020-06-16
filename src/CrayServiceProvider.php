@@ -2,6 +2,7 @@
 
 namespace JunaidQadirB\Cray;
 
+use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\ServiceProvider;
 use JunaidQadirB\Cray\Console\Commands\ControllerMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
@@ -29,6 +30,7 @@ class CrayServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         /*
          * Optional methods to load your package assets
          */
@@ -56,6 +58,12 @@ class CrayServiceProvider extends ServiceProvider
             /*$this->publishes([
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/cray'),
             ], 'lang');*/
+
+        $this->app->when(MigrationCreator::class)
+            ->needs('$customStubPath')
+            ->give(function ($app) {
+                return resource_path('stubs');
+            });
 
             // Registering package commands.
             $this->commands($this->commands);
