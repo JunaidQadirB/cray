@@ -19,7 +19,8 @@ class MigrateMakeCommand extends BaseCommand
         {--create= : The table to be created.}
         {--table= : The table to migrate.}
         {--path= : The location where the migration file should be created.}
-        {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths.}';
+        {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths.}
+        {--fullpath : Output the full path of the migration}';
 
     /**
      * The console command description.
@@ -31,23 +32,22 @@ class MigrateMakeCommand extends BaseCommand
     /**
      * The migration creator instance.
      *
-     * @var MigrationCreator
+     * @var \Illuminate\Database\Migrations\MigrationCreator
      */
     protected $creator;
 
     /**
      * The Composer instance.
      *
-     * @var Composer
+     * @var \Illuminate\Support\Composer
      */
     protected $composer;
 
     /**
      * Create a new migration install command instance.
      *
-     * @param MigrationCreator $creator
-     * @param Composer $composer
-     *
+     * @param  \Illuminate\Database\Migrations\MigrationCreator  $creator
+     * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
     public function __construct(MigrationCreator $creator, Composer $composer)
@@ -77,7 +77,7 @@ class MigrateMakeCommand extends BaseCommand
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-        if (!$table && is_string($create)) {
+        if (! $table && is_string($create)) {
             $table = $create;
 
             $create = true;
@@ -86,12 +86,8 @@ class MigrateMakeCommand extends BaseCommand
         // Next, we will attempt to guess the table name if this the migration has
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
-        if (!$table) {
-            if (preg_match('/^create_(\w+)_table$/', $name, $matches)) {
-                $table = $matches[1];
-
-                $create = true;
-            }
+        if (! $table) {
+            [$table, $create] = TableGuesser::guess($name);
         }
 
         // Now we are ready to write the migration out to disk. Once we've written
@@ -105,17 +101,20 @@ class MigrateMakeCommand extends BaseCommand
     /**
      * Write the migration file to disk.
      *
-     * @param string $name
-     * @param string $table
-     * @param bool $create
-     *
+     * @param  string  $name
+     * @param  string  $table
+     * @param  bool  $create
      * @return string
      */
     protected function writeMigration($name, $table, $create)
     {
-        $file = pathinfo($this->creator->create(
+        $file = $this->creator->create(
             $name, $this->getMigrationPath(), $table, $create
-        ), PATHINFO_FILENAME);
+        );
+
+        if (! $this->option('fullpath')) {
+            $file = pathinfo($file, PATHINFO_FILENAME);
+        }
 
         $this->line("<info>Created Migration:</info> {$file}");
     }
@@ -127,10 +126,10 @@ class MigrateMakeCommand extends BaseCommand
      */
     protected function getMigrationPath()
     {
-        if (!is_null($targetPath = $this->input->getOption('path'))) {
-            return !$this->usingRealPath()
-                ? $this->laravel->basePath() . '/' . $targetPath
-                : $targetPath;
+        if (! is_null($targetPath = $this->input->getOption('path'))) {
+            return ! $this->usingRealPath()
+                            ? $this->laravel->basePath().'/'.$targetPath
+                            : $targetPath;
         }
 
         return parent::getMigrationPath();
