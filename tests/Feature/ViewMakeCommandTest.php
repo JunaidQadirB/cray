@@ -1,8 +1,9 @@
 <?php
 
-namespace JunaidQadirB\Cray\Tests;
+namespace JunaidQadirB\Cray\Tests\Feature;
 
 use Illuminate\Support\Facades\Artisan;
+use JunaidQadirB\Cray\Tests\TestCase;
 
 class ViewMakeCommandTest extends TestCase
 {
@@ -15,7 +16,7 @@ class ViewMakeCommandTest extends TestCase
     public function test_cray_view_command_generates_all_views()
     {
         $this->withoutMockingConsoleOutput();
-        $this->assertDirectoryNotExists(resource_path('views/posts'));
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
         $this->artisan('cray:view Post');
         $output = Artisan::output();
         $this->assertSame('View created successfully in /resources/views/posts/index.blade.php' . PHP_EOL .
@@ -34,26 +35,26 @@ class ViewMakeCommandTest extends TestCase
 
     public function test_it_will_create_only_index_file()
     {
-        $this->assertDirectoryNotExists(resource_path('views/posts'));
-        $this->assertFileNotExists(resource_path('views/posts/index.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/create.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/edit.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/show.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/_form.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/modals/delete.blade.php'));
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/index.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/edit.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/show.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/modals/delete.blade.php'));
         $this->artisan('cray:view Post -i');
         $output = Artisan::output();
         $this->assertFileExists(resource_path('views/posts/index.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/show.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/create.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/show.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
 
     }
 
     public function test_it_will_create_only_create_file()
     {
-        $this->assertDirectoryNotExists(resource_path('views/posts'));
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
         $this->artisan('cray:view Post -c');
         $output = Artisan::output();
         $this->assertFileExists(resource_path('views/posts/create.blade.php'));
@@ -62,7 +63,7 @@ class ViewMakeCommandTest extends TestCase
 
     public function test_it_will_create_only_edit_file()
     {
-        $this->assertDirectoryNotExists(resource_path('views/posts'));
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
         $this->artisan('cray:view Post -e');
         $output = Artisan::output();
         $this->assertFileExists(resource_path('views/posts/edit.blade.php'));
@@ -71,20 +72,20 @@ class ViewMakeCommandTest extends TestCase
 
     public function test_it_will_create_only_show_file()
     {
-        $this->assertDirectoryNotExists(resource_path('views/posts'));
-        $this->assertFileNotExists(resource_path('views/posts/show.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/create.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/index.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/_form.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/modals/delete.blade.php'));
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/show.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/index.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/modals/delete.blade.php'));
         $this->artisan('cray:view Post -s');
         $output = Artisan::output();
         $this->assertFileExists(resource_path('views/posts/show.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/index.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/create.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/edit.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/_form.blade.php'));
-        $this->assertFileNotExists(resource_path('views/posts/modals/delete.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/index.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/edit.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/modals/delete.blade.php'));
     }
 
     public function test_it_will_give_error_message_when_index_view_exists()
@@ -114,7 +115,7 @@ class ViewMakeCommandTest extends TestCase
     public function test_it_will_give_error_message_when_create_view_exists()
     {
         $this->withoutMockingConsoleOutput();
-        $this->assertDirectoryNotExists(resource_path('views/posts'));
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
         $this->artisan('cray:view Post -c');
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -c');
@@ -126,7 +127,7 @@ class ViewMakeCommandTest extends TestCase
     public function test_it_will_overwrite_existing_view_when_create_view_is_passed_force_flag()
     {
         $this->withoutMockingConsoleOutput();
-        $this->assertDirectoryNotExists(resource_path('views/posts'));
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
         $this->artisan('cray:view Post -c');
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -c --force');

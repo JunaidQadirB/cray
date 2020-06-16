@@ -18,7 +18,7 @@ class CrayCommandTest extends TestCase
     public function test_it_publishes_stubs()
     {
         $this->deleteStubs();
-        $this->assertDirectoryNotExists(resource_path('stubs'));
+        $this->assertDirectoryDoesNotExist(resource_path('stubs'));
         $this->artisan('vendor:publish --tag=cray');
         $this->assertDirectoryExists(resource_path('stubs'));
     }
