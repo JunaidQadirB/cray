@@ -191,30 +191,35 @@ class ViewMakeCommand extends GeneratorCommand
     protected function replacePlaceholders($stub, $name, $path = null)
     {
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
-
         $viewLabel = str_to_words($name);
-        $stub = str_replace('$label$', $viewLabel, $stub);
-
         $viewLabelPlural = Str::plural(str_to_words($name));
-        $stub = str_replace('$labelPlural$', $viewLabelPlural, $stub);
-
         $viewName = Str::camel($name);
-        $stub = str_replace('$name$', $viewName, $stub);
 
-        $stub = str_replace('$model$', $name, $stub);
-        $stub = str_replace('$modelSlug$', $modelSlug, $stub);
+        $replace = array_merge([], [
+            '$label$' => $viewLabel,
+            '$labelPlural$' => $viewLabelPlural,
+            '$name$' => $viewName,
+            '$modelSlug$' => $modelSlug,
+            '$model$' => $name,
+            '$rows$' => '$' . Str::camel(Str::plural($name, 2)),
+            '$row$' => '$' . Str::camel(Str::singular($name)),
+            '$routeBase$' => $modelSlug,
+            '$viewDir$' => $modelSlug,
+        ]);
 
         $dir = $this->option('dir');
+
         if ($dir) {
             $dir = str_replace('/', '.', $dir);
             $stub = str_replace('$dir$', $dir . '.', $stub);
         } else {
             $stub = str_replace('$dir$', '', $stub);
         }
-        $stub = str_replace('$rows$', '$' . Str::camel(Str::plural($name, 2)), $stub);
-        $stub = str_replace('$row$', '$' . Str::camel(Str::singular($name)), $stub);
 
-        return $stub;
+
+        return str_replace(
+            array_keys($replace), array_values($replace), $stub
+        );
     }
 
     protected function createDeleteView($path)
