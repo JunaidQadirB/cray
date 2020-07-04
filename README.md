@@ -24,7 +24,7 @@ You use Cray and forget about it. It isn't coupled with your installation of Lar
 
 ## What does it actually do?
 
-Suppose you are building a blog and you want to create a Post model then you have to do a ton of other tedious and to be honest, boring things like creating migrations, model factories, the controller, form validation and adding all the logic and what not.
+Suppose you are building a blog, and you want to create a Post model then you have to do a ton of other tedious and to be honest, boring things like creating migrations, model factories, the controller, form validation and adding all the logic and what not.
 
 
 
@@ -66,7 +66,7 @@ It will generate `stubs` to `resources/vendor/cray/stubs` directory.
 ## Usage
 
 ```bash
-php artisan jq:cray Post
+php artisan cray Post
 ```
 
 Once done, it will show you the details of the files generated.
