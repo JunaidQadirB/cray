@@ -59,18 +59,7 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function createView()
     {
-        $viewDirSlug = Str::slug(Str::plural(str_to_words($this->argument('name')), 2));
-
-        $viewPath = Config::get('view.paths')[0];
-        $dir = $this->option('dir');
-        $path = $viewPath . '/' . $viewDirSlug;
-
-        if ($dir) {
-            $path = $viewPath . '/' . $dir . '/' . $viewDirSlug;
-        }
-
-
-        $this->createViewDirectory();
+        $path = $this->createViewDirectory();
 
         if ($this->option('all')) {
             $this->buildView('index', $path);
@@ -109,7 +98,7 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function createViewDirectory()
     {
-        $name = $this->argument('name');
+        $name = Str::studly(class_basename($this->argument('name')));
         $viewDirSlug = Str::slug(Str::plural(str_to_words($name), 2));
         $viewPath = Config::get('view.paths')[0];
         $dir = $this->option('dir');
@@ -121,14 +110,14 @@ class ViewMakeCommand extends GeneratorCommand
 
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
-        } else {
-//            $this->warn($viewDirSlug . ' exists. Ignoring');
         }
+
+        return $path;
     }
 
     protected function buildView($type, $path)
     {
-        $name = $this->argument('name');
+        $name = Str::studly(class_basename($this->argument('name')));
         $this->fileName = $type;
         $stub = $this->files->get($this->getStub());
         $viewLabel = Str::plural(str_to_words($name), 2);
