@@ -38,16 +38,17 @@ class RequestMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         if (!$this->option('type') || $this->option('type') == 'store') {
-            return config('cray.stubs_dir').'/request.stub';
+            return config('cray.stubs_dir') . '/request.stub';
         }
 
-        return config('cray.stubs_dir').'/request.update.stub';
+        return config('cray.stubs_dir') . '/request.update.stub';
     }
 
     protected function buildClass($name)
     {
         $replace = [];
         if ($model = $this->option('model')) {
+            $model = Str::studly(class_basename($this->argument('name')));
             $slug = Str::slug(str_to_words($model), '_');
             $replace['$modelSlug$'] = $slug;
             $replace['$modelTable$'] = Str::plural($slug, 2);

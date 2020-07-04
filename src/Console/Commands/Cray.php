@@ -177,7 +177,7 @@ class Cray extends GeneratorCommand
      */
     protected function createRequest($requestType = 'Store')
     {
-        $model = $this->getNameInput();
+        $model = Str::studly(class_basename($this->argument('name')));
         $name = "{$model}{$requestType}Request";
         $this->call('cray:request', [
             'name' => $name,
@@ -193,7 +193,7 @@ class Cray extends GeneratorCommand
      */
     protected function getStub()
     {
-        return config('cray.stubs_dir').'/' . Str::slug($this->type) . '.stub';
+        return config('cray.stubs_dir') . '/' . Str::slug($this->type) . '.stub';
     }
 
     /**

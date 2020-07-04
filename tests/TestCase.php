@@ -31,6 +31,10 @@ class TestCase extends Testbench
             unlink(app_path('Post.php'));
         }
 
+        if (file_exists(app_path('Models/Post.php'))) {
+            unlink(app_path('Models/Post.php'));
+        }
+
         if (file_exists(resource_path('views/posts'))) {
             unlink(resource_path('views/posts'));
         }

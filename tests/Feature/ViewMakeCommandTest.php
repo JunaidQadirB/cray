@@ -33,6 +33,26 @@ class ViewMakeCommandTest extends TestCase
         $this->assertStringContainsString("Posts", file_get_contents(resource_path('views/posts/index.blade.php')));
     }
 
+    public function test_cray_view_command_generates_all_views_with_model_is_in_a_subdirectory()
+    {
+        $this->withoutMockingConsoleOutput();
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
+        $this->artisan('cray:view Models/Post');
+        $output = Artisan::output();
+        $this->assertSame('View created successfully in /resources/views/posts/index.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/create.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/_form.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/edit.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/show.blade.php' . PHP_EOL .
+            'View created successfully in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
+            , $output);
+        $this->assertDirectoryExists(resource_path('views/posts'));
+        $this->assertFileExists(resource_path('views/posts/index.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
+        $this->assertStringContainsString("Posts", file_get_contents(resource_path('views/posts/index.blade.php')));
+    }
+
     public function test_it_will_create_only_index_file()
     {
         $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
