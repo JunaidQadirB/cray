@@ -39,6 +39,11 @@ class TestCase extends Testbench
             unlink(resource_path('views/posts'));
         }
 
+        if (file_exists(resource_path('views/dashboard/posts'))) {
+
+            $this->rmdirRecursive(resource_path('views/dashboard/posts'));
+        }
+
         if (file_exists(base_path('database/factories/PostFactory.php'))) {
             unlink(base_path('database/factories/PostFactory.php'));
         }

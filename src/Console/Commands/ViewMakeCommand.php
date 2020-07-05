@@ -180,6 +180,15 @@ class ViewMakeCommand extends GeneratorCommand
     protected function replacePlaceholders($stub, $name, $path = null)
     {
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
+
+        $dir = $this->option('dir');
+        if ($dir) {
+            $dir = str_replace('/', '.', $dir);
+            $viewDir = $dir . '.' . $modelSlug;
+        } else {
+            $viewDir =  $modelSlug;
+        }
+
         $viewLabel = str_to_words($name);
         $viewLabelPlural = Str::plural(str_to_words($name));
         $viewName = Str::camel($name);
@@ -192,19 +201,9 @@ class ViewMakeCommand extends GeneratorCommand
             '$model$' => $name,
             '$rows$' => '$' . Str::camel(Str::plural($name, 2)),
             '$row$' => '$' . Str::camel(Str::singular($name)),
-            '$routeBase$' => $modelSlug,
-            '$viewDir$' => $modelSlug,
+            '$routeBase$' => $viewDir,
+            '$viewDir$' => $viewDir,
         ]);
-
-        $dir = $this->option('dir');
-
-        if ($dir) {
-            $dir = str_replace('/', '.', $dir);
-            $stub = str_replace('$dir$', $dir . '.', $stub);
-        } else {
-            $stub = str_replace('$dir$', '', $stub);
-        }
-
 
         return str_replace(
             array_keys($replace), array_values($replace), $stub
