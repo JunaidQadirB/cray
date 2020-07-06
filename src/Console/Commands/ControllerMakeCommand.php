@@ -186,9 +186,11 @@ class ControllerMakeCommand extends GeneratorCommand
         $modelSlug = Str::slug(Str::plural($label, 2));
         $viewDir = $modelSlug;
         $routeBase = $modelSlug;
-        if ($this->option('views-dir')) {
-            $viewDir = $this->option('views-dir');
-            $viewDir = str_replace('/', '.', $viewDir);
+
+        $dir = $this->option('views-dir');
+        if ($dir) {
+            $dir = str_replace('/', '.', $dir);
+            $viewDir = $dir . '.' . $modelSlug;
         }
 
         if ($this->option('route-base')) {

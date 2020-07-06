@@ -153,6 +153,10 @@ Request created successfully in /app/Http/Requests/PostUpdateRequest.php" . PHP_
     {
         $this->artisan('cray Models/Post --controller-dir=dashboard --views-dir=dashboard/system');
         $createBladeView = file_get_contents(resource_path('views/dashboard/system/posts/create.blade.php'));
-        $this->assertStringContainsString("@include('dashboard.system.posts._form')", $createBladeView,'Include path is correct');
+        $postController = file_get_contents(app_path('Http/Controllers/Dashboard/PostController.php'));
+
+        $this->assertStringContainsString("@include('dashboard.system.posts._form')", $createBladeView,'Include path is incorrect');
+
+        $this->assertStringContainsString("return view('dashboard.system.posts.index'", $postController,'View path is incorrect');
     }
 }
