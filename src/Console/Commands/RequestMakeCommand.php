@@ -48,7 +48,7 @@ class RequestMakeCommand extends GeneratorCommand
     {
         $replace = [];
         if ($model = $this->option('model')) {
-            $model = Str::studly(class_basename($this->argument('name')));
+            $model = Str::studly(class_basename($this->option('model')));
             $slug = Str::slug(str_to_words($model), '_');
             $replace['$modelSlug$'] = $slug;
             $replace['$modelTable$'] = Str::plural($slug, 2);

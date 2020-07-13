@@ -155,8 +155,8 @@ Request created successfully in /app/Http/Requests/PostUpdateRequest.php" . PHP_
         $createBladeView = file_get_contents(resource_path('views/dashboard/system/posts/create.blade.php'));
         $postController = file_get_contents(app_path('Http/Controllers/Dashboard/PostController.php'));
 
-        $this->assertStringContainsString("@include('dashboard.system.posts._form')", $createBladeView,'Include path is incorrect');
+        $this->assertStringContainsString("@include('dashboard.system.posts._form')", $createBladeView, 'Include path is incorrect');
 
-        $this->assertStringContainsString("return view('dashboard.system.posts.index'", $postController,'View path is incorrect');
+        $this->assertStringContainsString("return view('dashboard.system.posts.index'", $postController, 'View path is incorrect');
     }
 }

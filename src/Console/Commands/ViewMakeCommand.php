@@ -102,6 +102,7 @@ class ViewMakeCommand extends GeneratorCommand
         $viewDirSlug = Str::slug(Str::plural(str_to_words($name), 2));
         $viewPath = Config::get('view.paths')[0];
         $dir = $this->option('dir');
+
         $path = $viewPath . '/' . $viewDirSlug;
 
         if ($dir) {
@@ -179,15 +180,10 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function replacePlaceholders($stub, $name, $path = null)
     {
-        $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
+        $viewDir = str_replace(resource_path('views/'), '', $path);
+        $viewDir = str_replace('/', '.', $viewDir);
 
-        $dir = $this->option('dir');
-        if ($dir) {
-            $dir = str_replace('/', '.', $dir);
-            $viewDir = $dir . '.' . $modelSlug;
-        } else {
-            $viewDir =  $modelSlug;
-        }
+        $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
 
         $viewLabel = str_to_words($name);
         $viewLabelPlural = Str::plural(str_to_words($name));

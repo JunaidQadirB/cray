@@ -48,7 +48,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(app_path('/Http/Controllers/PostController.php'));
     }
 
-    public function test_it_uses_views_path_specified_in_views_dir_option()
+    public function test_it_uses_views_path_specified_in_views_dir_option_scenario1()
     {
         //Scenario 1
         $this->artisan('cray:controller PostController --model=Post --views-dir=posts');
@@ -59,17 +59,25 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertStringContainsStringIgnoringCase("'posts.create'", $controllerContents);
 
         unlink(app_path('Http/Controllers/PostController.php'));
+    }
 
+    public function test_it_uses_views_path_specified_in_views_dir_option_scenario2()
+    {
         //Scenario 2
         $this->artisan('cray:controller PostController --model=Post --views-dir=blog_posts');
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
-        $this->assertStringContainsStringIgnoringCase("return view('blog_posts.index', compact('posts'));", $controllerContents);
-        $this->assertStringContainsStringIgnoringCase("'blog_posts.edit'", $controllerContents);
-        $this->assertStringContainsStringIgnoringCase("'blog_posts.show'", $controllerContents);
-        $this->assertStringContainsStringIgnoringCase("'blog_posts.create'", $controllerContents);
+        $this->assertStringContainsStringIgnoringCase("return view('blog_posts.posts.index', compact('posts'));", $controllerContents);
+        $this->assertStringContainsStringIgnoringCase("'blog_posts.posts.edit'", $controllerContents);
+        $this->assertStringContainsStringIgnoringCase("'blog_posts.posts.show'", $controllerContents);
+        $this->assertStringContainsStringIgnoringCase("'blog_posts.posts.create'", $controllerContents);
 
         unlink(app_path('Http/Controllers/PostController.php'));
 
+
+    }
+
+    public function test_it_uses_views_path_specified_in_views_dir_option_scenario3()
+    {
         //Scenario 3
         $this->artisan('cray:controller PostController --model=Post --views-dir=blog/posts');
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
@@ -77,6 +85,29 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertStringContainsStringIgnoringCase("'blog.posts.edit'", $controllerContents);
         $this->assertStringContainsStringIgnoringCase("'blog.posts.show'", $controllerContents);
         $this->assertStringContainsStringIgnoringCase("'blog.posts.create'", $controllerContents);
+    }
+
+    public function test_it_uses_views_path_specified_in_views_dir_option_scenario4()
+    {
+        //Scenario 3
+        $this->artisan('cray:controller PostController --model=Models/Post --views-dir=blog/posts');
+        $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
+        $this->assertStringContainsStringIgnoringCase("return view('blog.posts.index', compact('posts'));", $controllerContents);
+        $this->assertStringContainsStringIgnoringCase("'blog.posts.edit'", $controllerContents);
+        $this->assertStringContainsStringIgnoringCase("'blog.posts.show'", $controllerContents);
+        $this->assertStringContainsStringIgnoringCase("'blog.posts.create'", $controllerContents);
+    }
+
+    public function test_it_uses_views_path_specified_in_views_dir_option_scenario5()
+    {
+        //Scenario 3
+        $this->artisan('cray:controller PostController --model=Models/Post --controller-dir=dashboard --views-dir=dashboard/system');
+        $createBladeView = file_get_contents(resource_path('views/dashboard/system/posts/create.blade.php'));
+        $postController = file_get_contents(app_path('Http/Controllers/Dashboard/PostController.php'));
+
+        $this->assertStringContainsString("@include('dashboard.system.posts._form')", $createBladeView, 'Include path is incorrect');
+
+        $this->assertStringContainsString("return view('dashboard.system.posts.index'", $postController, 'View path is incorrect');
     }
 
     public function test_it_uses_the_specified_route_or_falls_back_to_model_slug()

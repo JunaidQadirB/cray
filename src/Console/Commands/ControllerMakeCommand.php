@@ -105,7 +105,6 @@ class ControllerMakeCommand extends GeneratorCommand
 
         if ($this->option('model')) {
             $replace = $this->buildModelReplacements($replace);
-
             if ($model = $this->option('model')) {
                 $replace = str_replace('$modelSlug$', Str::slug(str_to_words($model), '-'), $replace);
             }
@@ -184,14 +183,9 @@ class ControllerMakeCommand extends GeneratorCommand
         $label = str_to_words(class_basename($modelClass));
 
         $modelSlug = Str::slug(Str::plural($label, 2));
-        $viewDir = $modelSlug;
         $routeBase = $modelSlug;
-
-        $dir = $this->option('views-dir');
-        if ($dir) {
-            $dir = str_replace('/', '.', $dir);
-            $viewDir = $dir . '.' . $modelSlug;
-        }
+        $dir = $this->appendModelToViewDir($this->option('views-dir'), $modelSlug);
+        $dir = str_replace('/', '.', $dir);
 
         if ($this->option('route-base')) {
             $routeBase = $this->option('route-base');
@@ -204,9 +198,19 @@ class ControllerMakeCommand extends GeneratorCommand
             '$modelSlug$' => $modelSlug,
             '$label$' => $label,
             '$rows$' => Str::plural(lcfirst(class_basename($modelClass)), 2),
-            '$viewDir$' => $viewDir,
+            '$viewDir$' => $dir,
             '$routeBase$' => $routeBase,
         ]);
+    }
+
+    private function appendModelToViewDir($path, $model)
+    {
+        $pathArray = explode("/", $path);
+        if ($pathArray[sizeof($pathArray) - 1] == $model) {
+            return $path;
+        }
+
+        return rtrim($path, '/') . "/" . $model;
     }
 
     /**
