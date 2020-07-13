@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/junaidqadirb/cray.svg?style=flat-square)](https://packagist.org/packages/jq/cray)
 [![Build Status](https://img.shields.io/travis/junaidqadirb/cray/master.svg?style=flat-square)](https://travis-ci.org/junaidqadirb/cray)
 [![Quality Score](https://img.shields.io/scrutinizer/g/junaidqadirb/cray.svg?style=flat-square)](https://scrutinizer-ci.com/g/junaidqadirb/cray)
-[![Total Downloads](https://img.shields.io/packagist/dt/junaidqadirb/cray.svg?style=flat-square)](https://packagist.org/packages/junaidqadirb/cray)
+[![Total Downloads](https://img.shields.io/packagist/dt/junaidqadirb/cray.svg?style=flat-square)](https://packagist.org/packages/jq/cray)
 
 
 ## What is Cray?
@@ -56,7 +56,7 @@ composer require jq/cray --dev
 Then publish the stubs
 
 ```bash
-php artisan vendor:publish cray
+php artisan vendor:publish --tag:cray
 ```
 
 It will generate `stubs` to `resources/vendor/cray/stubs` directory.
@@ -94,9 +94,10 @@ php artisan migrate
 
 And that saved you an hour worth of repetitive and boring work which you can spend on more important development challenges.
 
+### Optional Packages
+ - [Blade Components](https://github.com/JunaidQadirB/blade-components)
+
 ### Changelog
-
-
 
 ## Contributing
 
