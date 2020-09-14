@@ -25,6 +25,7 @@ class CrayCommandTest extends TestCase
 
     public function test_it_scaffolds_crud_artifacts()
     {
+
         //Make sure no artifact related to Post exists
         $this->assertFileDoesNotExist(app_path('Post.php'));
         $this->assertFileDoesNotExist(app_path('Http/Controllers/PostController.php'));
