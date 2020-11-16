@@ -124,7 +124,11 @@ class ViewMakeCommand extends GeneratorCommand
         $viewLabel = Str::plural(str_to_words($name), 2);
         $viewName = Str::camel($viewLabel);
         $stub = $this->replacePlaceholders($stub, $name, $path);
+
         $target = $path . '/' . $type . '.blade.php';
+        if($type=='delete'){
+            $target = $path . '/modals/' . $type . '.blade.php';
+        }
         $displayPath = str_replace(resource_path(), '/resources', $target);
         if (file_exists($target) && !$this->option('force')) {
             $this->error("File already exists. Cannot overwrite {$displayPath}.");
@@ -211,7 +215,8 @@ class ViewMakeCommand extends GeneratorCommand
         if (!file_exists($path . '/modals')) {
             mkdir($path . '/modals');
         }
-        $this->buildView('delete', $path . '/modals');
+
+        $this->buildView('delete', $path);
     }
 
     /**

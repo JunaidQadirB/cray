@@ -51,10 +51,12 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileExists(resource_path('views/posts/_form.blade.php'));
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
         $this->assertStringContainsString("Posts", file_get_contents(resource_path('views/posts/index.blade.php')));
+        $this->assertStringContainsString("route('posts.index')", file_get_contents(resource_path('views/posts/modals/delete.blade.php')));
     }
 
     public function test_it_will_create_only_index_file()
     {
+        $this->removeGeneratedFiles();
         $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
         $this->assertFileDoesNotExist(resource_path('views/posts/index.blade.php'));
         $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
@@ -69,6 +71,27 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
         $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
+    }
+
+    public function test_it_will_create_only_index_file_with_model_in_a_subdirectory()
+    {
+        $this->removeGeneratedFiles();
+        $this->assertDirectoryDoesNotExist(resource_path('views/blog/posts'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/index.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/edit.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/show.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/modals/delete.blade.php'));
+        $this->artisan('cray:view Models/Post -i');
+        $output = Artisan::output();
+        $this->assertFileExists(resource_path('views/posts/index.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/show.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
+
+        $this->assertStringContainsString("route('posts.index')", file_get_contents(resource_path('views/posts/modals/delete.blade.php')));
 
     }
 
