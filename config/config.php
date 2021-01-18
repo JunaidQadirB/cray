@@ -7,7 +7,7 @@ return [
         /**
          * When enabled, when running cray ModelName will generate form fields from its migration
          */
-        "generate" => true,
+        "generate" => false,
 
         "component_paths" => [
             'input_text' => 'components.text',
@@ -38,6 +38,11 @@ return [
              * /resources/lang/en/messages.php
              */
             "key_container" => "messages",
+
+            /**
+             * When true, the evaluated value returned from the __() function will be used.
+             */
+            "render" => false
         ]
     ],
 ];
