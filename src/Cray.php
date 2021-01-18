@@ -23,6 +23,13 @@ class Cray
             }
 
             $label = Str::of($name)->replace('_', ' ')->title;
+            if (config('cray.fields.localization.enabled')) {
+                if (config('cray.fields.localization.render')) {
+                    $label = __(config('cray.fields.localization.key_container').'.'.$name);
+                } else {
+                    $label = "__('".config('cray.fields.localization.key_container').'.'.$name."')";
+                }
+            }
 
             switch ($column->getType()->getName()) {
                 case 'string':
@@ -51,7 +58,6 @@ class Cray
                         'type' => 'text',
                         'label' => $label,
                         'name' => $name,
-                        'label_i18n' => __('labels.'.$name),
                         'value' => $model->$name ?? null,
                     ];
                     break;
@@ -61,7 +67,6 @@ class Cray
                         'type' => 'date',
                         'label' => $label,
                         'name' => $name,
-                        'label_i18n' => __('labels.'.$name),
                         'value' => $model->$name ?? null,
                     ];
                     break;
@@ -71,7 +76,6 @@ class Cray
                         'type' => 'date',
                         'label' => $label,
                         'name' => $name,
-                        'label_i18n' => __('labels.'.$name),
                         'value' => $model->$name ?? null,
                     ];
                     break;
@@ -99,19 +103,24 @@ class Cray
     {
         $markup = '';
         foreach ($fields as $field) {
-            $valueField = ":value=\"old('{$field['name']}')\"";
+            $valueAttribute = ":value=\"old('{$field['name']}')\"";
 
             if (trim($field['value']) != '') {
-                $valueField = ":value=\"old('{$field['name']}'), '{$field['value']}')\"";
+                $valueAttribute = ":value=\"old('{$field['name']}'), '{$field['value']}')\"";
+            }
+            $labelAttribute = "label=\"{$field['label']}\"";
+
+            if (config('cray.fields.localization.enabled') && !config('cray.fields.localization.render')) {
+                $labelAttribute = ":label=\"{$field['label']}\"";
             }
 
             $markup .= <<<ENDL
 <x-dynamic-component
         component="{$field['component']}"
         name="{$field['name']}"
-        label="{$field['label_i18n']}"
+        {$labelAttribute}
         type="{$field['type']}"
-        {$valueField} />
+        {$valueAttribute} />
 ENDL;
             $markup .= "\n\n";
         }
