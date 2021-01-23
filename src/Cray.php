@@ -42,15 +42,12 @@ class Cray
                     ];
                     break;
                 case 'text':
-                    if ($name == 'photo') {
-                        $fields[] = [
-                            'component' => config('cray.fields.component_paths.input_file'),
-                            'type' => 'text',
-                            'label' => $label,
-                            'name' => $name,
-                            'value' => $model->$name ?? null,
-                        ];
-                    }
+                    $fields[] = [
+                        'component' => config('cray.fields.component_paths.textarea'),
+                        'label' => $label,
+                        'name' => $name,
+                        'value' => $model->$name ?? null,
+                    ];
                     break;
                 case 'bool':
                     $fields[] = [
@@ -81,7 +78,6 @@ class Cray
                     break;
             }
         }
-
         if ($markup) {
             return static::generateMarkup($fields);
         }
@@ -113,13 +109,17 @@ class Cray
             if (config('cray.fields.localization.enabled') && !config('cray.fields.localization.render')) {
                 $labelAttribute = ":label=\"{$field['label']}\"";
             }
+            $typeAttribute = '';
+            if (isset($field['type'])) {
+                $typeAttribute = "type=\"{$field['type']}\"";
+            }
 
             $markup .= <<<ENDL
 <x-dynamic-component
         component="{$field['component']}"
         name="{$field['name']}"
         {$labelAttribute}
-        type="{$field['type']}"
+        {$typeAttribute}
         {$valueAttribute} />
 ENDL;
             $markup .= "\n\n";

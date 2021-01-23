@@ -16,6 +16,7 @@ return [
             'input_radio' => 'components.radio',
             'input_file' => 'components.file',
             'input_date' => 'components.text',
+            'textarea' => 'components.textarea',
         ],
 
         /**
