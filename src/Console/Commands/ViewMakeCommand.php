@@ -34,6 +34,8 @@ class ViewMakeCommand extends GeneratorCommand
 
     private $fileName = 'index';
 
+    private string $baseViewPath;
+
     /**
      * Execute the console command.
      *
@@ -89,6 +91,19 @@ class ViewMakeCommand extends GeneratorCommand
         }
     }
 
+    private function chooseViewPath()
+    {
+        if (!Config::has('view.paths') || (Config::has('view.paths') && count(Config::get('view.paths')) < 1)) {
+            return $this->viewPath();
+        }
+
+        if (count(Config::get('view.paths')) == 1) {
+            return Config::get('view.paths')[0];
+        }
+
+        return $this->choice('Where would you like to put your views?', Config::get('view.paths'));
+    }
+
     /**
      *
      */
@@ -96,7 +111,8 @@ class ViewMakeCommand extends GeneratorCommand
     {
         $name = Str::studly(class_basename($this->argument('name')));
         $viewDirSlug = Str::slug(Str::plural(str_to_words($name), 2));
-        $viewPath = Config::get('view.paths')[0];
+        $this->baseViewPath = $viewPath = $this->chooseViewPath();
+
         $dir = $this->option('dir');
 
         $path = $viewPath.'/'.$viewDirSlug;
@@ -122,6 +138,7 @@ class ViewMakeCommand extends GeneratorCommand
         $stub = $this->replacePlaceholders($stub, $name, $path);
 
         $target = $path.'/'.$type.'.blade.php';
+
         if ($type == 'delete') {
             $target = $path.'/modals/'.$type.'.blade.php';
         }
