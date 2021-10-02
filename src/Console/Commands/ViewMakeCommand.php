@@ -41,7 +41,6 @@ class ViewMakeCommand extends GeneratorCommand
      */
     public function handle()
     {
-
         /*  if (parent::handle() === false && ! $this->option('force')) {
               return;
           }*/
@@ -49,7 +48,6 @@ class ViewMakeCommand extends GeneratorCommand
             $this->input->setOption('all', true);
         }
         $this->createView();
-
     }
 
     /**
@@ -67,7 +65,6 @@ class ViewMakeCommand extends GeneratorCommand
             $this->buildView('edit', $path);
             $this->buildView('show', $path);
             $this->createDeleteView($path);
-
         } else {
             if ($this->option('index') || $this->option('all')) {
                 $this->input->setOption('index', true);
@@ -90,7 +87,6 @@ class ViewMakeCommand extends GeneratorCommand
                 $this->buildView('show', $path);
             }
         }
-
     }
 
     /**
@@ -103,10 +99,10 @@ class ViewMakeCommand extends GeneratorCommand
         $viewPath = Config::get('view.paths')[0];
         $dir = $this->option('dir');
 
-        $path = $viewPath . '/' . $viewDirSlug;
+        $path = $viewPath.'/'.$viewDirSlug;
 
         if ($dir) {
-            $path = $viewPath . '/' . $dir . '/' . $viewDirSlug;
+            $path = $viewPath.'/'.$dir.'/'.$viewDirSlug;
         }
 
         if (!file_exists($path)) {
@@ -125,9 +121,9 @@ class ViewMakeCommand extends GeneratorCommand
         $viewName = Str::camel($viewLabel);
         $stub = $this->replacePlaceholders($stub, $name, $path);
 
-        $target = $path . '/' . $type . '.blade.php';
-        if($type=='delete'){
-            $target = $path . '/modals/' . $type . '.blade.php';
+        $target = $path.'/'.$type.'.blade.php';
+        if ($type == 'delete') {
+            $target = $path.'/modals/'.$type.'.blade.php';
         }
         $displayPath = str_replace(resource_path(), '/resources', $target);
         if (file_exists($target) && !$this->option('force')) {
@@ -140,14 +136,20 @@ class ViewMakeCommand extends GeneratorCommand
             /**
              * Create the _form partial form the stub
              */
-            $formPartial = $path . '/_form.blade.php';
+            $formPartial = $path.'/_form.blade.php';
             $formPartialDisplayPath = str_replace(resource_path(), '/resources', $formPartial);
             $formStub = $this->files->get($this->getStub('_form'));
 
             if (file_exists($formPartial) && !$this->option('force')) {
 //            $this->error("File already exists. Cannot overwrite {$formPartialDisplayPath}.");
             } else {
-                file_put_contents($formPartial, $formStub);
+                if (config('cray.fields.generate')) {
+                    $tableName = Str::plural(Str::snake(class_basename($this->argument('name'))));
+                    $fields = \JunaidQadirB\Cray\Cray::fields($tableName, null, true);
+                    file_put_contents($formPartial, $fields);
+                } else {
+                    file_put_contents($formPartial, $formStub);
+                }
                 $this->info("View created successfully in {$formPartialDisplayPath}");
             }
         }
@@ -156,7 +158,7 @@ class ViewMakeCommand extends GeneratorCommand
     /**
      * Get the stub file for the generator.
      *
-     * @param null|string $fileName
+     * @param  null|string  $fileName
      * @return string
      */
     protected function getStub($fileName = null)
@@ -168,7 +170,7 @@ class ViewMakeCommand extends GeneratorCommand
         $stubs = $this->option('stubs');
 
         if ($stubs) {
-            $stubsPath = $stubs . '/' . $this->fileName . ".stub";
+            $stubsPath = $stubs.'/'.$this->fileName.".stub";
         }
         return resource_path($stubsPath);
     }
@@ -178,15 +180,14 @@ class ViewMakeCommand extends GeneratorCommand
      *
      * @param $stub
      * @param $name
-     * @param null $path
+     * @param  null  $path
      *
      * @return mixed
      */
     protected function replacePlaceholders($stub, $name, $path = null)
     {
-        $viewDir = str_replace(resource_path('views/'), '', $path);
-        $viewDir = str_replace('/', '.', $viewDir);
-
+        $path = trim(str_replace($this->baseViewPath, '', $path),"/");
+        $path=str_replace('/','.',$path);
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
 
         $viewLabel = str_to_words($name);
@@ -199,10 +200,10 @@ class ViewMakeCommand extends GeneratorCommand
             '$name$' => $viewName,
             '$modelSlug$' => $modelSlug,
             '$model$' => $name,
-            '$rows$' => '$' . Str::camel(Str::plural($name, 2)),
-            '$row$' => '$' . Str::camel(Str::singular($name)),
-            '$routeBase$' => $viewDir,
-            '$viewDir$' => $viewDir,
+            '$rows$' => '$'.Str::camel(Str::plural($name, 2)),
+            '$row$' => '$'.Str::camel(Str::singular($name)),
+            '$routeBase$' => $path,
+            '$viewDir$' => $path,
         ]);
 
         return str_replace(
@@ -212,8 +213,8 @@ class ViewMakeCommand extends GeneratorCommand
 
     protected function createDeleteView($path)
     {
-        if (!file_exists($path . '/modals')) {
-            mkdir($path . '/modals');
+        if (!file_exists($path.'/modals')) {
+            mkdir($path.'/modals');
         }
 
         $this->buildView('delete', $path);
@@ -222,7 +223,7 @@ class ViewMakeCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
+     * @param  string  $rootNamespace
      *
      * @return string
      */
