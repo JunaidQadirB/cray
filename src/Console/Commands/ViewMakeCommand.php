@@ -186,9 +186,8 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function replacePlaceholders($stub, $name, $path = null)
     {
-        $viewDir = str_replace(resource_path('views/'), '', $path);
-        $viewDir = str_replace('/', '.', $viewDir);
-
+        $path = trim(str_replace($this->baseViewPath, '', $path),"/");
+        $path=str_replace('/','.',$path);
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
 
         $viewLabel = str_to_words($name);
@@ -203,8 +202,8 @@ class ViewMakeCommand extends GeneratorCommand
             '$model$' => $name,
             '$rows$' => '$'.Str::camel(Str::plural($name, 2)),
             '$row$' => '$'.Str::camel(Str::singular($name)),
-            '$routeBase$' => $viewDir,
-            '$viewDir$' => $viewDir,
+            '$routeBase$' => $path,
+            '$viewDir$' => $path,
         ]);
 
         return str_replace(
