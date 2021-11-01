@@ -173,7 +173,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         $class = $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
 
         return $class;
-
     }
 
     /**
@@ -239,6 +238,5 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     protected function getRelativePath($path)
     {
         return str_replace(base_path() . '/', '', $path);
-
     }
 }

@@ -2,7 +2,6 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
-
 use Config;
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
@@ -203,8 +202,8 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function replacePlaceholders($stub, $name, $path = null)
     {
-        $path = trim(str_replace($this->baseViewPath, '', $path),"/");
-        $path=str_replace('/','.',$path);
+        $path = trim(str_replace($this->baseViewPath, '', $path), "/");
+        $path=str_replace('/', '.', $path);
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
 
         $viewLabel = str_to_words($name);
@@ -224,7 +223,9 @@ class ViewMakeCommand extends GeneratorCommand
         ]);
 
         return str_replace(
-            array_keys($replace), array_values($replace), $stub
+            array_keys($replace),
+            array_values($replace),
+            $stub
         );
     }
 

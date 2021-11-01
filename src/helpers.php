@@ -13,7 +13,6 @@ if (!function_exists('className')) {
     {
         return (new ReflectionClass($instance))->getShortName();
     }
-
 }
 
 if (!function_exists('str_to_words')) {
@@ -30,7 +29,6 @@ if (!function_exists('str_to_words')) {
 
         return implode(" ", $result);
     }
-
 }
 
 if (!function_exists('studly_to_words')) {

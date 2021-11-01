@@ -2,7 +2,6 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
-
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,7 +54,9 @@ class RequestMakeCommand extends GeneratorCommand
         }
 
         return str_replace(
-            array_keys($replace), array_values($replace), parent::buildClass($name)
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
         );
     }
 

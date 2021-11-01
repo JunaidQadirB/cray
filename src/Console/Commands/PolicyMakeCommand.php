@@ -87,7 +87,9 @@ class PolicyMakeCommand extends GeneratorCommand
         }
 
         $stub = str_replace(
-            "use {$namespaceModel};\nuse {$namespaceModel};", "use {$namespaceModel};", $stub
+            "use {$namespaceModel};\nuse {$namespaceModel};",
+            "use {$namespaceModel};",
+            $stub
         );
 
         $model = class_basename(trim($model, '\\'));

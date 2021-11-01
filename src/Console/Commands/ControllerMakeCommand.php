@@ -2,7 +2,6 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
-
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
@@ -114,7 +113,9 @@ class ControllerMakeCommand extends GeneratorCommand
         $replace["use {$controllerNamespace}\Controller;\n"] = '';
 
         return str_replace(
-            array_keys($replace), array_values($replace), parent::buildClass($name)
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
         );
     }
 

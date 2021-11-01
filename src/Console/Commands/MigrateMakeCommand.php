@@ -2,7 +2,6 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
-
 use Illuminate\Database\Console\Migrations\BaseCommand;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\Composer;
@@ -109,7 +108,10 @@ class MigrateMakeCommand extends BaseCommand
     protected function writeMigration($name, $table, $create)
     {
         $file = $this->creator->create(
-            $name, $this->getMigrationPath(), $table, $create
+            $name,
+            $this->getMigrationPath(),
+            $table,
+            $create
         );
 
         if (! $this->option('fullpath')) {

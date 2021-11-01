@@ -14,7 +14,6 @@ use JunaidQadirB\Cray\Console\Commands\ViewMakeCommand;
 
 class CrayServiceProvider extends ServiceProvider
 {
-
     protected $commands = [
         ControllerMakeCommand::class,
         FactoryMakeCommand::class,
@@ -40,24 +39,24 @@ class CrayServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
 //        if ($this->app->runningInConsole()) {
-            $this->publishes([
+        $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('cray.php'),
             ], 'cray');
 
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/cray'),
-            ], 'views');*/
+        // Publishing the views.
+        /*$this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/cray'),
+        ], 'views');*/
 
-            // Publishing assets.
-            $this->publishes([
+        // Publishing assets.
+        $this->publishes([
                 __DIR__ . '/../resources/stubs' => resource_path('stubs')
             ], 'cray');
 
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/cray'),
-            ], 'lang');*/
+        // Publishing the translation files.
+        /*$this->publishes([
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/cray'),
+        ], 'lang');*/
 
         $this->app->when(MigrationCreator::class)
             ->needs('$customStubPath')
@@ -65,8 +64,8 @@ class CrayServiceProvider extends ServiceProvider
                 return resource_path('stubs');
             });
 
-            // Registering package commands.
-            $this->commands($this->commands);
+        // Registering package commands.
+        $this->commands($this->commands);
 //        }
     }
 
@@ -80,7 +79,7 @@ class CrayServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('cray', function () {
-            return new Cray;
+            return new Cray();
         });
     }
 }

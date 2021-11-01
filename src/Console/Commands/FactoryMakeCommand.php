@@ -52,7 +52,9 @@ class FactoryMakeCommand extends GeneratorCommand
             : 'Model';
 
         return str_replace(
-            'DummyModel', $model, parent::buildClass($name)
+            'DummyModel',
+            $model,
+            parent::buildClass($name)
         );
     }
 
@@ -66,7 +68,9 @@ class FactoryMakeCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = str_replace(
-            ['\\', '/'], '', $this->argument('name')
+            ['\\', '/'],
+            '',
+            $this->argument('name')
         );
 
         return $this->laravel->databasePath() . "/factories/{$name}.php";

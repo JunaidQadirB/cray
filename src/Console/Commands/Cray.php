@@ -7,7 +7,6 @@ use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
 
 class Cray extends GeneratorCommand
 {
-
     /**
      * The console command name.
      *
@@ -82,8 +81,6 @@ class Cray extends GeneratorCommand
         $this->createRequest('Store');
 
         $this->createRequest('Update');
-
-
     }
 
     /**
@@ -123,7 +120,6 @@ class Cray extends GeneratorCommand
      */
     protected function createController()
     {
-
         $controller = Str::studly(class_basename($this->argument('name')));
 
         $modelName = $this->qualifyClass($this->getNameInput());
@@ -164,8 +160,6 @@ class Cray extends GeneratorCommand
             $args['--stubs'] = $stub;
         }
         $this->call('cray:view', $args);
-
-
     }
 
     /**
