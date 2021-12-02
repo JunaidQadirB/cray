@@ -25,7 +25,7 @@ class CrayCommandTest extends TestCase
 
     public function test_it_scaffolds_crud_artifacts()
     {
-
+        $this->removeGeneratedFiles();
         //Make sure no artifact related to Post exists
         $this->assertFileDoesNotExist(app_path('Post.php'));
         $this->assertFileDoesNotExist(app_path('Http/Controllers/PostController.php'));
@@ -41,7 +41,7 @@ class CrayCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Requests/PostUpdateRequest.php'));
         $this->assertFileExists(app_path('Http/Requests/PostStoreRequest.php'));
         $this->assertFileExists(base_path('database/factories/PostFactory.php'));
-        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
+        $this->assertDirectoryExists(resource_path('views/posts'));
         $this->assertFileExists(resource_path("views/posts/index.blade.php"));
         $this->assertFileExists(resource_path("views/posts/create.blade.php"));
         $this->assertFileExists(resource_path("views/posts/_form.blade.php"));
