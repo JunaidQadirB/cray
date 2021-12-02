@@ -90,19 +90,6 @@ class ViewMakeCommand extends GeneratorCommand
         }
     }
 
-    private function chooseViewPath()
-    {
-        if (!Config::has('view.paths') || (Config::has('view.paths') && count(Config::get('view.paths')) < 1)) {
-            return $this->viewPath();
-        }
-
-        if (count(Config::get('view.paths')) == 1) {
-            return Config::get('view.paths')[0];
-        }
-
-        return $this->choice('Where would you like to put your views?', Config::get('view.paths'));
-    }
-
     /**
      *
      */
@@ -127,6 +114,19 @@ class ViewMakeCommand extends GeneratorCommand
         return $path;
     }
 
+    private function chooseViewPath()
+    {
+        if (!Config::has('view.paths') || (Config::has('view.paths') && count(Config::get('view.paths')) < 1)) {
+            return $this->viewPath();
+        }
+
+        if (count(Config::get('view.paths')) == 1) {
+            return Config::get('view.paths')[0];
+        }
+
+        return $this->choice('Where would you like to put your views?', Config::get('view.paths'));
+    }
+
     protected function buildView($type, $path)
     {
         $name = Str::studly(class_basename($this->argument('name')));
@@ -142,11 +142,15 @@ class ViewMakeCommand extends GeneratorCommand
             $target = $path.'/modals/'.$type.'.blade.php';
         }
         $displayPath = str_replace(resource_path(), '/resources', $target);
+        $message = "View created successfully in {$displayPath}";
         if (file_exists($target) && !$this->option('force')) {
             $this->error("File already exists. Cannot overwrite {$displayPath}.");
         } else {
+            if ($this->option('force')) {
+                $message = "View overwritten successfully in {$displayPath}";
+            }
             file_put_contents($target, $stub);
-            $this->info("View created successfully in {$displayPath}");
+            $this->info($message);
         }
         if ($type == 'create' || $type == 'edit') {
             /**

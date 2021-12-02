@@ -7,7 +7,6 @@ use JunaidQadirB\Cray\Tests\TestCase;
 
 class ViewMakeCommandTest extends TestCase
 {
-
     public function test_stubs_must_exist()
     {
         $this->assertFileExists(resource_path('/stubs/view/index.stub'));
@@ -92,7 +91,6 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
 
         $this->assertStringContainsString("route('posts.index')", file_get_contents(resource_path('views/posts/modals/delete.blade.php')));
-
     }
 
     public function test_it_will_create_only_create_file()
@@ -175,11 +173,8 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -c --force');
         $output = Artisan::output();
-        $this->assertSame('View created successfully in /resources/views/posts/create.blade.php' . PHP_EOL .
+        $this->assertSame('View overwritten successfully in /resources/views/posts/create.blade.php' . PHP_EOL .
             'View created successfully in /resources/views/posts/_form.blade.php' . PHP_EOL
             , $output);
     }
-
-
 }
-
