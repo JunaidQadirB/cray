@@ -1,15 +1,12 @@
 <?php
 
-
 namespace JunaidQadirB\Cray\Tests\Feature;
-
 
 use Illuminate\Support\Facades\Artisan;
 use JunaidQadirB\Cray\Tests\TestCase;
 
 class ControllerMakeCommandTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -72,8 +69,6 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertStringContainsStringIgnoringCase("'blog_posts.posts.create'", $controllerContents);
 
         unlink(app_path('Http/Controllers/PostController.php'));
-
-
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario3()
@@ -142,5 +137,4 @@ class ControllerMakeCommandTest extends TestCase
         $controllerContents = file_get_contents(app_path('/Http/Controllers/Dashboard/PostController.php'));
         $this->assertStringContainsStringIgnoringCase("return \$this->success('Post added successfully!', 'dashboard.posts.index');", $controllerContents);
     }
-
 }

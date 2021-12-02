@@ -30,57 +30,32 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected $type = 'Controller';
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
+    public function handle()
     {
-        $stub = null;
+        $name = $this->qualifyClass($this->getNameInput());
+        $path = $this->getPath($name);
+        // First we will check to see if the class already exists. If it does, we don't want
+        // to create the class and overwrite the user's code. So, we will bail out so the
+        // code is untouched. Otherwise, we will continue generating this class' files.
+        if ((!$this->hasOption('force') ||
+                !$this->option('force')) &&
+            $this->alreadyExists($this->getNameInput())
+        ) {
+            $this->error($this->type.' already exists!');
 
-        if ($this->option('parent')) {
-            $stub = 'stubs/controller.nested.stub';
-        } else {
-            if ($this->option('model')) {
-                $stub = 'stubs/controller.model.stub';
-            } else {
-                if ($this->option('resource')) {
-                    $stub = 'stubs/controller.stub';
-                }
-            }
+            return false;
         }
 
-        if ($this->option('api') && is_null($stub)) {
-            $stub = 'stubs/controller.api.stub';
-        } else {
-            if ($this->option('api') && !is_null($stub)) {
-                $stub = str_replace('.stub', '.api.stub', $stub);
-            }
-        }
+        // Next, we will generate the path to the location where this class' file should get
+        // written. Then, we will build the class and make the proper replacements on the
+        // stub files so that it gets the correctly formatted namespace and class name.
+        $this->makeDirectory($path);
 
-        $stub = $stub ?? 'stubs/controller.plain.stub';
+        $displayPath = str_replace($this->laravel['path'], '/app', $path);
 
-        return resource_path($stub);
-    }
+        $this->files->put($path, $this->buildClass($name));
 
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param string $rootNamespace
-     *
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        $dir = $this->hasOption('controller-dir') && trim($this->option('controller-dir')) != ''
-            ? $this->option('controller-dir')
-            : null;
-        if ($dir) {
-            return $rootNamespace . '\Http\Controllers\\' . Str::studly(strtolower($dir));
-        }
-
-        return $rootNamespace . '\Http\Controllers';
+        $this->info($this->type.' created successfully in '.$displayPath);
     }
 
     /**
@@ -88,7 +63,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return string
      */
@@ -144,7 +119,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * Get the fully-qualified model class name.
      *
-     * @param string $model
+     * @param  string  $model
      *
      * @return string
      */
@@ -157,7 +132,7 @@ class ControllerMakeCommand extends GeneratorCommand
         $model = trim(str_replace('/', '\\', $model), '\\');
 
         if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace . $model;
+            $model = $rootNamespace.$model;
         }
 
         return $model;
@@ -166,7 +141,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * Build the model replacement values.
      *
-     * @param array $replace
+     * @param  array  $replace
      *
      * @return array
      */
@@ -187,11 +162,11 @@ class ControllerMakeCommand extends GeneratorCommand
         $routeBase = $modelSlug;
         $dir = $this->appendModelToViewDir($this->option('views-dir'), $modelSlug);
         $dir = str_replace('/', '.', $dir);
+        $dir = ltrim($dir,'.');
 
         if ($this->option('route-base')) {
             $routeBase = $this->option('route-base');
         }
-
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
@@ -215,6 +190,59 @@ class ControllerMakeCommand extends GeneratorCommand
     }
 
     /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        $stub = null;
+
+        if ($this->option('parent')) {
+            $stub = 'stubs/controller.nested.stub';
+        } else {
+            if ($this->option('model')) {
+                $stub = 'stubs/controller.model.stub';
+            } else {
+                if ($this->option('resource')) {
+                    $stub = 'stubs/controller.stub';
+                }
+            }
+        }
+
+        if ($this->option('api') && is_null($stub)) {
+            $stub = 'stubs/controller.api.stub';
+        } else {
+            if ($this->option('api') && !is_null($stub)) {
+                $stub = str_replace('.stub', '.api.stub', $stub);
+            }
+        }
+
+        $stub = $stub ?? 'stubs/controller.plain.stub';
+
+        return resource_path($stub);
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     *
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        $dir = $this->hasOption('controller-dir') && trim($this->option('controller-dir')) != ''
+            ? $this->option('controller-dir')
+            : null;
+        if ($dir) {
+            return $rootNamespace.'\Http\Controllers\\'.Str::studly(strtolower($dir));
+        }
+
+        return $rootNamespace.'\Http\Controllers';
+    }
+
+    /**
      * Get the console command options.
      *
      * @return array
@@ -230,41 +258,19 @@ class ControllerMakeCommand extends GeneratorCommand
 
             ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
 
-            ['views-dir', 'i', InputOption::VALUE_OPTIONAL, 'Use the specified path in controller actions to return the respective view'],
+            [
+                'views-dir', 'i', InputOption::VALUE_OPTIONAL,
+                'Use the specified path in controller actions to return the respective view'
+            ],
 
-            ['controller-dir', 'c', InputOption::VALUE_OPTIONAL, 'Specify the controller path within the Http directory'],
+            [
+                'controller-dir', 'c', InputOption::VALUE_OPTIONAL,
+                'Specify the controller path within the Http directory'
+            ],
 
             ['route-base', 'b', InputOption::VALUE_OPTIONAL, 'Specify the base route to use'],
 
             ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller']
         ];
-    }
-
-    public function handle()
-    {
-        $name = $this->qualifyClass($this->getNameInput());
-        $path = $this->getPath($name);
-        // First we will check to see if the class already exists. If it does, we don't want
-        // to create the class and overwrite the user's code. So, we will bail out so the
-        // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((!$this->hasOption('force') ||
-                !$this->option('force')) &&
-            $this->alreadyExists($this->getNameInput())
-        ) {
-            $this->error($this->type . ' already exists!');
-
-            return false;
-        }
-
-        // Next, we will generate the path to the location where this class' file should get
-        // written. Then, we will build the class and make the proper replacements on the
-        // stub files so that it gets the correctly formatted namespace and class name.
-        $this->makeDirectory($path);
-
-        $displayPath = str_replace($this->laravel['path'], '/app', $path);
-
-        $this->files->put($path, $this->buildClass($name));
-
-        $this->info($this->type . ' created successfully in ' . $displayPath);
     }
 }
