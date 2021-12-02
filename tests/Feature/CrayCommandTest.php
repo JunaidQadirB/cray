@@ -160,4 +160,15 @@ Request created successfully in /app/Http/Requests/PostUpdateRequest.php" . PHP_
 
         $this->assertStringContainsString("return view('dashboard.system.posts.index'", $postController, 'View path is incorrect');
     }
+
+    public function test_it_generates_view_paths_correctly()
+    {
+        $this->artisan('cray Models/Post');
+        $createBladeView = file_get_contents(resource_path('views/posts/create.blade.php'));
+        $postController = file_get_contents(app_path('Http/Controllers/PostController.php'));
+
+        $this->assertStringContainsString("@include('posts._form')", $createBladeView, 'Include path is incorrect');
+
+        $this->assertStringContainsString("return view('posts.index'", $postController, 'View path is incorrect');
+    }
 }
