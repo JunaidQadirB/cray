@@ -222,7 +222,7 @@ class ViewMakeCommand extends GeneratorCommand
             '$model$' => $name,
             '$rows$' => '$'.Str::camel(Str::plural($name, 2)),
             '$row$' => '$'.Str::camel(Str::singular($name)),
-            '$routeBase$' => $path,
+            '$routeBase$' => $this->option('route-base') ?: $path,
             '$viewDir$' => $path,
         ]);
 
@@ -289,6 +289,8 @@ class ViewMakeCommand extends GeneratorCommand
             ['dir', 'd', InputOption::VALUE_OPTIONAL, 'Create the file inside this directory within the view.'],
 
             ['stubs', 'b', InputOption::VALUE_OPTIONAL, 'Use stubs from the specified directory.'],
+
+            ['route-base', 'r', InputOption::VALUE_OPTIONAL, 'Use the provided route base when generating views.'],
         ];
     }
 }

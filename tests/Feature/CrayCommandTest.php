@@ -8,7 +8,6 @@ use JunaidQadirB\Cray\Tests\TestCase;
 
 class CrayCommandTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -170,5 +169,15 @@ Request created successfully in /app/Http/Requests/PostUpdateRequest.php" . PHP_
         $this->assertStringContainsString("@include('posts._form')", $createBladeView, 'Include path is incorrect');
 
         $this->assertStringContainsString("return view('posts.index'", $postController, 'View path is incorrect');
+    }
+
+    public function test_it_generates_route_names_correctly()
+    {
+        $this->artisan('cray Models/Post --route-base=custom-route');
+        $createBladeView = file_get_contents(resource_path('views/posts/create.blade.php'));
+        $postController = file_get_contents(app_path('Http/Controllers/PostController.php'));
+
+        $this->assertStringContainsString("route('custom-route.index')", $createBladeView, 'Include path is incorrect');
+        $this->assertStringContainsString('return $this->success(\'Post added successfully!\', \'custom-route.index\');', $postController, 'View path is incorrect');
     }
 }

@@ -22,6 +22,7 @@ class Cray extends GeneratorCommand
     {name : Model name. Controller, factory, migration, views will be based on this name.}
     {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}
     {--controller-dir= : Place controller in a sub-directory under the Http/Controllers directory. It can be any nested directory structure}
+    {--route-base= : Base name for the route. Example: dashboard.analytics}
     {--stubs-dir= : Specify a custom stubs directory}
     {--no-views : Do not create view files for the model}
     {--no-migration : Do not create a migration for the model}
@@ -129,6 +130,12 @@ class Cray extends GeneratorCommand
             '--model' => $modelName,
         ];
 
+        if ($this->hasOption('route-base') ) {
+            $args['--route-base'] = $this->option('route-base');
+        } elseif ($this->hasOption('views-dir')) {
+            $args['--route-base'] = $this->option('views-dir');
+        }
+
         $viewsDir = $this->option('views-dir');
         if ($viewsDir) {
             $args['--views-dir'] = $viewsDir;
@@ -155,6 +162,10 @@ class Cray extends GeneratorCommand
             $args['--dir'] = $dir;
         }
 
+        if ($this->hasOption('route-base')) {
+            $args['--route-base'] = $this->option('route-base');
+        }
+
         $stub = $this->option('stubs-dir');
         if ($stub) {
             $args['--stubs'] = $stub;
@@ -165,7 +176,7 @@ class Cray extends GeneratorCommand
     /**
      * Create a controller for the model.
      *
-     * @param string $requestType
+     * @param  string  $requestType
      *
      * @return void
      */
@@ -187,13 +198,13 @@ class Cray extends GeneratorCommand
      */
     protected function getStub()
     {
-        return config('cray.stubs_dir') . '/' . Str::slug($this->type) . '.stub';
+        return config('cray.stubs_dir').'/'.Str::slug($this->type).'.stub';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
+     * @param  string  $rootNamespace
      *
      * @return string
      */
@@ -201,7 +212,7 @@ class Cray extends GeneratorCommand
     {
         switch ($this->type) {
             case 'Request':
-                return $rootNamespace . '\Http\Requests';
+                return $rootNamespace.'\Http\Requests';
         }
 
         return $rootNamespace;

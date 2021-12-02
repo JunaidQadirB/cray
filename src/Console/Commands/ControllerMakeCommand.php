@@ -164,7 +164,7 @@ class ControllerMakeCommand extends GeneratorCommand
         $dir = str_replace('/', '.', $dir);
         $dir = ltrim($dir,'.');
 
-        if ($this->option('route-base')) {
+        if ($this->hasOption('route-base')) {
             $routeBase = $this->option('route-base');
         }
         return array_merge($replace, [
