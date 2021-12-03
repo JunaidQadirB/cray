@@ -97,14 +97,17 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function parseModel($model)
     {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
-            throw new InvalidArgumentException('Model name contains invalid characters.');
-        }
+        /**
+         * Check if Models directory exist in /app
+         * Check if model has a namespace
+         */
+        $rootNamespace = $this->laravel->getNamespace();
 
-        $model = trim(str_replace('/', '\\', $model), '\\');
+        $namespace = is_dir(app_path('Models')) ? $rootNamespace.'Models\\' : $rootNamespace;
 
-        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.$model;
+        $model = str_replace('/', "\\", $model);
+        if (!Str::startsWith($model, $rootNamespace)) {
+            $model = $namespace . $model;
         }
 
         return $model;
