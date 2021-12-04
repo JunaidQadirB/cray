@@ -143,4 +143,34 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     {
         return str_replace(base_path() . '/', '', $path);
     }
+
+    /**
+     * Add route for the generated resource to the relevant routes file
+     * @param  string  $route
+     * @param  string  $controllerClassPath
+     */
+    public function addRoute(
+        string $route,
+        string $controllerClassPath
+    ) {
+        $routeFile = base_path('routes/web.php');
+        if (!file_exists($routeFile)) {
+            file_put_contents($routeFile, <<<DATA
+<?php
+
+
+DATA
+            );
+        }
+        $routeContent = file_get_contents($routeFile);
+        $route = str_replace('.', '/', $route);
+
+        $routeToAdd = "Route::resource('".$route."', ".$controllerClassPath.");\n";
+
+        if (strpos($routeContent, $routeToAdd) === false) {
+            file_put_contents($routeFile, $routeToAdd, FILE_APPEND);
+            $this->info("Route added successfully!");
+            $this->info("Click to open: ".url($route));
+        }
+    }
 }
