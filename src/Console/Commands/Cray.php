@@ -180,7 +180,7 @@ class Cray extends GeneratorCommand
      *
      * @return void
      */
-    protected function createRequest($requestType = 'Store')
+    protected function createRequest($requestType)
     {
         $model = Str::studly(class_basename($this->argument('name')));
         $name = "{$model}{$requestType}Request";
