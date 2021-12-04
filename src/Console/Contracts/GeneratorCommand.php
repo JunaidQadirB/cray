@@ -2,25 +2,13 @@
 
 namespace JunaidQadirB\Cray\Console\Contracts;
 
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {
-    /**
-     * The filesystem instance.
-     *
-     * @var Filesystem
-     */
-    protected $files;
 
-    /**
-     * The type of class being generated.
-     *
-     * @var string
-     */
-    protected $type;
     /**
      * @var array|string|string[]
      */
@@ -74,24 +62,10 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         $displayPath = str_replace($this->laravel->basePath(), '', $path);
 
         $this->info($this->type.' created successfully in '.$displayPath);
-    }
 
-    protected function getPath($name)
-    {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        $name = str_replace(array('\\', '\\'), array('/', ''), $name);
-
-        return $this->laravel['path'].'/'.$name.'.php';
-    }
-
-    /**
-     * Get the root namespace for the class.
-     *
-     * @return string
-     */
-    protected function rootNamespace()
-    {
-        return $this->laravel->getNamespace();
+        if (in_array(CreatesMatchingTest::class, class_uses_recursive($this))) {
+            $this->handleTestCreation($path);
+        }
     }
 
     /**
@@ -107,58 +81,25 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     }
 
     /**
-     * Get the desired class name from the input.
-     *
-     * @return string
-     */
-    protected function getNameInput()
-    {
-        return trim($this->argument('name'));
-    }
-
-
-    /**
      * Determine if the class already exists.
      *
      * @param  string  $rawName
      *
      * @return bool
      */
-    protected function alreadyExists($rawName)
-    {
-        return $this->files->exists($this->getPath($this->qualifyClass($rawName)));
-    }
+
 
     /**
-     * Build the directory for the class if necessary.
-     *
-     * @param  string  $path
-     *
-     * @return string
-     */
-    protected function makeDirectory($path)
-    {
-        if (!$this->files->isDirectory(dirname($path))) {
-            $this->files->makeDirectory(dirname($path), 0777, true, true);
-        }
-
-        return $path;
-    }
-
-    /**
-     * Build the class with the given name.
+     * Get the destination class path.
      *
      * @param  string  $name
-     *
      * @return string
      */
-    protected function buildClass($name)
+    protected function getPath($name)
     {
-        $stub = $this->files->get($this->getStub());
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        $class = $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
-
-        return $class;
+        return $this->laravel['path'].'/'.str_replace(array('\\', '\\'), array('/', ''), $name).'.php';
     }
 
     /**
@@ -188,38 +129,15 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)), '\\');
     }
 
-    /**
-     * Replace the namespace for the given stub.
-     *
-     * @param  string  $stub
-     * @param  string  $name
-     *
-     * @return $this
-     */
-    protected function replaceNamespace(&$stub, $name)
-    {
-        $namespace = $this->getNamespace($name);
 
-        $stub = str_replace(
-            ['DummyNamespace', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
-            [$namespace, $this->rootNamespace(), config('auth.providers.users.model')],
-            $stub
-        );
-
-        return $this;
-    }
 
     /**
-     * Get the console command arguments.
+     * Get the desired class name from the input.
      *
-     * @return array
+     * @return string
      */
-    protected function getArguments()
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'The name of the class'],
-        ];
-    }
+
+
 
     protected function getRelativePath($path)
     {
