@@ -1,9 +1,11 @@
 # Cray For Laravel
-
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/junaidqadirb/cray.svg?style=flat-square)](https://packagist.org/packages/jq/cray)
-[![Build Status](https://img.shields.io/travis/junaidqadirb/cray/master.svg?style=flat-square)](https://travis-ci.org/junaidqadirb/cray)
+[![Latest Stable Version](http://poser.pugx.org/jq/cray/v)](https://packagist.org/packages/jq/cray)
+[![Latest Unstable Version](http://poser.pugx.org/jq/cray/v/unstable)](https://packagist.org/packages/jq/cray)
+[![Daily Downloads](http://poser.pugx.org/jq/cray/d/daily)](https://packagist.org/packages/jq/cray)
+[![Total Downloads](http://poser.pugx.org/jq/cray/downloads)](https://packagist.org/packages/jq/cray)
 [![Quality Score](https://img.shields.io/scrutinizer/g/junaidqadirb/cray.svg?style=flat-square)](https://scrutinizer-ci.com/g/junaidqadirb/cray)
-[![Total Downloads](https://img.shields.io/packagist/dt/junaidqadirb/cray.svg?style=flat-square)](https://packagist.org/packages/jq/cray)
+[![License](http://poser.pugx.org/jq/cray/license)](https://packagist.org/packages/jq/cray)
+[![PHP Version Require](http://poser.pugx.org/jq/cray/require/php)](https://packagist.org/packages/jq/cray)
 
 
 ## What is Cray?
@@ -51,6 +53,11 @@ So what Cray does is when you tell it the model name, it will do all those borin
 
 ```bash
 composer require jq/cray --dev
+```
+Or specify specific version, for example to try a beta
+
+```bash
+composer require "jq/cray:3.2.0-beta3" --dev
 ```
 
 Then publish the stubs
