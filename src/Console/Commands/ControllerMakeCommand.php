@@ -3,7 +3,6 @@
 namespace JunaidQadirB\Cray\Console\Commands;
 
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -53,8 +52,8 @@ class ControllerMakeCommand extends GeneratorCommand
             $replace = $this->buildParentReplacements();
         }
 
+        $replace = $this->buildModelReplacements($replace);
         if ($this->option('model')) {
-            $replace = $this->buildModelReplacements($replace);
             if ($model = $this->option('model')) {
                 $replace = str_replace('$modelSlug$', Str::slug(str_to_words($model), '-'), $replace);
             }
@@ -111,7 +110,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
         $model = str_replace('/', "\\", $model);
         if (!Str::startsWith($model, $rootNamespace)) {
-            $model = $namespace . $model;
+            $model = $namespace.$model;
         }
 
         return $model;
@@ -127,11 +126,11 @@ class ControllerMakeCommand extends GeneratorCommand
     protected function buildModelReplacements(array $replace)
     {
         $modelClass = $this->parseModel($this->option('model'));
-
         if (!class_exists($modelClass)) {
             /*if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
 
             }*/
+
             $this->call('cray:model', ['name' => $modelClass]);
         }
 
@@ -161,11 +160,11 @@ class ControllerMakeCommand extends GeneratorCommand
     private function appendModelToViewDir($path, $model)
     {
         $pathArray = explode("/", $path);
-        if ($pathArray[sizeof($pathArray) - 1] == $model) {
+        if ($pathArray[count($pathArray) - 1] === $model) {
             return $path;
         }
 
-        return rtrim($path, '/') . "/" . $model;
+        return rtrim($path, '/')."/".$model;
     }
 
     /**

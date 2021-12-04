@@ -39,6 +39,7 @@ class ModelMakeCommand extends GeneratorCommand
         if (parent::handle() === false && !$this->option('force')) {
             return;
         }
+
         if ($this->option('all')) {
             $this->input->setOption('factory', true);
             $this->input->setOption('migration', true);

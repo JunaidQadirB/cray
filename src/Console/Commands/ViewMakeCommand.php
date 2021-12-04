@@ -66,27 +66,28 @@ class ViewMakeCommand extends GeneratorCommand
             $this->buildView('edit', $path);
             $this->buildView('show', $path);
             $this->createDeleteView($path);
-        } else {
-            if ($this->option('index') || $this->option('all')) {
-                $this->input->setOption('index', true);
-                $this->buildView('index', $path);
-                $this->createDeleteView($path);
-            }
+            return;
+        }
 
-            if ($this->option('create') || $this->option('all')) {
-                $this->input->setOption('create', true);
-                $this->buildView('create', $path);
-            }
+        if ($this->option('index') || $this->option('all')) {
+            $this->input->setOption('index', true);
+            $this->buildView('index', $path);
+            $this->createDeleteView($path);
+        }
 
-            if ($this->option('edit') || $this->option('all')) {
-                $this->input->setOption('edit', true);
-                $this->buildView('edit', $path);
-            }
+        if ($this->option('create') || $this->option('all')) {
+            $this->input->setOption('create', true);
+            $this->buildView('create', $path);
+        }
 
-            if ($this->option('show') || $this->option('all')) {
-                $this->input->setOption('show', true);
-                $this->buildView('show', $path);
-            }
+        if ($this->option('edit') || $this->option('all')) {
+            $this->input->setOption('edit', true);
+            $this->buildView('edit', $path);
+        }
+
+        if ($this->option('show') || $this->option('all')) {
+            $this->input->setOption('show', true);
+            $this->buildView('show', $path);
         }
     }
 
@@ -207,7 +208,7 @@ class ViewMakeCommand extends GeneratorCommand
     protected function replacePlaceholders($stub, $name, $path = null)
     {
         $path = trim(str_replace($this->baseViewPath, '', $path), "/");
-        $path=str_replace('/', '.', $path);
+        $path = str_replace('/', '.', $path);
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
 
         $viewLabel = str_to_words($name);

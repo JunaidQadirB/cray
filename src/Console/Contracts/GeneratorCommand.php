@@ -4,7 +4,6 @@ namespace JunaidQadirB\Cray\Console\Contracts;
 
 use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
-use Symfony\Component\Console\Input\InputArgument;
 
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {
@@ -138,10 +137,9 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      */
 
 
-
     protected function getRelativePath($path)
     {
-        return str_replace(base_path() . '/', '', $path);
+        return str_replace(base_path().'/', '', $path);
     }
 
     /**
