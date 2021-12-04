@@ -29,6 +29,10 @@ class ControllerMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $type = 'Controller';
+    /**
+     * @var mixed|string
+     */
+    public $routeBase;
 
     /**
      * Build the class with the given name.
@@ -134,14 +138,14 @@ class ControllerMakeCommand extends GeneratorCommand
         $label = str_to_words(class_basename($modelClass));
 
         $modelSlug = Str::slug(Str::plural($label, 2));
-        $routeBase = $modelSlug;
         $dir = $this->appendModelToViewDir($this->option('views-dir'), $modelSlug);
         $dir = str_replace('/', '.', $dir);
-        $dir = ltrim($dir,'.');
+        $dir = ltrim($dir, '.');
 
-        if ($this->hasOption('route-base')) {
-            $routeBase = $this->option('route-base');
-        }
+        $routeBase = $this->option('route-base') ?? $modelSlug;
+
+        $this->routeBase = $routeBase;
+
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
@@ -247,5 +251,14 @@ class ControllerMakeCommand extends GeneratorCommand
 
             ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller']
         ];
+    }
+
+    public function handle()
+    {
+        parent::handle();
+
+        if ($this->type === 'Controller') {
+            $this->addRoute($this->routeBase, $this->class);
+        }
     }
 }
