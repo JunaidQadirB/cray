@@ -17,6 +17,8 @@ class ModelMakeCommandTest extends TestCase
 
     public function test_it_generates_a_model()
     {
+        $this->removeGeneratedFiles();
+
         //Make sure no artifact related to Post exists
         $this->assertFalse(file_exists(app_path('/Post.php')));
 
@@ -33,8 +35,9 @@ class ModelMakeCommandTest extends TestCase
 
     public function test_it_generates_a_model_in_the_given_directory_and_namespace()
     {
-        //Make sure no artifact related to Post exists
-        $this->assertFileDoesNotExist((app_path('Models/Post.php')));
+        $this->removeGeneratedFiles();
+
+        $this->assertFileDoesNotExist(app_path('Models/Post.php'));
 
         $this->artisan('cray:model Models/Post');
 

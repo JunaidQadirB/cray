@@ -21,6 +21,10 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * @var string
      */
     protected $type;
+    /**
+     * @var array|string|string[]
+     */
+    public $class;
 
 
     /**
@@ -36,16 +40,26 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      */
     public function handle()
     {
+        // First we need to ensure that the given name is not a reserved word within the PHP
+        // language and that the class name will actually be valid. If it is not valid we
+        // can error now and prevent from polluting the filesystem using invalid files.
+        if ($this->isReservedName($this->getNameInput())) {
+            $this->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
+
+            return false;
+        }
+
         $name = $this->qualifyClass($this->getNameInput());
+
         $path = $this->getPath($name);
-        // First we will check to see if the class already exists. If it does, we don't want
+
+        // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
         if ((!$this->hasOption('force') ||
                 !$this->option('force')) &&
-            $this->alreadyExists($this->getNameInput())
-        ) {
-            $this->error($this->type . ' already exists!');
+            $this->alreadyExists($this->getNameInput())) {
+            $this->error($this->type.' already exists!');
 
             return false;
         }
@@ -55,34 +69,19 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         // stub files so that it gets the correctly formatted namespace and class name.
         $this->makeDirectory($path);
 
-        $this->files->put($path, $this->buildClass($name));
+        $this->files->put($path, $this->sortImports($this->buildClass($name)));
 
         $displayPath = str_replace($this->laravel->basePath(), '', $path);
 
-        $this->info($this->type . ' created successfully in ' . $displayPath);
+        $this->info($this->type.' created successfully in '.$displayPath);
     }
 
-    /**
-     * Parse the class name and format according to the root namespace.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function qualifyClass($name)
+    protected function getPath($name)
     {
-        $name = ltrim($name, '\\/');
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $name = str_replace(array('\\', '\\'), array('/', ''), $name);
 
-        $rootNamespace = $this->rootNamespace();
-        if (Str::startsWith($name, $rootNamespace)) {
-            return $name;
-        }
-
-        $name = str_replace('/', '\\', $name);
-
-        return $this->qualifyClass(
-            $this->getDefaultNamespace(trim($rootNamespace, '\\')) . '\\' . $name
-        );
+        return $this->laravel['path'].'/'.$name.'.php';
     }
 
     /**
@@ -98,13 +97,13 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
+     * @param  string  $rootNamespace
      *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace;
+        return is_dir(app_path('Models')) ? $rootNamespace.'\\Models' : $rootNamespace;
     }
 
     /**
@@ -117,24 +116,11 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         return trim($this->argument('name'));
     }
 
-    /**
-     * Get the destination class path.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function getPath($name)
-    {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-
-        return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
-    }
 
     /**
      * Determine if the class already exists.
      *
-     * @param string $rawName
+     * @param  string  $rawName
      *
      * @return bool
      */
@@ -146,7 +132,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     /**
      * Build the directory for the class if necessary.
      *
-     * @param string $path
+     * @param  string  $path
      *
      * @return string
      */
@@ -162,7 +148,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return string
      */
@@ -178,22 +164,22 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     /**
      * Replace the class name for the given stub.
      *
-     * @param string $stub
-     * @param string $name
+     * @param  string  $stub
+     * @param  string  $name
      *
      * @return string
      */
     protected function replaceClass($stub, $name)
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
-
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $this->class = $name.'::class';
         return str_replace('DummyClass', $class, $stub);
     }
 
     /**
      * Get the full namespace for a given class, without the class name.
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return string
      */
@@ -205,8 +191,8 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     /**
      * Replace the namespace for the given stub.
      *
-     * @param string $stub
-     * @param string $name
+     * @param  string  $stub
+     * @param  string  $name
      *
      * @return $this
      */

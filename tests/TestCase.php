@@ -11,6 +11,10 @@ class TestCase extends Testbench
 {
     public function removeGeneratedFiles()
     {
+        if(file_exists(base_path('routes/web.php'))){
+            unlink(base_path('routes/web.php'));
+        }
+
         if (file_exists(app_path('Http/Controllers/PostController.php'))) {
             unlink(app_path('Http/Controllers/PostController.php'));
         }
@@ -31,12 +35,18 @@ class TestCase extends Testbench
             unlink(app_path('Post.php'));
         }
 
-        if (file_exists(app_path('Models/Post.php'))) {
-            unlink(app_path('Models/Post.php'));
+        if (file_exists(app_path('Models'))) {
+
+            $this->rmdirRecursive(app_path('Models'));
+        }
+
+        if (file_exists(app_path('Models'))) {
+
+            rmdir('Models');
         }
 
         if (file_exists(resource_path('views/posts'))) {
-            unlink(resource_path('views/posts'));
+            $this->rmdirRecursive(resource_path('views/posts'));
         }
 
         if (file_exists(resource_path('views/dashboard/posts'))) {
@@ -102,7 +112,9 @@ class TestCase extends Testbench
     {
         $files = scandir($dir);
         foreach ($files as $file) {
-            if ($file == '.' OR $file == '..') continue;
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
 
             $file = "$dir/$file";
             if (!file_exists($file)) {
@@ -110,10 +122,6 @@ class TestCase extends Testbench
             }
             if (is_dir($file) && file_exists($file)) {
                 $this->rmdirRecursive($file);
-                if (file_exists($file)) {
-                    rmdir($file);
-                }
-
             } elseif (file_exists($file)) {
                 unlink($file);
             }
@@ -127,10 +135,10 @@ class TestCase extends Testbench
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->withoutMockingConsoleOutput();
-        if (file_exists(resource_path('views/posts'))) {
-            $this->rmdirRecursive(resource_path('views/posts'));
-        }
+
+        $this->removeGeneratedFiles();
     }
 
     protected function tearDown(): void

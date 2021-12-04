@@ -148,8 +148,8 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -i --force');
         $output = Artisan::output();
-        $this->assertSame('View created successfully in /resources/views/posts/index.blade.php' . PHP_EOL .
-            'View created successfully in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
+        $this->assertSame('View overwritten successfully in /resources/views/posts/index.blade.php' . PHP_EOL .
+            'View overwritten successfully in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
             , $output);
     }
 

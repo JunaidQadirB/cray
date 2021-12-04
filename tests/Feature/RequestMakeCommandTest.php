@@ -44,7 +44,7 @@ class RequestMakeCommandTest extends TestCase
     public function test_it_generates_update_form_request_with_model_in_subfolder()
     {
         //Make sure no artifact related to Post exists
-        $this->assertFileDoesNotExist(app_path('ModelsPost.php'));
+        $this->assertFileDoesNotExist(app_path('Models/Post.php'));
         $this->assertFileDoesNotExist(app_path('Http/Controllers/PostController.php'));
         $this->assertFileDoesNotExist(app_path('Http/Requests/PostUpdateRequest.php'));
         $this->assertFileDoesNotExist(app_path('Http/Requests/PostStoreRequest.php'));
