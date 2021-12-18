@@ -99,7 +99,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     protected function getPath($name)
     {
         $path = '';
-        if($base = $this->option('base')){
+        if ($base = $this->option('base')) {
             return $this->getArtifactPath($base);
         }
 
@@ -114,22 +114,23 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     {
         $path = '';
 
-        switch ($this->type){
+        switch ($this->type) {
             case 'Controller':
-                $path = $base .'/Http/Controllers/'.$this->argument('name').'.php';
-                if($controllerSubDir= ($this->hasOption('controller-dir') &&  $this->option('controller-dir'))){
+                $path = $base.'/Http/Controllers/'.$this->argument('name').'.php';
+                if ($controllerSubDir = ($this->hasOption('controller-dir') && $this->option('controller-dir'))) {
                     $path = $base.'/Http/Controllers/'.$controllerSubDir.'/'.$this->argument('name').'.php';
                 }
                 break;
             case 'Model':
                 $model = class_basename($this->argument('name'));
-                $path = $base .'/Models/'.$model.'.php';
+                $path = $base.'/Models/'.$model.'.php';
 
                 break;
         }
 
         return $this->laravel->basePath($path);
     }
+
     /**
      * Replace the class name for the given stub.
      *
@@ -215,21 +216,21 @@ DATA
 
     public function getCommonArguments()
     {
-        $arguments=[];
+        $arguments = [];
 
-        if( $this->option('base')){
+        if ($this->option('base')) {
             $arguments['--base'] = $this->option('base');
         }
 
-        if($this->hasOption('force') && $this->option('force') !== false){
+        if ($this->hasOption('force') && $this->option('force') !== false) {
             $arguments['--force'] = $this->option('force');
         }
 
-        if( $this->option('namespace')){
+        if ($this->option('namespace')) {
             $arguments['--namespace'] = $this->option('namespace');
         }
 
-        if ($this->option('route-base') ) {
+        if ($this->option('route-base')) {
             $arguments['--route-base'] = $this->option('route-base');
         } elseif ($this->option('views-dir')) {
             $arguments['--route-base'] = $this->option('views-dir');

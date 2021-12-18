@@ -5,13 +5,13 @@ namespace JunaidQadirB\Cray;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\ServiceProvider;
 use JunaidQadirB\Cray\Console\Commands\ControllerMakeCommand;
-use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\Cray;
+use JunaidQadirB\Cray\Console\Commands\DeleteResourceCommand;
+use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\MigrateMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ModelMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\RequestMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ViewMakeCommand;
-use JunaidQadirB\Cray\Console\Commands\DeleteResourceCommand;
 
 class CrayServiceProvider extends ServiceProvider
 {

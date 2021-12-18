@@ -161,7 +161,7 @@ class CrayCommandTest extends TestCase
     {
         if (!file_exists(base_path('routes/web.php'))) {
             touch(base_path('routes/web.php'));
-            file_put_contents(base_path('routes/web.php'),"<?php\n\n");
+            file_put_contents(base_path('routes/web.php'), "<?php\n\n");
         }
         $this->artisan('cray Models/Post --route-base=custom-route');
 

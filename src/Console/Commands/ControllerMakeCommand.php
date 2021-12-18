@@ -129,7 +129,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace)
     {
-        $this->model = str_replace('Controller','', $this->argument('name'));
+        $this->model = str_replace('Controller', '', $this->argument('name'));
 
         if ($this->option('model')) {
             $this->model = $this->option('model');
@@ -281,7 +281,7 @@ class ControllerMakeCommand extends GeneratorCommand
             $name = str_replace('Controller', '', $this->argument('name'));
             $this->routeBase = $this->option('route-base') ?? Str::plural($name);
 
-            $this->class =  $this->qualifyClass( $this->argument('name')).'::class';
+            $this->class = $this->qualifyClass($this->argument('name')).'::class';
 
             $this->addRoute($this->routeBase, $this->class);
         }
