@@ -26,7 +26,7 @@ class RequestMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(base_path('database/factories/PostFactory.php'));
         $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
 
-        $this->artisan('cray Post');
+        $this->artisan('cray Post --namespace=\\Uot\\Conferences\\');
 
         $this->assertFileExists(app_path('Http/Requests/PostUpdateRequest.php'));
         $this->assertFileExists(app_path('Http/Requests/PostStoreRequest.php'));

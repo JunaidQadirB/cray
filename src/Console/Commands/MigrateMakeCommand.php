@@ -2,10 +2,12 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
+use Exception;
 use Illuminate\Database\Console\Migrations\BaseCommand;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
+
 
 class MigrateMakeCommand extends BaseCommand
 {
@@ -107,18 +109,22 @@ class MigrateMakeCommand extends BaseCommand
      */
     protected function writeMigration($name, $table, $create)
     {
-        $file = $this->creator->create(
-            $name,
-            $this->getMigrationPath(),
-            $table,
-            $create
-        );
+        try {
+            $file = $this->creator->create(
+                $name,
+                $this->getMigrationPath(),
+                $table,
+                $create
+            );
 
-        if (! $this->option('fullpath')) {
-            $file = pathinfo($file, PATHINFO_FILENAME);
+            if (!$this->option('fullpath')) {
+                $file = pathinfo($file, PATHINFO_FILENAME);
+            }
+
+            $this->line("<info>Created Migration:</info> {$file}");
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
         }
-
-        $this->line("<info>Created Migration:</info> {$file}");
     }
 
     /**
@@ -130,8 +136,8 @@ class MigrateMakeCommand extends BaseCommand
     {
         if (! is_null($targetPath = $this->input->getOption('path'))) {
             return ! $this->usingRealPath()
-                            ? $this->laravel->basePath().'/'.$targetPath
-                            : $targetPath;
+                ? $this->laravel->basePath().'/'.$targetPath
+                : $targetPath;
         }
 
         return parent::getMigrationPath();

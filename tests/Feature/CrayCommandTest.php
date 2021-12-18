@@ -3,7 +3,6 @@
 namespace JunaidQadirB\Cray\Tests\Feature;
 
 
-use Illuminate\Support\Facades\Artisan;
 use JunaidQadirB\Cray\Tests\TestCase;
 
 class CrayCommandTest extends TestCase
@@ -22,7 +21,7 @@ class CrayCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('stubs'));
     }
 
-    public function test_it_scaffolds_crud_artifacts()
+    public function test_it_scaffolds_crud_artifacts_with_no_models_directory()
     {
         $this->removeGeneratedFiles();
         //Make sure no artifact related to Post exists
@@ -52,6 +51,10 @@ class CrayCommandTest extends TestCase
     public function test_it_scaffolds_crud_artifacts_model_in_models_dir_with_namespace()
     {
         //Make sure no artifact related to Post exists
+        if (!file_exists(app_path('Models'))) {
+            mkdir(app_path('Models'));
+        }
+
         $this->assertFileDoesNotExist(app_path('Models/Post.php'));
         $this->assertFileDoesNotExist(app_path('Http/Controllers/PostController.php'));
         $this->assertFileDoesNotExist(app_path('Http/Requests/PostUpdateRequest.php'));
@@ -84,7 +87,12 @@ class CrayCommandTest extends TestCase
     public function test_it_generates_views_and_the_controller_under_the_given_directory_when_controller_directory_is_specified(
     )
     {
+        $this->removeGeneratedFiles();
+
         //Make sure no artifact related to Post exists
+        if (!file_exists(app_path('Models'))) {
+            mkdir(app_path('Models'));
+        }
         $this->assertFileDoesNotExist(app_path('Models/Post.php'));
         $this->assertFileDoesNotExist(app_path('Http/Controllers/Dashboard/PostController.php'));
         $this->assertFileDoesNotExist(app_path('Http/Requests/PostUpdateRequest.php'));
@@ -153,12 +161,7 @@ class CrayCommandTest extends TestCase
     {
         if (!file_exists(base_path('routes/web.php'))) {
             touch(base_path('routes/web.php'));
-            file_put_contents(base_path('routes/web.php'), <<<DATA
-<?php
-
-
-DATA
-            );
+            file_put_contents(base_path('routes/web.php'),"<?php\n\n");
         }
         $this->artisan('cray Models/Post --route-base=custom-route');
 

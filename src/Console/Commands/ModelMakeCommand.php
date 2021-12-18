@@ -54,7 +54,6 @@ class ModelMakeCommand extends GeneratorCommand
         if ($this->option('migration')) {
             $this->createMigration();
         }
-
         if ($this->option('controller') || $this->option('resource')) {
             $this->createController();
         }
@@ -157,6 +156,8 @@ class ModelMakeCommand extends GeneratorCommand
                 InputOption::VALUE_NONE,
                 'Indicates if the generated controller should be a resource controller.',
             ],
+            ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
+            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from']
         ];
     }
 }

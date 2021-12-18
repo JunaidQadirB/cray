@@ -117,6 +117,10 @@ class ViewMakeCommand extends GeneratorCommand
 
     private function chooseViewPath()
     {
+        if ($this->option('base')) {
+            return $this->option('base').'/Resources/views';
+        }
+
         if (!Config::has('view.paths') || (Config::has('view.paths') && count(Config::get('view.paths')) < 1)) {
             return $this->viewPath();
         }
@@ -289,9 +293,11 @@ class ViewMakeCommand extends GeneratorCommand
 
             ['dir', 'd', InputOption::VALUE_OPTIONAL, 'Create the file inside this directory within the view.'],
 
-            ['stubs', 'b', InputOption::VALUE_OPTIONAL, 'Use stubs from the specified directory.'],
+            ['stubs', null, InputOption::VALUE_OPTIONAL, 'Use stubs from the specified directory.'],
 
             ['route-base', 'r', InputOption::VALUE_OPTIONAL, 'Use the provided route base when generating views.'],
+
+            ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
         ];
     }
 }

@@ -5,6 +5,8 @@ namespace JunaidQadirB\Cray\Console\Commands;
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
 
+use function array_merge;
+
 class Cray extends GeneratorCommand
 {
     /**
@@ -27,6 +29,9 @@ class Cray extends GeneratorCommand
     {--no-views : Do not create view files for the model}
     {--no-migration : Do not create a migration for the model}
     {--no-factory : Do not create a factory for the model}
+    {--base= : The base of all the files being generated. Project root is default the base if not specified}
+    {--namespace= : The namespace of all the files being generated. Project root is default the namespace if not specified}
+    {--force : overwrite existing artificats}
     ';
 
     /**
@@ -64,6 +69,7 @@ class Cray extends GeneratorCommand
          */
         $this->type = 'Model';
 
+
         if (!$this->option('no-factory')) {
             $this->createFactory();
         }
@@ -71,6 +77,7 @@ class Cray extends GeneratorCommand
         if (!$this->option('no-migration')) {
             $this->createMigration();
         }
+
         $this->createController();
 
         if (!$this->option('no-views')) {
@@ -93,10 +100,15 @@ class Cray extends GeneratorCommand
     {
         $factory = Str::studly(class_basename($this->argument('name')));
 
-        $this->call('cray:factory', [
+        $arguments = [
             'name' => "{$factory}Factory",
             '--model' => $this->argument('name'),
-        ]);
+        ];
+
+        $arguments = array_merge($arguments, $this->getCommonArguments());
+        unset($arguments['--route-base'], $arguments['--views-dir'], $arguments['--controller-dir']);
+
+        $this->call('cray:factory', $arguments);
     }
 
     /**
@@ -107,11 +119,13 @@ class Cray extends GeneratorCommand
     protected function createMigration()
     {
         $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
-
-        $this->call('cray:migration', [
+        $arguments = [
             'name' => "create_{$table}_table",
             '--create' => $table,
-        ]);
+            '--path' => $this->option('base').'/Database/Migrations',
+        ];
+
+        $this->call('cray:migration', $arguments);
     }
 
     /**
@@ -125,52 +139,39 @@ class Cray extends GeneratorCommand
 
         $modelName = $this->qualifyClass($this->getNameInput());
 
-        $args = [
+        $arguments = [
             'name' => "{$controller}Controller",
             '--model' => $modelName,
         ];
 
-        if ($this->hasOption('route-base') ) {
-            $args['--route-base'] = $this->option('route-base');
-        } elseif ($this->hasOption('views-dir')) {
-            $args['--route-base'] = $this->option('views-dir');
-        }
+        $arguments = array_merge($arguments, $this->getCommonArguments());
 
-        $viewsDir = $this->option('views-dir');
-        if ($viewsDir) {
-            $args['--views-dir'] = $viewsDir;
-        }
-
-        $controllerDir = $this->option('controller-dir');
-        if ($controllerDir) {
-            $args['--controller-dir'] = $controllerDir;
-        }
-
-        $this->call('cray:controller', $args);
+        $this->call('cray:controller', $arguments);
     }
 
     protected function createViews()
     {
         $name = $this->argument('name');
-        $args = [
+        $arguments = [
             'name' => $name,
             '--all' => true,
         ];
 
         $dir = $this->option('views-dir');
         if ($dir) {
-            $args['--dir'] = $dir;
-        }
-
-        if ($this->hasOption('route-base')) {
-            $args['--route-base'] = $this->option('route-base');
+            $arguments['--dir'] = $dir;
         }
 
         $stub = $this->option('stubs-dir');
         if ($stub) {
-            $args['--stubs'] = $stub;
+            $arguments['--stubs'] = $stub;
         }
-        $this->call('cray:view', $args);
+
+        $arguments = array_merge($arguments, $this->getCommonArguments());
+
+        unset($arguments['--namespace'], $arguments['--views-dir'], $arguments['--controller-dir']);
+
+        $this->call('cray:view', $arguments);
     }
 
     /**
@@ -184,11 +185,16 @@ class Cray extends GeneratorCommand
     {
         $model = Str::studly(class_basename($this->argument('name')));
         $name = "{$model}{$requestType}Request";
-        $this->call('cray:request', [
+        $arguments = [
             'name' => $name,
             '--model' => $model,
             '--type' => Str::slug($requestType),
-        ]);
+        ];
+
+        $arguments = array_merge($arguments, $this->getCommonArguments());
+        unset($arguments['--route-base'], $arguments['--views-dir'], $arguments['--controller-dir']);
+
+        $this->call('cray:request', $arguments);
     }
 
     /**
@@ -210,11 +216,6 @@ class Cray extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        switch ($this->type) {
-            case 'Request':
-                return $rootNamespace.'\Http\Requests';
-        }
-
         return $rootNamespace;
     }
 }

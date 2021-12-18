@@ -21,11 +21,16 @@ class ControllerMakeCommandTest extends TestCase
 
     public function test_it_creates_a_controller_with_the_given_name()
     {
+        $this->removeGeneratedFiles();
+        //Make sure no artifact related to Post exists
+        $this->assertFileDoesNotExist(app_path('Post.php'));
         $this->assertFileDoesNotExist(app_path('Http/Controllers/PostController.php'));
 
         $this->artisan('cray:controller PostController');
 
+        $this->assertFileExists(app_path('Post.php'));
         $this->assertFileExists(app_path('Http/Controllers/PostController.php'));
+
     }
 
     public function test_it_gives_an_error_if_controller_exists()
@@ -155,6 +160,9 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Controllers/Dashboard/PostController.php'));
 
         $this->removeGeneratedFiles();
+        if(!file_exists(app_path('Models'))){
+            mkdir(app_path('Models'));
+        }
 
         $this->assertFileDoesNotExist(app_path('Models/Post.php'));
         $this->assertFileDoesNotExist(app_path('Http/Controllers/Dashboard/PostController.php'));

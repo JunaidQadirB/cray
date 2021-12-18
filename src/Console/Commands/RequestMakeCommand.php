@@ -52,24 +52,11 @@ class RequestMakeCommand extends GeneratorCommand
             $replace['$modelSlug$'] = $slug;
             $replace['$modelTable$'] = Str::plural($slug, 2);
         }
-
         return str_replace(
             array_keys($replace),
             array_values($replace),
             parent::buildClass($name)
         );
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param string $rootNamespace
-     *
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace . '\Http\Requests';
     }
 
     /**
@@ -82,6 +69,19 @@ class RequestMakeCommand extends GeneratorCommand
         return [
             ['model', 'm', InputOption::VALUE_REQUIRED, 'The given model.'],
             ['type', 't', InputOption::VALUE_OPTIONAL, 'Type of request. Values can be store or update'],
+            ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
+            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from']
         ];
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Http\Requests';
     }
 }

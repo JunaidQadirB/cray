@@ -13,6 +13,7 @@ class TestCase extends Testbench
     {
         if(file_exists(base_path('routes/web.php'))){
             unlink(base_path('routes/web.php'));
+            file_put_contents(base_path('routes/web.php'),"<?php\n\n");
         }
 
         if (file_exists(app_path('Http/Controllers/PostController.php'))) {
@@ -36,7 +37,6 @@ class TestCase extends Testbench
         }
 
         if (file_exists(app_path('Models'))) {
-
             $this->rmdirRecursive(app_path('Models'));
         }
 

@@ -5,6 +5,8 @@ namespace JunaidQadirB\Cray\Console\Contracts;
 use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
 
+use function base_path;
+
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {
 
@@ -96,11 +98,38 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $path = '';
+        if($base = $this->option('base')){
+            return $this->getArtifactPath($base);
+        }
 
-        return $this->laravel['path'].'/'.str_replace(array('\\', '\\'), array('/', ''), $name).'.php';
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $base = $this->option('base') ?? $this->laravel['path'];
+        $file = '/'.str_replace(array('\\', '\\'), array('/', ''), $name).'.php';
+
+        return $base.$file;
     }
 
+    public function getArtifactPath($base)
+    {
+        $path = '';
+
+        switch ($this->type){
+            case 'Controller':
+                $path = $base .'/Http/Controllers/'.$this->argument('name').'.php';
+                if($controllerSubDir= ($this->hasOption('controller-dir') &&  $this->option('controller-dir'))){
+                    $path = $base.'/Http/Controllers/'.$controllerSubDir.'/'.$this->argument('name').'.php';
+                }
+                break;
+            case 'Model':
+                $model = class_basename($this->argument('name'));
+                $path = $base .'/Models/'.$model.'.php';
+
+                break;
+        }
+
+        return $this->laravel->basePath($path);
+    }
     /**
      * Replace the class name for the given stub.
      *
@@ -151,6 +180,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         string $route,
         string $controllerClassPath
     ) {
+
         $routeFile = base_path('routes/web.php');
         if (!file_exists($routeFile)) {
             file_put_contents($routeFile, <<<DATA
@@ -170,5 +200,50 @@ DATA
             $this->info("Route added successfully!");
             $this->info("Click to open: ".url($route));
         }
+    }
+
+
+    /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     */
+    protected function rootNamespace()
+    {
+        return $this->option('namespace') ?? $this->laravel->getNamespace();
+    }
+
+    public function getCommonArguments()
+    {
+        $arguments=[];
+
+        if( $this->option('base')){
+            $arguments['--base'] = $this->option('base');
+        }
+
+        if($this->hasOption('force') && $this->option('force') !== false){
+            $arguments['--force'] = $this->option('force');
+        }
+
+        if( $this->option('namespace')){
+            $arguments['--namespace'] = $this->option('namespace');
+        }
+
+        if ($this->option('route-base') ) {
+            $arguments['--route-base'] = $this->option('route-base');
+        } elseif ($this->option('views-dir')) {
+            $arguments['--route-base'] = $this->option('views-dir');
+        }
+
+        if ($this->option('views-dir')) {
+            $arguments['--views-dir'] = $this->option('views-dir');
+        }
+
+        $controllerDir = $this->option('controller-dir');
+        if ($controllerDir) {
+            $arguments['--controller-dir'] = $controllerDir;
+        }
+
+        return $arguments;
     }
 }

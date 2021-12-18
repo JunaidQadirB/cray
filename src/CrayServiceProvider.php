@@ -11,6 +11,7 @@ use JunaidQadirB\Cray\Console\Commands\MigrateMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ModelMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\RequestMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ViewMakeCommand;
+use JunaidQadirB\Cray\Console\Commands\DeleteResourceCommand;
 
 class CrayServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,7 @@ class CrayServiceProvider extends ServiceProvider
         ModelMakeCommand::class,
         RequestMakeCommand::class,
         ViewMakeCommand::class,
+        DeleteResourceCommand::class
     ];
 
     /**

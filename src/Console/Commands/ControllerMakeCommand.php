@@ -14,7 +14,6 @@ class ControllerMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'cray:controller';
-
     /**
      * The console command description.
      *
@@ -53,12 +52,12 @@ class ControllerMakeCommand extends GeneratorCommand
         }
 
         $replace = $this->buildModelReplacements($replace);
-        if ($this->option('model')) {
-            if ($model = $this->option('model')) {
+
+        if ($this->model) {
+            if ($model = $this->model) {
                 $replace = str_replace('$modelSlug$', Str::slug(str_to_words($model), '-'), $replace);
             }
         }
-
 
         $replace["use {$controllerNamespace}\Controller;\n"] = '';
 
@@ -104,9 +103,14 @@ class ControllerMakeCommand extends GeneratorCommand
          * Check if Models directory exist in /app
          * Check if model has a namespace
          */
-        $rootNamespace = $this->laravel->getNamespace();
+        $model = str_replace('Controller', '', class_basename($model));
+
+        $rootNamespace = $this->hasOption('namespace') && $this->option('namespace')
+            ? $this->option('namespace')
+            : $this->laravel->getNamespace();
 
         $namespace = is_dir(app_path('Models')) ? $rootNamespace.'Models\\' : $rootNamespace;
+
 
         $model = str_replace('/', "\\", $model);
         if (!Str::startsWith($model, $rootNamespace)) {
@@ -125,19 +129,32 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace)
     {
-        $modelClass = $this->parseModel($this->option('model'));
+        $this->model = str_replace('Controller','', $this->argument('name'));
+
+        if ($this->option('model')) {
+            $this->model = $this->option('model');
+        }
+
+        $modelClass = $this->parseModel($this->model);
+
         if (!class_exists($modelClass)) {
             /*if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
 
             }*/
 
-            $this->call('cray:model', ['name' => $modelClass]);
-        }
+            $arguments = [
+                'name' => class_basename($this->model),
+                '--base' => $this->option('base'),
+                '--namespace' => $this->option('namespace'),
+            ];
 
+            $this->call('cray:model', $arguments);
+        }
         $label = str_to_words(class_basename($modelClass));
 
         $modelSlug = Str::slug(Str::plural($label, 2));
         $dir = $this->appendModelToViewDir($this->option('views-dir'), $modelSlug);
+
         $dir = str_replace('/', '.', $dir);
         $dir = ltrim($dir, '.');
 
@@ -246,9 +263,13 @@ class ControllerMakeCommand extends GeneratorCommand
                 'Specify the controller path within the Http directory'
             ],
 
-            ['route-base', 'b', InputOption::VALUE_OPTIONAL, 'Specify the base route to use'],
+            ['route-base', 'rb', InputOption::VALUE_OPTIONAL, 'Specify the base route to use'],
 
-            ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller']
+            ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller'],
+
+            ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
+
+            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from']
         ];
     }
 
@@ -257,6 +278,11 @@ class ControllerMakeCommand extends GeneratorCommand
         parent::handle();
 
         if ($this->type === 'Controller') {
+            $name = str_replace('Controller', '', $this->argument('name'));
+            $this->routeBase = $this->option('route-base') ?? Str::plural($name);
+
+            $this->class =  $this->qualifyClass( $this->argument('name')).'::class';
+
             $this->addRoute($this->routeBase, $this->class);
         }
     }

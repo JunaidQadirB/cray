@@ -21,6 +21,12 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected $description = 'Create a new model factory';
 
+    protected $signature = 'cray:factory {name}
+    {-m|--model= : Name of the model}
+    {-b|--base= : Base to create paths from}
+    {-n|--namespace= : Namespace to use}
+    {-f|--force : Overwrite if factory class already exists}';
+
     /**
      * The type of class being generated.
      *
@@ -47,14 +53,13 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $model = $this->option('model')
-            ? $this->qualifyClass($this->option('model'))
-            : 'Model';
+        $stub = $this->files->get($this->getStub());
+        $name = $this->argument('name');
 
         return str_replace(
-            'DummyModel',
-            $model,
-            parent::buildClass($name)
+            'DummyClass',
+            $name,
+            $stub
         );
     }
 
@@ -73,7 +78,22 @@ class FactoryMakeCommand extends GeneratorCommand
             $this->argument('name')
         );
 
-        return $this->laravel->databasePath() . "/factories/{$name}.php";
+        $path = base_path($this->option('base'));
+
+        return $this->getDatabasePath($path)."/factories/{$name}.php";
+    }
+
+    private function getDatabasePath($path): string
+    {
+        $dbDirNames = ['database', 'Database'];
+        foreach ($dbDirNames as $dbDirName) {
+            $dbPath = $path.DIRECTORY_SEPARATOR.$dbDirName;
+            if (file_exists($dbPath) && is_dir($dbPath)) {
+                return $dbPath;
+            }
+        }
+
+        return database_path();
     }
 
     /**
