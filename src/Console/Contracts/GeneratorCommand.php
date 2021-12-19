@@ -29,6 +29,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      */
     public function handle()
     {
+        $this->formatNamespace();
         // First we need to ensure that the given name is not a reserved word within the PHP
         // language and that the class name will actually be valid. If it is not valid we
         // can error now and prevent from polluting the filesystem using invalid files.
@@ -246,5 +247,12 @@ DATA
         }
 
         return $arguments;
+    }
+
+    public function formatNamespace(): void
+    {
+        if ($this->option('namespace')) {
+            $this->input->setOption('namespace', str_replace('/', '\\', $this->option('namespace')));
+        }
     }
 }

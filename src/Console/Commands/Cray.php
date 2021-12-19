@@ -57,6 +57,8 @@ class Cray extends GeneratorCommand
      */
     public function handle()
     {
+        $this->formatNamespace();
+
         /**
          * Steps
          * - Generate Model
