@@ -76,7 +76,7 @@ class Cray extends GeneratorCommand
             $this->createFactory();
         }
 
-        if (!$this->option('no-migration')) {
+      if (!$this->option('no-migration')) {
             $this->createMigration();
         }
 
