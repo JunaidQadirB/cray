@@ -3,8 +3,8 @@
 namespace DummyNamespace;
 
 use DummyFullModelClass;
-use App\Http\Requests\DummyModelClassUpdateRequest;
-use App\Http\Requests\DummyModelClassStoreRequest;
+use DummyRootNamespaceHttp\Requests\DummyModelClassUpdateRequest;
+use DummyRootNamespaceHttp\Requests\DummyModelClassStoreRequest;
 use JunaidQadirB\Cray\Traits\RedirectsWithFlash;
 use Illuminate\Routing\Controller;
 
@@ -49,10 +49,10 @@ class DummyClass extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  DummyModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function show(\DummyFullModelClass $DummyModelVariable)
+    public function show(DummyModelClass $DummyModelVariable)
     {
         $previous = $DummyModelVariable->where('id', '<', $DummyModelVariable->id)->max('id');
         $next = $DummyModelVariable->where('id', '>', $DummyModelVariable->id)->min('id');
@@ -65,10 +65,10 @@ class DummyClass extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  DummyModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function edit(\DummyFullModelClass $DummyModelVariable)
+    public function edit(DummyModelClass $DummyModelVariable)
     {
         return view('$viewDir$.edit', compact('DummyModelVariable'));
     }
@@ -77,7 +77,7 @@ class DummyClass extends Controller
      * Update the specified resource in storage.
      *
      * @param  DummyModelClassUpdateRequest  $request
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  DummyModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
     public function update(DummyModelClassUpdateRequest $request, DummyModelClass $DummyModelVariable)
@@ -89,7 +89,7 @@ class DummyClass extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  DummyModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
     public function destroy(DummyModelClass $DummyModelVariable)
