@@ -39,7 +39,7 @@ class ModelMakeCommandTest extends TestCase
 
         $this->assertFileDoesNotExist(app_path('Models/Post.php'));
 
-        $this->artisan('cray:model Models/Post');
+        $this->artisan('cray:model Models/Post --namespace=Modules/');
 
         $this->assertFileExists(app_path('Models/Post.php'));
 

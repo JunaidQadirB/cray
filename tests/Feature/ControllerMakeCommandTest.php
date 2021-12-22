@@ -74,6 +74,7 @@ class ControllerMakeCommandTest extends TestCase
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario1()
     {
+        $this->removeGeneratedFiles();
         //Scenario 1
         $this->artisan('cray:controller PostController --model=Post --views-dir=posts');
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
@@ -82,11 +83,13 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertStringContainsStringIgnoringCase("'posts.show'", $controllerContents);
         $this->assertStringContainsStringIgnoringCase("'posts.create'", $controllerContents);
 
-        unlink(app_path('Http/Controllers/PostController.php'));
+
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario2()
     {
+        $this->removeGeneratedFiles();
+
         //Scenario 2
         $this->artisan('cray:controller PostController --model=Post --views-dir=blog_posts');
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
@@ -98,6 +101,8 @@ class ControllerMakeCommandTest extends TestCase
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario3()
     {
+        $this->removeGeneratedFiles();
+
         //Scenario 3
         $this->artisan('cray:controller PostController --model=Post --views-dir=blog/posts');
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
@@ -109,7 +114,9 @@ class ControllerMakeCommandTest extends TestCase
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario4()
     {
-        //Scenario 3
+        $this->removeGeneratedFiles();
+
+        //Scenario 4
         $this->artisan('cray:controller PostController --model=Models/Post --views-dir=blog/posts');
 
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
@@ -122,6 +129,7 @@ class ControllerMakeCommandTest extends TestCase
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario5()
     {
+        $this->removeGeneratedFiles();
 
         $this->artisan('cray:controller PostController --model=Models/Post --controller-dir=dashboard --views-dir=dashboard/system');
 
@@ -134,6 +142,8 @@ class ControllerMakeCommandTest extends TestCase
 
     public function test_it_uses_the_specified_route_or_falls_back_to_model_slug()
     {
+        $this->removeGeneratedFiles();
+
         //Scenario 1
         /*$this->artisan('cray:controller PostController --model=Post --views-dir=posts --route-base=my-posts');
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
@@ -145,6 +155,56 @@ class ControllerMakeCommandTest extends TestCase
         $this->artisan('cray:controller PostController --model=Post --views-dir=posts');
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
         $this->assertStringContainsStringIgnoringCase("return \$this->success('Post added successfully!', 'posts.index');", $controllerContents);
+    }
+
+    public function test_it_creates_the_controller_in_the_specified_base()
+    {
+        $this->removeGeneratedFiles();
+
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
+
+        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog');
+
+        $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
+        $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
+
+    }
+
+    public function test_it_creates_the_controller_in_the_specified_base_with_custom_controller_dir()
+    {
+        $this->removeGeneratedFiles();
+
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
+
+        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --controller-dir=dashboard ');
+
+        $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
+        $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
+
+
+        $this->assertStringContainsString("view('posts::posts", file_get_contents(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php')));
+
+
+    }
+
+    public function test_it_creates_the_controller_in_the_specified_base_with_custom_controller_dir_and_namespace()
+    {
+        $this->removeGeneratedFiles();
+
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
+
+        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --namespace=My/Blog/ --controller-dir=dashboard ');
+
+        $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
+        $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
+
+
+        $expectedNamespace = 'namespace My\Blog\Http\Controllers\Dashboard;';
+        $this->assertStringContainsStringIgnoringCase($expectedNamespace, file_get_contents(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php')));
+
     }
 
     public function test_it_creates_the_controller_in_the_specified_directory_namespace()

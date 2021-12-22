@@ -11,9 +11,25 @@ class TestCase extends Testbench
 {
     public function removeGeneratedFiles()
     {
-        if(file_exists(base_path('routes/web.php'))){
+        $packageDirs=[
+            'src/Http/Requests',
+            'src/Http/Controllers',
+            'src/Models',
+            'database/factories',
+            'database/migrations',
+            'routes',
+            'resources/views'
+        ];
+
+        $this->rmdirRecursive(base_path('Modules'));
+        mkdir(base_path('Modules/blog'), 0777, true);
+
+        foreach ($packageDirs as $packageDir) {
+            mkdir(base_path('Modules/blog/'.$packageDir), 0777, true);
+        }
+        if (file_exists(base_path('routes/web.php'))) {
             unlink(base_path('routes/web.php'));
-            file_put_contents(base_path('routes/web.php'),"<?php\n\n");
+            file_put_contents(base_path('routes/web.php'), "<?php\n\n");
         }
 
         if (file_exists(app_path('Http/Controllers/PostController.php'))) {
@@ -110,6 +126,10 @@ class TestCase extends Testbench
 
     function rmdirRecursive($dir)
     {
+        if(!file_exists($dir) ){
+            return;
+        }
+
         $files = scandir($dir);
         foreach ($files as $file) {
             if ($file === '.' || $file === '..') {

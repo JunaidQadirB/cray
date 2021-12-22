@@ -99,16 +99,14 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      */
     protected function getPath($name)
     {
-        $path = '';
-        if ($base = $this->option('base')) {
-            return $this->getArtifactPath($base);
-        }
-
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        $base = $this->option('base') ?? $this->laravel['path'];
-        $file = '/'.str_replace(array('\\', '\\'), array('/', ''), $name).'.php';
+        $base = $this->option('base')
+            ? base_path($this->option('base')).'/src'
+            : $this->laravel['path'];
 
-        return $base.$file;
+        $file = $base.'/'.str_replace('\\', '/', $name).'.php';
+
+        return $file;
     }
 
     public function getArtifactPath($base)

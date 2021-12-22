@@ -15,7 +15,7 @@ class FactoryMakeCommandTest extends TestCase
         $this->removeGeneratedFiles();
     }
 
-    public function test_it_generates_a_factory()
+    public function test_it_generates_a_factory_in_default_path()
     {
         //Make sure no artifact related to Post exists
         $this->assertFalse(file_exists(base_path('database/factories/PostFactory.php')));
@@ -29,5 +29,18 @@ class FactoryMakeCommandTest extends TestCase
 
         $expectedOutput = "Factory created successfully in /database/factories/PostFactory.php" . PHP_EOL;
         $this->assertSame($expectedOutput, $actualOutput);
+    }
+
+    public function test_it_generates_a_factory_in_custom_path()
+    {
+
+        //Make sure no artifact related to Post exists
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/database/factories/PostFactory.php'));
+
+        $this->artisan('cray:factory PostFactory --base=Modules/blog/src');
+
+        $this->assertFileExists(base_path('Modules/blog/src/database/factories/PostFactory.php'));
+
+
     }
 }

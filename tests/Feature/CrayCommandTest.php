@@ -68,7 +68,7 @@ class CrayCommandTest extends TestCase
         $this->assertFileDoesNotExist(resource_path("views/posts/show.blade.php"));
         $this->assertFileDoesNotExist(resource_path("views/posts/modals/delete.blade.php"));
 
-        $this->artisan('cray Models/Post');
+        $this->artisan('cray Models/Post --namespace=Blog/');
 
         $this->assertFileExists(app_path('Models/Post.php'));
         $this->assertFileExists(app_path('Http/Controllers/PostController.php'));
@@ -148,6 +148,8 @@ class CrayCommandTest extends TestCase
 
     public function test_it_generates_route_names_correctly()
     {
+        $this->removeGeneratedFiles();
+
         $this->artisan('cray Models/Post --route-base=custom-route');
         $createBladeView = file_get_contents(resource_path('views/posts/create.blade.php'));
         $postController = file_get_contents(app_path('Http/Controllers/PostController.php'));
@@ -168,4 +170,70 @@ class CrayCommandTest extends TestCase
         $this->assertStringContainsString("Route::resource('custom-route', App\\Http\\Controllers\PostController::class)",
             file_get_contents(base_path('routes/web.php')), 'Route not added');
     }
+
+    public function test_it_generates_update_form_request_with_custom_base()
+    {
+        //Make sure no artifact related to Post exists
+
+        $base = base_path('Modules/blog/');
+        $this->removeGeneratedFiles();
+        $this->assertFileDoesNotExist($base.'src/Post.php');
+        $this->assertFileDoesNotExist($base.'src/Http/Controllers/PostController.php');
+        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist($base.'database/factories/PostFactory.php');
+        $this->assertDirectoryDoesNotExist($base.'resources/views/posts');
+
+        $this->artisan('cray Post --namespace=Blog/ --base=Modules/blog');
+
+        $this->assertFileExists($base.'src/Post.php');
+        $this->assertFileExists($base.'src/Http/Controllers/PostController.php');
+        $this->assertFileExists($base.'src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileExists($base.'src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileExists($base.'database/factories/PostFactory.php');
+        $this->assertDirectoryExists($base.'resources/views/posts');
+        /*        $assertString1 = '$id = $this->route()->parameter(\'post\')->id;';
+                $actual = file_get_contents($base.'src/Http/Requests/PostUpdateRequest.php');
+                $assertString2 = ' \'id\' => \'required|unique:posts,id,\' . $id,';
+
+                $this->assertStringContainsString($assertString1, $actual);
+                $this->assertStringContainsString($assertString2, $actual);*/
+    }
+
+
+    public function test_it_scaffolds_crud_artifacts_with_namespaces_form_requests()
+    {
+        $this->removeGeneratedFiles();
+
+        $this->assertFileDoesNotExist(app_path('Http/Requests/PostUpdateRequest.php'));
+        $this->assertFileDoesNotExist(app_path('Http/Requests/PostStoreRequest.php'));
+
+        $this->artisan('cray Models/Post --namespace=Blog/');
+
+        $this->assertFileExists(app_path('Http/Requests/PostUpdateRequest.php'));
+        $this->assertFileExists(app_path('Http/Requests/PostStoreRequest.php'));
+
+        $expectedNamespace = 'namespace Blog\Http\Requests;';
+
+        $requestClassContents = file_get_contents(app_path('Http/Requests/PostStoreRequest.php'));
+        $this->assertStringContainsStringIgnoringCase($expectedNamespace, $requestClassContents);
+
+        /**
+         * With base
+         */
+        $base = base_path('Modules/blog');
+        $this->assertFileDoesNotExist($base . '/src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist($base . '/src/Http/Requests/PostStoreRequest.php');
+
+        $this->artisan('cray Models/Post --namespace=Blog/ --base=Modules/blog');
+
+        $this->assertFileExists($base . '/src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileExists($base . '/src/Http/Requests/PostStoreRequest.php');
+
+        $expectedNamespace2 = 'namespace Blog\Http\Requests;';
+
+        $requestClassContents2 = file_get_contents($base . '/src/Http/Requests/PostStoreRequest.php');
+        $this->assertStringContainsStringIgnoringCase($expectedNamespace2, $requestClassContents2);
+    }
+
 }
