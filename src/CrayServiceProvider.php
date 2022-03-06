@@ -2,6 +2,7 @@
 
 namespace JunaidQadirB\Cray;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\ServiceProvider;
 use JunaidQadirB\Cray\Console\Commands\ControllerMakeCommand;
@@ -80,8 +81,8 @@ class CrayServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'cray');
 
         // Register the main class to use with the facade
-        $this->app->singleton('cray', function () {
-            return new Cray();
+        $this->app->singleton('cray', function (Container $container) {
+            return new Cray($container->get('files'));
         });
     }
 }
