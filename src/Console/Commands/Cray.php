@@ -31,7 +31,7 @@ class Cray extends GeneratorCommand
     {--no-factory : Do not create a factory for the model}
     {--base= : The base of all the files being generated. Project root is default the base if not specified}
     {--namespace= : The namespace of all the files being generated. Project root is default the namespace if not specified}
-    {--force : overwrite existing artificats}
+    {--force : overwrite existing artifacts}
     ';
 
     /**
