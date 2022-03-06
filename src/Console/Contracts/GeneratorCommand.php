@@ -127,7 +127,10 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
                 break;
         }
 
-        return $this->laravel->basePath($path);
+
+        return $this->option('base')
+            ? base_path($path)
+            : $this->laravel->basePath($path);
     }
 
     /**
@@ -181,7 +184,10 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         string $controllerClassPath
     ) {
 
-        $routeFile = base_path('routes/web.php');
+        $base = base_path($this->option('base')) ?? base_path();
+
+        $routeFile = $base. "/routes/web.php";
+
         if (!file_exists($routeFile)) {
             file_put_contents($routeFile, <<<DATA
 <?php

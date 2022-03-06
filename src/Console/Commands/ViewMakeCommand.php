@@ -118,7 +118,7 @@ class ViewMakeCommand extends GeneratorCommand
     private function chooseViewPath()
     {
         if ($this->option('base')) {
-            return $this->option('base').'/Resources/views';
+            return base_path($this->option('base').'/resources/views');
         }
 
         if (!Config::has('view.paths') || (Config::has('view.paths') && count(Config::get('view.paths')) < 1)) {
@@ -212,12 +212,19 @@ class ViewMakeCommand extends GeneratorCommand
     protected function replacePlaceholders($stub, $name, $path = null)
     {
         $path = trim(str_replace($this->baseViewPath, '', $path), "/");
-        $path = str_replace('/', '.', $path);
+        $path =  str_replace('/', '.', $path);
+
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
+
+        $routeBase = $this->option('route-base') ?? $modelSlug;
 
         $viewLabel = str_to_words($name);
         $viewLabelPlural = Str::plural(str_to_words($name));
         $viewName = Str::camel($name);
+
+        if($this->option('base')){
+            $path = $modelSlug.'::'.$path;
+        }
 
         $replace = array_merge([], [
             '$label$' => $viewLabel,
@@ -227,7 +234,7 @@ class ViewMakeCommand extends GeneratorCommand
             '$model$' => $name,
             '$rows$' => '$'.Str::camel(Str::plural($name, 2)),
             '$row$' => '$'.Str::camel(Str::singular($name)),
-            '$routeBase$' => $this->option('route-base') ?: $path,
+            '$routeBase$' => $routeBase,
             '$viewDir$' => $path,
         ]);
 

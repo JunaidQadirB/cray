@@ -158,6 +158,10 @@ class ControllerMakeCommand extends GeneratorCommand
         $dir = str_replace('/', '.', $dir);
         $dir = ltrim($dir, '.');
 
+        if($this->option('base')){
+            $dir = $modelSlug.'::'.$dir;
+        }
+
         $routeBase = $this->option('route-base') ?? $modelSlug;
 
         $this->routeBase = $routeBase;
