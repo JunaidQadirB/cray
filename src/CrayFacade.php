@@ -4,9 +4,6 @@ namespace JunaidQadirB\Cray;
 
 use Illuminate\Support\Facades\Facade;
 
-/**
- * @see \JunaidQadirB\Cray\Skeleton\SkeletonClass
- */
 class CrayFacade extends Facade
 {
     /**
@@ -14,8 +11,8 @@ class CrayFacade extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
-        return 'cray';
+        return \JunaidQadirB\Cray\Console\Commands\Cray::class;
     }
 }
