@@ -129,7 +129,25 @@ class ViewMakeCommand extends GeneratorCommand
             return Config::get('view.paths')[0];
         }
 
-        return $this->choice('Where would you like to put your views?', Config::get('view.paths'));
+        $paths = Config::get('view.paths');
+        $paths[] = 'Other';
+
+
+        $response = $this->choice('Where would you like to put your views?', $paths);
+
+        if ($response !== 'Other') {
+            return $response;
+        }
+
+        $otherRespone = $this->ask('Enter view path');
+
+
+        if ((Str::startsWith(base_path(), $otherRespone) && !is_dir(base_path($otherRespone))) || !is_dir(base_path($otherRespone))) {
+            $this->error($otherRespone. ' does not exist.');
+            $this->chooseViewPath();
+        }
+
+        return $otherRespone;
     }
 
     protected function buildView($type, $path)
@@ -212,7 +230,7 @@ class ViewMakeCommand extends GeneratorCommand
     protected function replacePlaceholders($stub, $name, $path = null)
     {
         $path = trim(str_replace($this->baseViewPath, '', $path), "/");
-        $path =  str_replace('/', '.', $path);
+        $path = str_replace('/', '.', $path);
 
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
 
@@ -222,7 +240,7 @@ class ViewMakeCommand extends GeneratorCommand
         $viewLabelPlural = Str::plural(str_to_words($name));
         $viewName = Str::camel($name);
 
-        if($this->option('base')){
+        if ($this->option('base')) {
             $path = $modelSlug.'::'.$path;
         }
 

@@ -40,7 +40,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         }
 
         $name = $this->qualifyClass($this->getNameInput());
-
         $path = $this->getPath($name);
 
         // Next, We will check to see if the class already exists. If it does, we don't want
@@ -112,7 +111,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     public function getArtifactPath($base)
     {
         $path = '';
-
         switch ($this->type) {
             case 'Controller':
                 $path = $base.'/Http/Controllers/'.$this->argument('name').'.php';
@@ -124,6 +122,9 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
                 $model = class_basename($this->argument('name'));
                 $path = $base.'/Models/'.$model.'.php';
 
+                break;
+            case 'Request':
+                $path = $base.'/Http/Requests/'.$this->argument('name').'.php';
                 break;
         }
 
