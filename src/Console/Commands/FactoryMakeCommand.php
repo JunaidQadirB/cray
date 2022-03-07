@@ -85,12 +85,8 @@ class FactoryMakeCommand extends GeneratorCommand
 
     private function getDatabasePath($path): string
     {
-        $dbDirNames = ['database', 'Database'];
-        foreach ($dbDirNames as $dbDirName) {
-            $dbPath = $path.DIRECTORY_SEPARATOR.$dbDirName;
-            if (file_exists($dbPath) && is_dir($dbPath)) {
-                return $dbPath;
-            }
+        if($this->option('base')){
+            return base_path($this->option('base')).'/database';
         }
 
         return database_path();

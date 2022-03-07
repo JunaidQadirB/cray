@@ -124,7 +124,7 @@ class Cray extends GeneratorCommand
         $arguments = [
             'name' => "create_{$table}_table",
             '--create' => $table,
-            '--path' => $this->option('base').'/Database/Migrations',
+            '--path' => $this->option('base').'/database/migrations',
         ];
 
         $this->call('cray:migration', $arguments);
