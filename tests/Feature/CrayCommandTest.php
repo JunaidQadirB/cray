@@ -222,18 +222,62 @@ class CrayCommandTest extends TestCase
          * With base
          */
         $base = base_path('Modules/blog');
-        $this->assertFileDoesNotExist($base . '/src/Http/Requests/PostUpdateRequest.php');
-        $this->assertFileDoesNotExist($base . '/src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist($base.'/src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist($base.'/src/Http/Requests/PostStoreRequest.php');
 
         $this->artisan('cray Models/Post --namespace=Blog/ --base=Modules/blog');
 
-        $this->assertFileExists($base . '/src/Http/Requests/PostUpdateRequest.php');
-        $this->assertFileExists($base . '/src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileExists($base.'/src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileExists($base.'/src/Http/Requests/PostStoreRequest.php');
 
         $expectedNamespace2 = 'namespace Blog\Http\Requests;';
 
-        $requestClassContents2 = file_get_contents($base . '/src/Http/Requests/PostStoreRequest.php');
+        $requestClassContents2 = file_get_contents($base.'/src/Http/Requests/PostStoreRequest.php');
         $this->assertStringContainsStringIgnoringCase($expectedNamespace2, $requestClassContents2);
     }
 
+
+    public function test_it_should_have_no_reference_to_cray_in_generated_files()
+    {
+        $this->removeGeneratedFiles();
+
+        $this->removeGeneratedFiles();
+        $this->assertFileDoesNotExist('Post.php');
+        $this->assertFileDoesNotExist('app/Http/Controllers/PostController.php');
+        $this->assertFileDoesNotExist('app/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist('app/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist('database/factories/PostFactory.php');
+        $this->assertDirectoryDoesNotExist('resources/views/posts');
+
+        $this->artisan('cray Post');
+
+        $needle = 'cray';
+        $haystack = app_path('Post.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = app_path('Http/Controllers/PostController.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = app_path('Http/Requests/PostUpdateRequest.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = app_path('Http/Requests/PostStoreRequest.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = database_path('factories/PostFactory.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = resource_path('views/posts/index.blade.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = resource_path('views/posts/create.blade.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = resource_path('views/posts/edit.blade.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+        $haystack = resource_path('views/posts/show.blade.php');
+        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+
+    }
 }

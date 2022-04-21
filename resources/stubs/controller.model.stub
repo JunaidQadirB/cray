@@ -5,7 +5,7 @@ namespace DummyNamespace;
 use DummyFullModelClass;
 use DummyRootNamespaceHttp\Requests\DummyModelClassUpdateRequest;
 use DummyRootNamespaceHttp\Requests\DummyModelClassStoreRequest;
-use JunaidQadirB\Cray\Traits\RedirectsWithFlash;
+use App\Traits\RedirectsWithFlash;
 use Illuminate\Routing\Controller;
 
 class DummyClass extends Controller
