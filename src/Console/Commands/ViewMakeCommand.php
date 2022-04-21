@@ -45,7 +45,7 @@ class ViewMakeCommand extends GeneratorCommand
         /*  if (parent::handle() === false && ! $this->option('force')) {
               return;
           }*/
-        if (!$this->option('index') && !$this->option('create') && !$this->option('edit') && !$this->option('show') && !$this->option('all')) {
+        if (! $this->option('index') && ! $this->option('create') && ! $this->option('edit') && ! $this->option('show') && ! $this->option('all')) {
             $this->input->setOption('all', true);
         }
         $this->createView();
@@ -66,6 +66,7 @@ class ViewMakeCommand extends GeneratorCommand
             $this->buildView('edit', $path);
             $this->buildView('show', $path);
             $this->createDeleteView($path);
+
             return;
         }
 
@@ -91,9 +92,6 @@ class ViewMakeCommand extends GeneratorCommand
         }
     }
 
-    /**
-     *
-     */
     protected function createViewDirectory()
     {
         $name = Str::studly(class_basename($this->argument('name')));
@@ -108,7 +106,7 @@ class ViewMakeCommand extends GeneratorCommand
             $path = $viewPath.'/'.$dir.'/'.$viewDirSlug;
         }
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0777, true);
         }
 
@@ -121,7 +119,7 @@ class ViewMakeCommand extends GeneratorCommand
             return base_path($this->option('base').'/resources/views');
         }
 
-        if (!Config::has('view.paths') || (Config::has('view.paths') && count(Config::get('view.paths')) < 1)) {
+        if (! Config::has('view.paths') || (Config::has('view.paths') && count(Config::get('view.paths')) < 1)) {
             return $this->viewPath();
         }
 
@@ -132,7 +130,6 @@ class ViewMakeCommand extends GeneratorCommand
         $paths = Config::get('view.paths');
         $paths[] = 'Other';
 
-
         $response = $this->choice('Where would you like to put your views?', $paths);
 
         if ($response !== 'Other') {
@@ -141,9 +138,8 @@ class ViewMakeCommand extends GeneratorCommand
 
         $otherRespone = $this->ask('Enter view path');
 
-
-        if ((Str::startsWith(base_path(), $otherRespone) && !is_dir(base_path($otherRespone))) || !is_dir(base_path($otherRespone))) {
-            $this->error($otherRespone. ' does not exist.');
+        if ((Str::startsWith(base_path(), $otherRespone) && ! is_dir(base_path($otherRespone))) || ! is_dir(base_path($otherRespone))) {
+            $this->error($otherRespone.' does not exist.');
             $this->chooseViewPath();
         }
 
@@ -166,7 +162,7 @@ class ViewMakeCommand extends GeneratorCommand
         }
         $displayPath = str_replace(resource_path(), '/resources', $target);
         $message = "View created successfully in {$displayPath}";
-        if (file_exists($target) && !$this->option('force')) {
+        if (file_exists($target) && ! $this->option('force')) {
             $this->error("File already exists. Cannot overwrite {$displayPath}.");
         } else {
             if ($this->option('force')) {
@@ -177,13 +173,13 @@ class ViewMakeCommand extends GeneratorCommand
         }
         if ($type == 'create' || $type == 'edit') {
             /**
-             * Create the _form partial form the stub
+             * Create the _form partial form the stub.
              */
             $formPartial = $path.'/_form.blade.php';
             $formPartialDisplayPath = str_replace(resource_path(), '/resources', $formPartial);
             $formStub = $this->files->get($this->getStub('_form'));
 
-            if (file_exists($formPartial) && !$this->option('force')) {
+            if (file_exists($formPartial) && ! $this->option('force')) {
 //            $this->error("File already exists. Cannot overwrite {$formPartialDisplayPath}.");
             } else {
                 if (config('cray.fields.generate')) {
@@ -213,23 +209,23 @@ class ViewMakeCommand extends GeneratorCommand
         $stubs = $this->option('stubs');
 
         if ($stubs) {
-            $stubsPath = $stubs.'/'.$this->fileName.".stub";
+            $stubsPath = $stubs.'/'.$this->fileName.'.stub';
         }
+
         return resource_path($stubsPath);
     }
 
     /**
-     * Replace all placeholders
+     * Replace all placeholders.
      *
      * @param $stub
      * @param $name
      * @param  null  $path
-     *
      * @return mixed
      */
     protected function replacePlaceholders($stub, $name, $path = null)
     {
-        $path = trim(str_replace($this->baseViewPath, '', $path), "/");
+        $path = trim(str_replace($this->baseViewPath, '', $path), '/');
         $path = str_replace('/', '.', $path);
 
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
@@ -265,7 +261,7 @@ class ViewMakeCommand extends GeneratorCommand
 
     protected function createDeleteView($path)
     {
-        if (!file_exists($path.'/modals')) {
+        if (! file_exists($path.'/modals')) {
             mkdir($path.'/modals');
         }
 
@@ -276,7 +272,6 @@ class ViewMakeCommand extends GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)

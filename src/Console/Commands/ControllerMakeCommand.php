@@ -38,7 +38,6 @@ class ControllerMakeCommand extends GeneratorCommand
      * Remove the base controller import if we are already in base namespace.
      *
      * @param  string  $name
-     *
      * @return string
      */
     protected function buildClass($name)
@@ -77,7 +76,7 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $parentModelClass = $this->parseModel($this->option('parent'));
 
-        if (!class_exists($parentModelClass)) {
+        if (! class_exists($parentModelClass)) {
             if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?", true)) {
                 $this->call('cray:model', ['name' => $parentModelClass]);
             }
@@ -94,14 +93,13 @@ class ControllerMakeCommand extends GeneratorCommand
      * Get the fully-qualified model class name.
      *
      * @param  string  $model
-     *
      * @return string
      */
     protected function parseModel($model)
     {
         /**
          * Check if Models directory exist in /app
-         * Check if model has a namespace
+         * Check if model has a namespace.
          */
         $model = str_replace('Controller', '', class_basename($model));
 
@@ -111,9 +109,8 @@ class ControllerMakeCommand extends GeneratorCommand
 
         $namespace = is_dir(app_path('Models')) ? $rootNamespace.'Models\\' : $rootNamespace;
 
-
-        $model = str_replace('/', "\\", $model);
-        if (!Str::startsWith($model, $rootNamespace)) {
+        $model = str_replace('/', '\\', $model);
+        if (! Str::startsWith($model, $rootNamespace)) {
             $model = $namespace.$model;
         }
 
@@ -124,7 +121,6 @@ class ControllerMakeCommand extends GeneratorCommand
      * Build the model replacement values.
      *
      * @param  array  $replace
-     *
      * @return array
      */
     protected function buildModelReplacements(array $replace)
@@ -137,7 +133,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
         $modelClass = $this->parseModel($this->model);
 
-        if (!class_exists($modelClass)) {
+        if (! class_exists($modelClass)) {
             /*if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
 
             }*/
@@ -158,7 +154,7 @@ class ControllerMakeCommand extends GeneratorCommand
         $dir = str_replace('/', '.', $dir);
         $dir = ltrim($dir, '.');
 
-        if($this->option('base')){
+        if ($this->option('base')) {
             $dir = $modelSlug.'::'.$dir;
         }
 
@@ -180,12 +176,12 @@ class ControllerMakeCommand extends GeneratorCommand
 
     private function appendModelToViewDir($path, $model)
     {
-        $pathArray = explode("/", $path);
+        $pathArray = explode('/', $path);
         if ($pathArray[count($pathArray) - 1] === $model) {
             return $path;
         }
 
-        return rtrim($path, '/')."/".$model;
+        return rtrim($path, '/').'/'.$model;
     }
 
     /**
@@ -212,7 +208,7 @@ class ControllerMakeCommand extends GeneratorCommand
         if ($this->option('api') && is_null($stub)) {
             $stub = 'stubs/controller.api.stub';
         } else {
-            if ($this->option('api') && !is_null($stub)) {
+            if ($this->option('api') && ! is_null($stub)) {
                 $stub = str_replace('.stub', '.api.stub', $stub);
             }
         }
@@ -226,7 +222,6 @@ class ControllerMakeCommand extends GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
@@ -259,12 +254,12 @@ class ControllerMakeCommand extends GeneratorCommand
 
             [
                 'views-dir', 'i', InputOption::VALUE_OPTIONAL,
-                'Use the specified path in controller actions to return the respective view'
+                'Use the specified path in controller actions to return the respective view',
             ],
 
             [
                 'controller-dir', 'c', InputOption::VALUE_OPTIONAL,
-                'Specify the controller path within the Http directory'
+                'Specify the controller path within the Http directory',
             ],
 
             ['route-base', 'rb', InputOption::VALUE_OPTIONAL, 'Specify the base route to use'],
@@ -273,7 +268,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
 
-            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from']
+            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from'],
         ];
     }
 

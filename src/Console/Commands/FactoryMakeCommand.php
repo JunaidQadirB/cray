@@ -47,8 +47,7 @@ class FactoryMakeCommand extends GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function buildClass($name)
@@ -66,8 +65,7 @@ class FactoryMakeCommand extends GeneratorCommand
     /**
      * Get the destination class path.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function getPath($name)
@@ -85,7 +83,7 @@ class FactoryMakeCommand extends GeneratorCommand
 
     private function getDatabasePath($path): string
     {
-        if($this->option('base')){
+        if ($this->option('base')) {
             return base_path($this->option('base')).'/database';
         }
 

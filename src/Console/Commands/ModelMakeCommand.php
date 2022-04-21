@@ -36,7 +36,7 @@ class ModelMakeCommand extends GeneratorCommand
      */
     public function handle()
     {
-        if (parent::handle() === false && !$this->option('force')) {
+        if (parent::handle() === false && ! $this->option('force')) {
             return;
         }
 
@@ -157,7 +157,7 @@ class ModelMakeCommand extends GeneratorCommand
                 'Indicates if the generated controller should be a resource controller.',
             ],
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
-            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from']
+            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from'],
         ];
     }
 }

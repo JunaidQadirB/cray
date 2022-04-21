@@ -2,7 +2,6 @@
 
 namespace JunaidQadirB\Cray\Tests\Feature;
 
-
 use JunaidQadirB\Cray\Tests\TestCase;
 
 class CrayCommandTest extends TestCase
@@ -40,18 +39,18 @@ class CrayCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Requests/PostStoreRequest.php'));
         $this->assertFileExists(base_path('database/factories/PostFactory.php'));
         $this->assertDirectoryExists(resource_path('views/posts'));
-        $this->assertFileExists(resource_path("views/posts/index.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/create.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/_form.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/edit.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/show.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/modals/delete.blade.php"));
+        $this->assertFileExists(resource_path('views/posts/index.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/create.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/edit.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/show.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
     }
 
     public function test_it_scaffolds_crud_artifacts_model_in_models_dir_with_namespace()
     {
         //Make sure no artifact related to Post exists
-        if (!file_exists(app_path('Models'))) {
+        if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
 
@@ -61,12 +60,12 @@ class CrayCommandTest extends TestCase
         $this->assertFileDoesNotExist(app_path('Http/Requests/PostStoreRequest.php'));
         $this->assertFileDoesNotExist(base_path('database/factories/PostFactory.php'));
         $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
-        $this->assertFileDoesNotExist(resource_path("views/posts/index.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/posts/create.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/posts/_form.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/posts/edit.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/posts/show.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/posts/modals/delete.blade.php"));
+        $this->assertFileDoesNotExist(resource_path('views/posts/index.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/edit.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/show.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/posts/modals/delete.blade.php'));
 
         $this->artisan('cray Models/Post --namespace=Blog/');
 
@@ -76,21 +75,20 @@ class CrayCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Requests/PostStoreRequest.php'));
         $this->assertFileExists(base_path('database/factories/PostFactory.php'));
         $this->assertDirectoryExists(resource_path('views/posts'));
-        $this->assertFileExists(resource_path("views/posts/index.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/create.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/_form.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/edit.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/show.blade.php"));
-        $this->assertFileExists(resource_path("views/posts/modals/delete.blade.php"));
+        $this->assertFileExists(resource_path('views/posts/index.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/create.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/_form.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/edit.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/show.blade.php'));
+        $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
     }
 
     public function test_it_generates_views_and_the_controller_under_the_given_directory_when_controller_directory_is_specified(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         //Make sure no artifact related to Post exists
-        if (!file_exists(app_path('Models'))) {
+        if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
         $this->assertFileDoesNotExist(app_path('Models/Post.php'));
@@ -99,12 +97,12 @@ class CrayCommandTest extends TestCase
         $this->assertFileDoesNotExist(app_path('Http/Requests/PostStoreRequest.php'));
         $this->assertFileDoesNotExist(base_path('database/factories/PostFactory.php'));
         $this->assertDirectoryDoesNotExist(resource_path('views/dashboard/posts'));
-        $this->assertFileDoesNotExist(resource_path("views/dashboard/posts/index.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/dashboard/posts/create.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/dashboard/posts/_form.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/dashboard/posts/edit.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/dashboard/posts/show.blade.php"));
-        $this->assertFileDoesNotExist(resource_path("views/dashboard/posts/modals/delete.blade.php"));
+        $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/index.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/create.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/_form.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/edit.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/show.blade.php'));
+        $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/modals/delete.blade.php'));
 
         $this->artisan('cray Models/Post --controller-dir=dashboard --views-dir=dashboard');
 
@@ -114,12 +112,12 @@ class CrayCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Requests/PostStoreRequest.php'));
         $this->assertFileExists(base_path('database/factories/PostFactory.php'));
         $this->assertDirectoryExists(resource_path('views/dashboard/posts'));
-        $this->assertFileExists(resource_path("views/dashboard/posts/index.blade.php"));
-        $this->assertFileExists(resource_path("views/dashboard/posts/create.blade.php"));
-        $this->assertFileExists(resource_path("views/dashboard/posts/_form.blade.php"));
-        $this->assertFileExists(resource_path("views/dashboard/posts/edit.blade.php"));
-        $this->assertFileExists(resource_path("views/dashboard/posts/show.blade.php"));
-        $this->assertFileExists(resource_path("views/dashboard/posts/modals/delete.blade.php"));
+        $this->assertFileExists(resource_path('views/dashboard/posts/index.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/posts/create.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/posts/_form.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/posts/edit.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/posts/show.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/posts/modals/delete.blade.php'));
     }
 
     public function test_it_generates_view_paths_correctly_when_subdirectory_is_specified_for_the_controller()
@@ -161,7 +159,7 @@ class CrayCommandTest extends TestCase
 
     public function test_it_adds_route_for_the_controller()
     {
-        if (!file_exists(base_path('routes/web.php'))) {
+        if (! file_exists(base_path('routes/web.php'))) {
             touch(base_path('routes/web.php'));
             file_put_contents(base_path('routes/web.php'), "<?php\n\n");
         }
@@ -200,7 +198,6 @@ class CrayCommandTest extends TestCase
                 $this->assertStringContainsString($assertString2, $actual);*/
     }
 
-
     public function test_it_scaffolds_crud_artifacts_with_namespaces_form_requests()
     {
         $this->removeGeneratedFiles();
@@ -219,7 +216,7 @@ class CrayCommandTest extends TestCase
         $this->assertStringContainsStringIgnoringCase($expectedNamespace, $requestClassContents);
 
         /**
-         * With base
+         * With base.
          */
         $base = base_path('Modules/blog');
         $this->assertFileDoesNotExist($base.'/src/Http/Requests/PostUpdateRequest.php');

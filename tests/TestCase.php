@@ -1,6 +1,5 @@
 <?php
 
-
 namespace JunaidQadirB\Cray\Tests;
 
 use Illuminate\Support\Facades\Artisan;
@@ -11,14 +10,14 @@ class TestCase extends Testbench
 {
     public function removeGeneratedFiles()
     {
-        $packageDirs=[
+        $packageDirs = [
             'src/Http/Requests',
             'src/Http/Controllers',
             'src/Models',
             'database/factories',
             'database/migrations',
             'routes',
-            'resources/views'
+            'resources/views',
         ];
 
         $this->rmdirRecursive(base_path('Modules'));
@@ -57,7 +56,6 @@ class TestCase extends Testbench
         }
 
         if (file_exists(app_path('Models'))) {
-
             rmdir('Models');
         }
 
@@ -66,7 +64,6 @@ class TestCase extends Testbench
         }
 
         if (file_exists(resource_path('views/dashboard/posts'))) {
-
             $this->rmdirRecursive(resource_path('views/dashboard/posts'));
         }
 
@@ -87,16 +84,16 @@ class TestCase extends Testbench
     public function deleteStubs()
     {
         if (file_exists(resource_path('stubs'))) {
-            $stubs = glob(resource_path('stubs') . '/*.stub');
+            $stubs = glob(resource_path('stubs').'/*.stub');
             foreach ($stubs as $stub) {
-                if (!file_exists($stub)) {
+                if (! file_exists($stub)) {
                     continue;
                 }
                 unlink($stub);
             }
-            $stubs = glob(resource_path('stubs') . '/view/*.stub');
+            $stubs = glob(resource_path('stubs').'/view/*.stub');
             foreach ($stubs as $stub) {
-                if (!file_exists($stub)) {
+                if (! file_exists($stub)) {
                     continue;
                 }
                 unlink($stub);
@@ -115,8 +112,7 @@ class TestCase extends Testbench
     {
         parent::getEnvironmentSetUp($app);
 
-        Artisan::call("vendor:publish", ["--tag" => "cray"]);
-
+        Artisan::call('vendor:publish', ['--tag' => 'cray']);
     }
 
     protected function resolveApplicationConsoleKernel($app)
@@ -124,9 +120,9 @@ class TestCase extends Testbench
         $app->singleton('Illuminate\Contracts\Console\Kernel', 'JunaidQadirB\Cray\Console\Kernel');
     }
 
-    function rmdirRecursive($dir)
+    public function rmdirRecursive($dir)
     {
-        if(!file_exists($dir) ){
+        if (! file_exists($dir)) {
             return;
         }
 
@@ -137,7 +133,7 @@ class TestCase extends Testbench
             }
 
             $file = "$dir/$file";
-            if (!file_exists($file)) {
+            if (! file_exists($file)) {
                 continue;
             }
             if (is_dir($file) && file_exists($file)) {
@@ -146,7 +142,7 @@ class TestCase extends Testbench
                 unlink($file);
             }
         }
-        if (!file_exists($dir)) {
+        if (! file_exists($dir)) {
             return;
         }
         rmdir($dir);

@@ -30,7 +30,6 @@ class ControllerMakeCommandTest extends TestCase
 
         $this->assertFileExists(app_path('Post.php'));
         $this->assertFileExists(app_path('Http/Controllers/PostController.php'));
-
     }
 
     public function test_it_gives_an_error_if_controller_exists()
@@ -38,7 +37,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->artisan('cray:controller PostController');
         $this->artisan('cray:controller PostController');
         $output = Artisan::output();
-        $this->assertSame('Controller already exists!' . PHP_EOL, $output);
+        $this->assertSame('Controller already exists!'.PHP_EOL, $output);
     }
 
     public function test_generates_a_resource_controller_for_the_given_model_if_models_directory_does_not_exist()
@@ -82,8 +81,6 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertStringContainsStringIgnoringCase("'posts.edit'", $controllerContents);
         $this->assertStringContainsStringIgnoringCase("'posts.show'", $controllerContents);
         $this->assertStringContainsStringIgnoringCase("'posts.create'", $controllerContents);
-
-
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario2()
@@ -168,7 +165,6 @@ class ControllerMakeCommandTest extends TestCase
 
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
         $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
-
     }
 
     public function test_it_creates_the_controller_in_the_specified_base_with_custom_controller_dir()
@@ -183,10 +179,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
         $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
 
-
         $this->assertStringContainsString("view('posts::posts", file_get_contents(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php')));
-
-
     }
 
     public function test_it_creates_the_controller_in_the_specified_base_with_custom_controller_dir_and_namespace()
@@ -201,10 +194,8 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
         $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
 
-
         $expectedNamespace = 'namespace My\Blog\Http\Controllers\Dashboard;';
         $this->assertStringContainsStringIgnoringCase($expectedNamespace, file_get_contents(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php')));
-
     }
 
     public function test_it_creates_the_controller_in_the_specified_directory_namespace()
@@ -220,7 +211,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Controllers/Dashboard/PostController.php'));
 
         $this->removeGeneratedFiles();
-        if(!file_exists(app_path('Models'))){
+        if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
 

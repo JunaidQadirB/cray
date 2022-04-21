@@ -34,7 +34,6 @@ class RequestMakeCommand extends GeneratorCommand
      */
     public function handle()
     {
-
         $this->formatNamespace();
         // First we need to ensure that the given name is not a reserved word within the PHP
         // language and that the class name will actually be valid. If it is not valid we
@@ -49,12 +48,11 @@ class RequestMakeCommand extends GeneratorCommand
 
         $path = $this->getPath($name);
 
-
         // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((!$this->hasOption('force') ||
-                !$this->option('force')) &&
+        if ((! $this->hasOption('force') ||
+                ! $this->option('force')) &&
             $this->alreadyExists($this->getNameInput())) {
             $this->error($this->type.' already exists!');
 
@@ -80,12 +78,13 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function getStub(): string
     {
-        if (!$this->option('type') || $this->option('type') === 'store') {
-            return config('cray.stubs_dir') . '/request.stub';
+        if (! $this->option('type') || $this->option('type') === 'store') {
+            return config('cray.stubs_dir').'/request.stub';
         }
 
-        return config('cray.stubs_dir') . '/request.update.stub';
+        return config('cray.stubs_dir').'/request.update.stub';
     }
+
     /**
      * Resolve the fully-qualified path to the stub.
      *
@@ -119,6 +118,7 @@ class RequestMakeCommand extends GeneratorCommand
             $replace['$modelSlug$'] = $slug;
             $replace['$modelTable$'] = Str::plural($slug, 2);
         }
+
         return str_replace(
             array_keys($replace),
             array_values($replace),
@@ -137,7 +137,7 @@ class RequestMakeCommand extends GeneratorCommand
             ['model', 'm', InputOption::VALUE_REQUIRED, 'The given model.'],
             ['type', 't', InputOption::VALUE_OPTIONAL, 'Type of request. Values can be store or update'],
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
-            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from']
+            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from'],
         ];
     }
 }
