@@ -233,7 +233,6 @@ class CrayCommandTest extends TestCase
         $this->assertStringContainsStringIgnoringCase($expectedNamespace2, $requestClassContents2);
     }
 
-
     public function test_it_should_have_no_reference_to_cray_in_generated_files()
     {
         $this->removeGeneratedFiles();
@@ -275,6 +274,5 @@ class CrayCommandTest extends TestCase
 
         $haystack = resource_path('views/posts/show.blade.php');
         $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
-
     }
 }
