@@ -11,7 +11,7 @@ class Cray
         $fields = [];
         $table = static::getTable($tableName);
 
-        if (!$table) {
+        if (! $table) {
             return $fields;
         }
 
@@ -106,7 +106,7 @@ class Cray
             }
             $labelAttribute = "label=\"{$field['label']}\"";
 
-            if (config('cray.fields.localization.enabled') && !config('cray.fields.localization.render')) {
+            if (config('cray.fields.localization.enabled') && ! config('cray.fields.localization.render')) {
                 $labelAttribute = ":label=\"{$field['label']}\"";
             }
             $typeAttribute = '';

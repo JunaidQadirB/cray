@@ -1,21 +1,16 @@
 <?php
 
-
 namespace JunaidQadirB\Cray\Tests\Feature;
 
-
-use Exception;
 use Illuminate\Support\Facades\Artisan;
 use JunaidQadirB\Cray\Tests\TestCase;
 
 class RequestMakeCommandTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->removeGeneratedFiles();
-
     }
 
     public function test_it_generates_update_form_request_with_no_options()
@@ -33,7 +28,6 @@ class RequestMakeCommandTest extends TestCase
 
         $this->assertFileExists(app_path('Http/Requests/PostUpdateRequest.php'));
         $this->assertFileExists(app_path('Http/Requests/PostStoreRequest.php'));
-
 
         $assertString1 = '$id = $this->route()->parameter(\'post\')->id;';
         $actual = file_get_contents(app_path('Http/Requests/PostUpdateRequest.php'));
@@ -82,7 +76,6 @@ class RequestMakeCommandTest extends TestCase
 
     public function test_it_creates_form_request_in_custom_namespace_using_cray_request_command()
     {
-
         $base = base_path('Modules/blog/');
         $this->removeGeneratedFiles();
 
@@ -94,7 +87,6 @@ class RequestMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist($base.'src/Http/Requests/PostUpdateRequest.php');
         $this->assertFileExists($base.'src/Http/Requests/PostStoreRequest.php');
 
-
         $base = base_path('Modules/blog/');
         $this->removeGeneratedFiles();
 
@@ -103,19 +95,17 @@ class RequestMakeCommandTest extends TestCase
 
         $this->artisan('cray:request PostUpdateRequest --model=Post --type=Update --base=Modules/blog --namespace=Blog/');
 
-
         $this->assertFileDoesNotExist($base.'src/Http/Requests/PostStoreRequest.php');
         $this->assertFileExists($base.'src/Http/Requests/PostUpdateRequest.php');
     }
-
 
     public function test_the_form_request_has_correct_namespace()
     {
         $base = base_path('Modules/blog/');
         $this->artisan('cray:request PostStoreRequest --model=Post --type=Store --base=Modules/blog --namespace=Blog/');
 
-        $expectedNamespace ='namespace Blog\Http\Requests;';
-       $requestClassContents= file_get_contents($base.'src/Http/Requests/PostStoreRequest.php');
-       $this->assertStringContainsStringIgnoringCase($expectedNamespace, $requestClassContents);
+        $expectedNamespace = 'namespace Blog\Http\Requests;';
+        $requestClassContents = file_get_contents($base.'src/Http/Requests/PostStoreRequest.php');
+        $this->assertStringContainsStringIgnoringCase($expectedNamespace, $requestClassContents);
     }
 }

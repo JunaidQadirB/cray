@@ -1,12 +1,11 @@
 <?php
 
-if (!function_exists('className')) {
+if (! function_exists('className')) {
 
     /**
-     * Get instance class name without namespace
+     * Get instance class name without namespace.
      *
      * @param $instance
-     *
      * @return string
      */
     function className($instance)
@@ -15,7 +14,7 @@ if (!function_exists('className')) {
     }
 }
 
-if (!function_exists('str_to_words')) {
+if (! function_exists('str_to_words')) {
     function str_to_words($input)
     {
         $re = '/(?#! splitCamelCase Rev:20140412)
@@ -27,19 +26,20 @@ if (!function_exists('str_to_words')) {
     /x';
         $result = preg_split($re, $input);
 
-        return implode(" ", $result);
+        return implode(' ', $result);
     }
 }
 
-if (!function_exists('studly_to_words')) {
+if (! function_exists('studly_to_words')) {
     function studly_to_words($text)
     {
         $data = preg_split('/(?=[A-Z])/', class_basename($text));
+
         return trim(implode(' ', $data));
     }
 }
 
-if (!function_exists('has_permission')) {
+if (! function_exists('has_permission')) {
     function has_permission(\App\User $user, string $ability): bool
     {
         $userRoles = $user->roles;

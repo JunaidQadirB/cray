@@ -2,7 +2,6 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
-
 use Illuminate\Console\Command;
 
 class DeleteResourceCommand extends Command
@@ -83,7 +82,7 @@ class DeleteResourceCommand extends Command
         $response = $this->choice('Enter your choice. Examples: a or c,m', $choices, null, 1, true);
 
         if (in_array('a', $response)) {
-            echo "All~";
+            echo 'All~';
         } else {
             $workOn = [];
             foreach ($response as $item) {
@@ -130,7 +129,8 @@ class DeleteResourceCommand extends Command
                 return $namespace;
             })
             ->map(function ($item) {
-                $item .= "/";
+                $item .= '/';
+
                 return str_replace('/', '\\', $item);
             })->toArray();
 
@@ -147,6 +147,7 @@ class DeleteResourceCommand extends Command
         $composer = json_decode(file_get_contents(base_path('composer.json')), true);
         $psrNamespaces = (array) data_get($composer, 'autoload.psr-4');
         $namespaces = array_merge($psrNamespaces, $modules);
+
         return \JunaidQadirB\Cray\Cray::getModels($namespaces);
     }
 
@@ -158,10 +159,10 @@ class DeleteResourceCommand extends Command
 
     private function deleteController($model)
     {
-        $controllerNamespace = "\\App\\Http\\Controllers\\";
+        $controllerNamespace = '\\App\\Http\\Controllers\\';
         $namespacePrefixes = [
-            "\\App\\Models\\",
-            "\\App\\",
+            '\\App\\Models\\',
+            '\\App\\',
 
         ];
         $name = $model;
@@ -169,9 +170,9 @@ class DeleteResourceCommand extends Command
             $name = str_replace($namespacePrefix, '', $name);
         }
 
-        $controllerName = $controllerNamespace.$name."Controller";
+        $controllerName = $controllerNamespace.$name.'Controller';
         $controllerFile = app_path('Http/Controllers/'.$name.'Controller.php');
-        if (!file_exists($controllerFile)) {
+        if (! file_exists($controllerFile)) {
             $this->error('Controller '.$controllerName.' does not exist.');
             exit(0);
         }

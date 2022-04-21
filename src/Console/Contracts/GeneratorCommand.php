@@ -2,19 +2,16 @@
 
 namespace JunaidQadirB\Cray\Console\Contracts;
 
+use function base_path;
 use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
 
-use function base_path;
-
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {
-
     /**
      * @var array|string|string[]
      */
     public $class;
-
 
     /**
      * Get the stub file for the generator.
@@ -45,8 +42,8 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((!$this->hasOption('force') ||
-                !$this->option('force')) &&
+        if ((! $this->hasOption('force') ||
+                ! $this->option('force')) &&
             $this->alreadyExists($this->getNameInput())) {
             $this->error($this->type.' already exists!');
 
@@ -73,7 +70,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
@@ -85,10 +81,8 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Determine if the class already exists.
      *
      * @param  string  $rawName
-     *
      * @return bool
      */
-
 
     /**
      * Get the destination class path.
@@ -128,7 +122,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
                 break;
         }
 
-
         return $this->option('base')
             ? base_path($path)
             : $this->laravel->basePath($path);
@@ -139,13 +132,13 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      *
      * @param  string  $stub
      * @param  string  $name
-     *
      * @return string
      */
     protected function replaceClass($stub, $name)
     {
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
         $this->class = $name.'::class';
+
         return str_replace('DummyClass', $class, $stub);
     }
 
@@ -153,7 +146,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Get the full namespace for a given class, without the class name.
      *
      * @param  string  $name
-     *
      * @return string
      */
     protected function getNamespace($name)
@@ -161,22 +153,19 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)), '\\');
     }
 
-
-
     /**
      * Get the desired class name from the input.
      *
      * @return string
      */
-
-
     protected function getRelativePath($path)
     {
         return str_replace(base_path().'/', '', $path);
     }
 
     /**
-     * Add route for the generated resource to the relevant routes file
+     * Add route for the generated resource to the relevant routes file.
+     *
      * @param  string  $route
      * @param  string  $controllerClassPath
      */
@@ -184,13 +173,12 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         string $route,
         string $controllerClassPath
     ) {
-
         $base = base_path($this->option('base')) ?? base_path();
 
-        $routeFile = $base. "/routes/web.php";
+        $routeFile = $base.'/routes/web.php';
 
-        if (!file_exists($routeFile)) {
-            file_put_contents($routeFile, <<<DATA
+        if (! file_exists($routeFile)) {
+            file_put_contents($routeFile, <<<'DATA'
 <?php
 
 
@@ -204,11 +192,10 @@ DATA
 
         if (strpos($routeContent, $routeToAdd) === false) {
             file_put_contents($routeFile, $routeToAdd, FILE_APPEND);
-            $this->info("Route added successfully!");
-            $this->info("Click to open: ".url($route));
+            $this->info('Route added successfully!');
+            $this->info('Click to open: '.url($route));
         }
     }
-
 
     /**
      * Get the root namespace for the class.

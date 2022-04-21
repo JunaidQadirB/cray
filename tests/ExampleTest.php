@@ -6,7 +6,6 @@ use JunaidQadirB\Cray\CrayServiceProvider;
 
 class ExampleTest extends TestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [CrayServiceProvider::class];
