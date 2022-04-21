@@ -2,13 +2,11 @@
 
 namespace JunaidQadirB\Cray\Tests\Feature;
 
-
 use Illuminate\Support\Facades\Artisan;
 use JunaidQadirB\Cray\Tests\TestCase;
 
 class FactoryMakeCommandTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -20,14 +18,13 @@ class FactoryMakeCommandTest extends TestCase
         //Make sure no artifact related to Post exists
         $this->assertFalse(file_exists(base_path('database/factories/PostFactory.php')));
 
-
         $this->artisan('cray:factory PostFactory');
 
         $this->assertTrue(file_exists(base_path('database/factories/PostFactory.php')));
 
         $actualOutput = Artisan::output();
 
-        $expectedOutput = "Factory created successfully in /database/factories/PostFactory.php" . PHP_EOL;
+        $expectedOutput = 'Factory created successfully in /database/factories/PostFactory.php'.PHP_EOL;
         $this->assertSame($expectedOutput, $actualOutput);
     }
 
@@ -40,7 +37,5 @@ class FactoryMakeCommandTest extends TestCase
         $this->artisan('cray:factory PostFactory --base=Modules/blog/src');
 
         $this->assertFileExists(base_path('Modules/blog/src/database/factories/PostFactory.php'));
-
-
     }
 }

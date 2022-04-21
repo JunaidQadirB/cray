@@ -8,7 +8,6 @@ use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
 
-
 class MigrateMakeCommand extends BaseCommand
 {
     /**
@@ -117,7 +116,7 @@ class MigrateMakeCommand extends BaseCommand
                 $create
             );
 
-            if (!$this->option('fullpath')) {
+            if (! $this->option('fullpath')) {
                 $file = pathinfo($file, PATHINFO_FILENAME);
             }
 
@@ -135,7 +134,7 @@ class MigrateMakeCommand extends BaseCommand
     protected function getMigrationPath()
     {
         if (! is_null($targetPath = $this->input->getOption('path'))) {
-            return !$this->usingRealPath()
+            return ! $this->usingRealPath()
                 ? $this->laravel->basePath().'/'.$targetPath
                 : $targetPath;
         }

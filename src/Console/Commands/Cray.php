@@ -2,10 +2,9 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
+use function array_merge;
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
-
-use function array_merge;
 
 class Cray extends GeneratorCommand
 {
@@ -43,7 +42,6 @@ class Cray extends GeneratorCommand
 
     /**
      * Create a new command instance.
-     *
      */
     /*    public function __construct()
         {
@@ -66,23 +64,21 @@ class Cray extends GeneratorCommand
          * - Generate Migration
          * - Generate Controller
          * - Generate Requests
-         * - Generate Views
-         *
+         * - Generate Views.
          */
         $this->type = 'Model';
 
-
-        if (!$this->option('no-factory')) {
+        if (! $this->option('no-factory')) {
             $this->createFactory();
         }
 
-      if (!$this->option('no-migration')) {
+        if (! $this->option('no-migration')) {
             $this->createMigration();
         }
 
         $this->createController();
 
-        if (!$this->option('no-views')) {
+        if (! $this->option('no-views')) {
             $this->createViews();
         }
 
@@ -180,7 +176,6 @@ class Cray extends GeneratorCommand
      * Create a controller for the model.
      *
      * @param  string  $requestType
-     *
      * @return void
      */
     protected function createRequest($requestType)
@@ -213,7 +208,6 @@ class Cray extends GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)

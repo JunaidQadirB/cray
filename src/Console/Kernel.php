@@ -5,8 +5,8 @@ namespace JunaidQadirB\Cray\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use JunaidQadirB\Cray\Console\Commands\ControllerMakeCommand;
-use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\Cray;
+use JunaidQadirB\Cray\Console\Commands\FactoryMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\MigrateMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\ModelMakeCommand;
 use JunaidQadirB\Cray\Console\Commands\RequestMakeCommand;
@@ -32,8 +32,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param Schedule $schedule
-     *
+     * @param  Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -49,6 +48,6 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
     }
 }

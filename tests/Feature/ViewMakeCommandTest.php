@@ -27,7 +27,7 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileExists(resource_path('views/posts/show.blade.php'));
         $this->assertFileExists(resource_path('views/posts/_form.blade.php'));
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
-        $this->assertStringContainsString("Posts", file_get_contents(resource_path('views/posts/index.blade.php')));
+        $this->assertStringContainsString('Posts', file_get_contents(resource_path('views/posts/index.blade.php')));
         $this->assertStringContainsStringIgnoringCase("route('posts.create')", file_get_contents(resource_path('views/posts/index.blade.php')));
     }
 
@@ -45,7 +45,7 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileExists($base.'views/posts/index.blade.php');
         $this->assertFileExists($base.'views/posts/_form.blade.php');
         $this->assertFileExists($base.'views/posts/modals/delete.blade.php');
-        $this->assertStringContainsString("Posts", file_get_contents($base.'views/posts/index.blade.php'));
+        $this->assertStringContainsString('Posts', file_get_contents($base.'views/posts/index.blade.php'));
         $this->assertStringContainsString("@include('posts::posts", file_get_contents($base.'views/posts/edit.blade.php'));
     }
 
@@ -60,7 +60,7 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileExists(resource_path('views/posts/index.blade.php'));
         $this->assertFileExists(resource_path('views/posts/_form.blade.php'));
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
-        $this->assertStringContainsString("Posts", file_get_contents(resource_path('views/posts/index.blade.php')));
+        $this->assertStringContainsString('Posts', file_get_contents(resource_path('views/posts/index.blade.php')));
         $this->assertStringContainsString("route('posts.index')", file_get_contents(resource_path('views/posts/modals/delete.blade.php')));
     }
 
@@ -80,7 +80,6 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(resource_path('views/posts/create.blade.php'));
         $this->assertFileDoesNotExist(resource_path('views/posts/_form.blade.php'));
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
-        
     }
 
     public function test_it_will_create_only_index_file_with_model_in_a_subdirectory()
@@ -147,8 +146,8 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -i');
         $output = Artisan::output();
-        $this->assertSame('File already exists. Cannot overwrite /resources/views/posts/index.blade.php.' . PHP_EOL .
-            'File already exists. Cannot overwrite /resources/views/posts/modals/delete.blade.php.' . PHP_EOL,
+        $this->assertSame('File already exists. Cannot overwrite /resources/views/posts/index.blade.php.'.PHP_EOL.
+            'File already exists. Cannot overwrite /resources/views/posts/modals/delete.blade.php.'.PHP_EOL,
             $output);
     }
 
@@ -159,9 +158,8 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -i --force');
         $output = Artisan::output();
-        $this->assertSame('View overwritten successfully in /resources/views/posts/index.blade.php' . PHP_EOL .
-            'View overwritten successfully in /resources/views/posts/modals/delete.blade.php' . PHP_EOL
-            , $output);
+        $this->assertSame('View overwritten successfully in /resources/views/posts/index.blade.php'.PHP_EOL.
+            'View overwritten successfully in /resources/views/posts/modals/delete.blade.php'.PHP_EOL, $output);
     }
 
     public function test_it_will_give_error_message_when_create_view_exists()
@@ -172,7 +170,7 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -c');
         $output = Artisan::output();
-        $this->assertSame('File already exists. Cannot overwrite /resources/views/posts/create.blade.php.' . PHP_EOL,
+        $this->assertSame('File already exists. Cannot overwrite /resources/views/posts/create.blade.php.'.PHP_EOL,
             $output);
     }
 
@@ -184,8 +182,7 @@ class ViewMakeCommandTest extends TestCase
         $this->assertDirectoryExists(resource_path('views/posts'));
         $this->artisan('cray:view Post -c --force');
         $output = Artisan::output();
-        $this->assertSame('View overwritten successfully in /resources/views/posts/create.blade.php' . PHP_EOL .
-            'View created successfully in /resources/views/posts/_form.blade.php' . PHP_EOL
-            , $output);
+        $this->assertSame('View overwritten successfully in /resources/views/posts/create.blade.php'.PHP_EOL.
+            'View created successfully in /resources/views/posts/_form.blade.php'.PHP_EOL, $output);
     }
 }
