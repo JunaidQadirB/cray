@@ -50,7 +50,7 @@ class CrayCommandTest extends TestCase
     public function test_it_scaffolds_crud_artifacts_model_in_models_dir_with_namespace()
     {
         //Make sure no artifact related to Post exists
-        if (! file_exists(app_path('Models'))) {
+        if (!file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
 
@@ -84,11 +84,12 @@ class CrayCommandTest extends TestCase
     }
 
     public function test_it_generates_views_and_the_controller_under_the_given_directory_when_controller_directory_is_specified(
-    ) {
+    )
+    {
         $this->removeGeneratedFiles();
 
         //Make sure no artifact related to Post exists
-        if (! file_exists(app_path('Models'))) {
+        if (!file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
         $this->assertFileDoesNotExist(app_path('Models/Post.php'));
@@ -159,7 +160,7 @@ class CrayCommandTest extends TestCase
 
     public function test_it_adds_route_for_the_controller()
     {
-        if (! file_exists(base_path('routes/web.php'))) {
+        if (!file_exists(base_path('routes/web.php'))) {
             touch(base_path('routes/web.php'));
             file_put_contents(base_path('routes/web.php'), "<?php\n\n");
         }
@@ -243,7 +244,7 @@ class CrayCommandTest extends TestCase
         $this->assertFileDoesNotExist('app/Http/Requests/PostUpdateRequest.php');
         $this->assertFileDoesNotExist('app/Http/Requests/PostStoreRequest.php');
         $this->assertFileDoesNotExist('database/factories/PostFactory.php');
-        $this->assertDirectoryDoesNotExist('resources/views/posts');
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
 
         $this->artisan('cray Post');
 
@@ -274,5 +275,19 @@ class CrayCommandTest extends TestCase
 
         $haystack = resource_path('views/posts/show.blade.php');
         $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+    }
+
+    public function test_it_does_not_create_views_when_no_views_option_is_passed()
+    {
+        $this->removeGeneratedFiles();
+        $this->assertFileDoesNotExist('Post.php');
+        $this->assertFileDoesNotExist('app/Http/Controllers/PostController.php');
+        $this->assertFileDoesNotExist('app/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist('app/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist('database/factories/PostFactory.php');
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
+
+        $this->artisan('cray Post --no-views');
+        $this->assertDirectoryDoesNotExist(resource_path('views/posts'));
     }
 }
