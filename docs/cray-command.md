@@ -22,21 +22,11 @@ The `cray` command is all you need when you want to scaffold artifacts for your 
 |:---------|:-------------------------|
 | name     | Model name. **Required** |
 
-To see all the support options run:
-```bash
-php artisan cray --help
-```
-
 The `cray` command can take a mix of the following optional options:
 
 ## The `base` Option
 
 The base of all the files being generated. Project root is default if the base is not specified.
-
-### Example
-```bash
-php artisan cray Post --base 
-```
 
 ## The `views-dir` Option
 
