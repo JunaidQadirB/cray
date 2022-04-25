@@ -38,6 +38,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * Remove the base controller import if we are already in base namespace.
      *
      * @param  string  $name
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -54,7 +55,8 @@ class ControllerMakeCommand extends GeneratorCommand
 
         if ($this->model) {
             if ($model = $this->model) {
-                $replace = str_replace('$modelSlug$', Str::slug(str_to_words($model), '-'), $replace);
+                $replace = str_replace('$modelSlug$',
+                    Str::slug(str_to_words($model), '-'), $replace);
             }
         }
 
@@ -76,8 +78,10 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $parentModelClass = $this->parseModel($this->option('parent'));
 
-        if (! class_exists($parentModelClass)) {
-            if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?", true)) {
+        if (!class_exists($parentModelClass)) {
+            if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?",
+                true)
+            ) {
                 $this->call('cray:model', ['name' => $parentModelClass]);
             }
         }
@@ -93,6 +97,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * Get the fully-qualified model class name.
      *
      * @param  string  $model
+     *
      * @return string
      */
     protected function parseModel($model)
@@ -103,14 +108,16 @@ class ControllerMakeCommand extends GeneratorCommand
          */
         $model = str_replace('Controller', '', class_basename($model));
 
-        $rootNamespace = $this->hasOption('namespace') && $this->option('namespace')
+        $rootNamespace = $this->hasOption('namespace')
+        && $this->option('namespace')
             ? $this->option('namespace')
             : $this->laravel->getNamespace();
 
-        $namespace = is_dir(app_path('Models')) ? $rootNamespace.'Models\\' : $rootNamespace;
+        $namespace = is_dir(app_path('Models')) ? $rootNamespace.'Models\\'
+            : $rootNamespace;
 
         $model = str_replace('/', '\\', $model);
-        if (! Str::startsWith($model, $rootNamespace)) {
+        if (!Str::startsWith($model, $rootNamespace)) {
             $model = $namespace.$model;
         }
 
@@ -121,6 +128,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * Build the model replacement values.
      *
      * @param  array  $replace
+     *
      * @return array
      */
     protected function buildModelReplacements(array $replace)
@@ -133,7 +141,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
         $modelClass = $this->parseModel($this->model);
 
-        if (! class_exists($modelClass)) {
+        if (!class_exists($modelClass)) {
             /*if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
 
             }*/
@@ -208,7 +216,7 @@ class ControllerMakeCommand extends GeneratorCommand
         if ($this->option('api') && is_null($stub)) {
             $stub = 'stubs/controller.api.stub';
         } else {
-            if ($this->option('api') && ! is_null($stub)) {
+            if ($this->option('api') && !is_null($stub)) {
                 $stub = str_replace('.stub', '.api.stub', $stub);
             }
         }
@@ -222,15 +230,18 @@ class ControllerMakeCommand extends GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        $dir = $this->hasOption('controller-dir') && trim($this->option('controller-dir')) != ''
+        $dir = $this->hasOption('controller-dir')
+        && trim($this->option('controller-dir')) != ''
             ? $this->option('controller-dir')
             : null;
         if ($dir) {
-            return $rootNamespace.'\Http\Controllers\\'.Str::studly(strtolower($dir));
+            return $rootNamespace.'\Http\Controllers\\'
+                .Str::studly(strtolower($dir));
         }
 
         return $rootNamespace.'\Http\Controllers';
@@ -244,13 +255,25 @@ class ControllerMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
+            [
+                'model', 'm', InputOption::VALUE_OPTIONAL,
+                'Generate a resource controller for the given model.',
+            ],
 
-            ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
+            [
+                'resource', 'r', InputOption::VALUE_NONE,
+                'Generate a resource controller class.',
+            ],
 
-            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
+            [
+                'parent', 'p', InputOption::VALUE_OPTIONAL,
+                'Generate a nested resource controller class.',
+            ],
 
-            ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
+            [
+                'api', null, InputOption::VALUE_NONE,
+                'Exclude the create and edit methods from the controller.',
+            ],
 
             [
                 'views-dir', 'i', InputOption::VALUE_OPTIONAL,
@@ -262,13 +285,25 @@ class ControllerMakeCommand extends GeneratorCommand
                 'Specify the controller path within the Http directory',
             ],
 
-            ['route-base', 'rb', InputOption::VALUE_OPTIONAL, 'Specify the base route to use'],
+            [
+                'route-base', 'rb', InputOption::VALUE_OPTIONAL,
+                'Specify the base route to use',
+            ],
 
-            ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller'],
+            [
+                'force', 'f', InputOption::VALUE_NONE,
+                'Overwrite existing controller',
+            ],
 
-            ['base', 'b', InputOption::VALUE_OPTIONAL, 'Base to generate the controller from'],
+            [
+                'base', 'b', InputOption::VALUE_OPTIONAL,
+                'Base to generate the controller from',
+            ],
 
-            ['namespace', null, InputOption::VALUE_OPTIONAL, 'Namespace to generate the controller from'],
+            [
+                'namespace', null, InputOption::VALUE_OPTIONAL,
+                'Namespace to generate the controller from',
+            ],
         ];
     }
 
@@ -278,9 +313,11 @@ class ControllerMakeCommand extends GeneratorCommand
 
         if ($this->type === 'Controller') {
             $name = str_replace('Controller', '', $this->argument('name'));
-            $this->routeBase = $this->option('route-base') ?? Str::plural($name);
+            $this->routeBase = $this->option('route-base') ??
+                Str::plural($name);
 
-            $this->class = $this->qualifyClass($this->argument('name')).'::class';
+            $this->class = $this->qualifyClass($this->argument('name'))
+                .'::class';
 
             $this->addRoute($this->routeBase, $this->class);
         }

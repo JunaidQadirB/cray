@@ -2,9 +2,10 @@
 
 namespace JunaidQadirB\Cray\Console\Contracts;
 
-use function base_path;
 use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
+
+use function base_path;
 
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {
@@ -31,7 +32,8 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         // language and that the class name will actually be valid. If it is not valid we
         // can error now and prevent from polluting the filesystem using invalid files.
         if ($this->isReservedName($this->getNameInput())) {
-            $this->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
+            $this->error('The name "'.$this->getNameInput()
+                .'" is reserved by PHP.');
 
             return false;
         }
@@ -42,9 +44,9 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((! $this->hasOption('force') ||
-                ! $this->option('force')) &&
-            $this->alreadyExists($this->getNameInput())) {
+        if ((!$this->hasOption('force') || !$this->option('force'))
+            && $this->alreadyExists($this->getNameInput())
+        ) {
             $this->error($this->type.' already exists!');
 
             return false;
@@ -81,6 +83,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Determine if the class already exists.
      *
      * @param  string  $rawName
+     *
      * @return bool
      */
 
@@ -88,6 +91,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Get the destination class path.
      *
      * @param  string  $name
+     *
      * @return string
      */
     protected function getPath($name)
@@ -102,14 +106,41 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         return $file;
     }
 
+    /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     */
+    protected function rootNamespace()
+    {
+        return $this->option('namespace') ?? $this->laravel->getNamespace();
+    }
+
+    /**
+     * Get the full namespace for a given class, without the class name.
+     *
+     * @param  string  $name
+     *
+     * @return string
+     */
+    protected function getNamespace($name)
+    {
+        return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)),
+            '\\');
+    }
+
     public function getArtifactPath($base)
     {
         $path = '';
         switch ($this->type) {
             case 'Controller':
-                $path = $base.'/Http/Controllers/'.$this->argument('name').'.php';
-                if ($controllerSubDir = ($this->hasOption('controller-dir') && $this->option('controller-dir'))) {
-                    $path = $base.'/Http/Controllers/'.$controllerSubDir.'/'.$this->argument('name').'.php';
+                $path = $base.'/Http/Controllers/'.$this->argument('name')
+                    .'.php';
+                if ($controllerSubDir = ($this->hasOption('controller-dir')
+                    && $this->option('controller-dir'))
+                ) {
+                    $path = $base.'/Http/Controllers/'.$controllerSubDir.'/'
+                        .$this->argument('name').'.php';
                 }
                 break;
             case 'Model':

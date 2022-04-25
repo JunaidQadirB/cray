@@ -47,7 +47,8 @@ class CrayCommandTest extends TestCase
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
     }
 
-    public function test_it_scaffolds_crud_artifacts_model_in_models_dir_with_namespace()
+    public function test_it_scaffolds_crud_artifacts_model_in_models_dir_with_namespace(
+    )
     {
         //Make sure no artifact related to Post exists
         if (!file_exists(app_path('Models'))) {
@@ -121,7 +122,8 @@ class CrayCommandTest extends TestCase
         $this->assertFileExists(resource_path('views/dashboard/posts/modals/delete.blade.php'));
     }
 
-    public function test_it_generates_view_paths_correctly_when_subdirectory_is_specified_for_the_controller()
+    public function test_it_generates_view_paths_correctly_when_subdirectory_is_specified_for_the_controller(
+    )
     {
         $this->artisan('cray Models/Post --controller-dir=dashboard --views-dir=dashboard/system');
         $createBladeView = file_get_contents(resource_path('views/dashboard/system/posts/create.blade.php'));
@@ -137,12 +139,16 @@ class CrayCommandTest extends TestCase
     public function test_it_generates_view_paths_correctly()
     {
         $this->artisan('cray Models/Post');
-        $createBladeView = file_get_contents(resource_path('views/posts/create.blade.php'));
-        $postController = file_get_contents(app_path('Http/Controllers/PostController.php'));
+        $createBladeView
+            = file_get_contents(resource_path('views/posts/create.blade.php'));
+        $postController
+            = file_get_contents(app_path('Http/Controllers/PostController.php'));
 
-        $this->assertStringContainsString("@include('posts._form')", $createBladeView, 'Include path is incorrect');
+        $this->assertStringContainsString("@include('posts._form')",
+            $createBladeView, 'Include path is incorrect');
 
-        $this->assertStringContainsString("return view('posts.index'", $postController, 'View path is incorrect');
+        $this->assertStringContainsString("return view('posts.index'",
+            $postController, 'View path is incorrect');
     }
 
     public function test_it_generates_route_names_correctly()
@@ -150,10 +156,13 @@ class CrayCommandTest extends TestCase
         $this->removeGeneratedFiles();
 
         $this->artisan('cray Models/Post --route-base=custom-route');
-        $createBladeView = file_get_contents(resource_path('views/posts/create.blade.php'));
-        $postController = file_get_contents(app_path('Http/Controllers/PostController.php'));
+        $createBladeView
+            = file_get_contents(resource_path('views/posts/create.blade.php'));
+        $postController
+            = file_get_contents(app_path('Http/Controllers/PostController.php'));
 
-        $this->assertStringContainsString("route('custom-route.index')", $createBladeView, 'Include path is incorrect');
+        $this->assertStringContainsString("route('custom-route.index')",
+            $createBladeView, 'Include path is incorrect');
         $this->assertStringContainsString('return $this->success(\'Post added successfully!\', \'custom-route.index\');',
             $postController, 'View path is incorrect');
     }
@@ -173,21 +182,26 @@ class CrayCommandTest extends TestCase
     public function test_it_generates_update_form_request_with_custom_base()
     {
         //Make sure no artifact related to Post exists
-
         $base = base_path('Modules/blog/');
         $this->removeGeneratedFiles();
         $this->assertFileDoesNotExist($base.'src/Post.php');
-        $this->assertFileDoesNotExist($base.'src/Http/Controllers/PostController.php');
-        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostUpdateRequest.php');
-        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostStoreRequest.php');
-        $this->assertFileDoesNotExist($base.'database/factories/PostFactory.php');
+        $this->assertFileDoesNotExist($base
+            .'src/Http/Controllers/PostController.php');
+        $this->assertFileDoesNotExist($base
+            .'src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist($base
+            .'src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist($base
+            .'database/factories/PostFactory.php');
         $this->assertDirectoryDoesNotExist($base.'resources/views/posts');
 
         $this->artisan('cray Post --namespace=Blog/ --base=Modules/blog');
 
         $this->assertFileExists($base.'src/Post.php');
-        $this->assertFileExists($base.'src/Http/Controllers/PostController.php');
-        $this->assertFileExists($base.'src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileExists($base
+            .'src/Http/Controllers/PostController.php');
+        $this->assertFileExists($base
+            .'src/Http/Requests/PostUpdateRequest.php');
         $this->assertFileExists($base.'src/Http/Requests/PostStoreRequest.php');
         $this->assertFileExists($base.'database/factories/PostFactory.php');
         $this->assertDirectoryExists($base.'resources/views/posts');
@@ -199,7 +213,8 @@ class CrayCommandTest extends TestCase
                 $this->assertStringContainsString($assertString2, $actual);*/
     }
 
-    public function test_it_scaffolds_crud_artifacts_with_namespaces_form_requests()
+    public function test_it_scaffolds_crud_artifacts_with_namespaces_form_requests(
+    )
     {
         $this->removeGeneratedFiles();
 
@@ -213,28 +228,37 @@ class CrayCommandTest extends TestCase
 
         $expectedNamespace = 'namespace Blog\Http\Requests;';
 
-        $requestClassContents = file_get_contents(app_path('Http/Requests/PostStoreRequest.php'));
-        $this->assertStringContainsStringIgnoringCase($expectedNamespace, $requestClassContents);
+        $requestClassContents
+            = file_get_contents(app_path('Http/Requests/PostStoreRequest.php'));
+        $this->assertStringContainsStringIgnoringCase($expectedNamespace,
+            $requestClassContents);
 
         /**
          * With base.
          */
         $base = base_path('Modules/blog');
-        $this->assertFileDoesNotExist($base.'/src/Http/Requests/PostUpdateRequest.php');
-        $this->assertFileDoesNotExist($base.'/src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist($base
+            .'/src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist($base
+            .'/src/Http/Requests/PostStoreRequest.php');
 
         $this->artisan('cray Models/Post --namespace=Blog/ --base=Modules/blog');
 
-        $this->assertFileExists($base.'/src/Http/Requests/PostUpdateRequest.php');
-        $this->assertFileExists($base.'/src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileExists($base
+            .'/src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileExists($base
+            .'/src/Http/Requests/PostStoreRequest.php');
 
         $expectedNamespace2 = 'namespace Blog\Http\Requests;';
 
-        $requestClassContents2 = file_get_contents($base.'/src/Http/Requests/PostStoreRequest.php');
-        $this->assertStringContainsStringIgnoringCase($expectedNamespace2, $requestClassContents2);
+        $requestClassContents2 = file_get_contents($base
+            .'/src/Http/Requests/PostStoreRequest.php');
+        $this->assertStringContainsStringIgnoringCase($expectedNamespace2,
+            $requestClassContents2);
     }
 
-    public function test_it_should_have_no_reference_to_cray_in_generated_files()
+    public function test_it_should_have_no_reference_to_cray_in_generated_files(
+    )
     {
         $this->removeGeneratedFiles();
 
@@ -250,34 +274,44 @@ class CrayCommandTest extends TestCase
 
         $needle = 'cray';
         $haystack = app_path('Post.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = app_path('Http/Controllers/PostController.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = app_path('Http/Requests/PostUpdateRequest.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = app_path('Http/Requests/PostStoreRequest.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = database_path('factories/PostFactory.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = resource_path('views/posts/index.blade.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = resource_path('views/posts/create.blade.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = resource_path('views/posts/edit.blade.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
 
         $haystack = resource_path('views/posts/show.blade.php');
-        $this->assertStringNotContainsStringIgnoringCase($needle, file_get_contents($haystack));
+        $this->assertStringNotContainsStringIgnoringCase($needle,
+            file_get_contents($haystack));
     }
 
-    public function test_it_does_not_create_views_when_no_views_option_is_passed()
+    public function test_it_does_not_create_views_when_no_views_option_is_passed(
+    )
     {
         $this->removeGeneratedFiles();
         $this->assertFileDoesNotExist('Post.php');
