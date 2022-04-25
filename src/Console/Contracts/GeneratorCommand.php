@@ -219,7 +219,8 @@ DATA
         $routeContent = file_get_contents($routeFile);
         $route = str_replace('.', '/', $route);
 
-        $routeToAdd = "Route::resource('".$route."', ".$controllerClassPath.");\n";
+        $routeToAdd = "Route::resource('".Str::kebab($route)."', ".$controllerClassPath
+            .");\n";
 
         if (strpos($routeContent, $routeToAdd) === false) {
             file_put_contents($routeFile, $routeToAdd, FILE_APPEND);

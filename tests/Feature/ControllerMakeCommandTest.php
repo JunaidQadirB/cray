@@ -10,6 +10,7 @@ class ControllerMakeCommandTest extends TestCase
     {
         parent::setUp();
         $this->removeGeneratedFiles();
+        $this->mockConsoleOutput = true;
     }
 
     public function test_it_throws_exception_when_a_name_is_not_passed()
@@ -31,12 +32,47 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Controllers/PostController.php'));
     }
 
+    public function test_it_generates_pretty_urls()
+    {
+        $this->removeGeneratedFiles();
+        //Make sure no artifact related to Post exists
+        $this->assertFileDoesNotExist(app_path('Post.php'));
+        $this->assertFileDoesNotExist(app_path('Http/Controllers/PostController.php'));
+
+        $this->artisan('cray:controller PostController');
+
+        $this->assertFileExists(app_path('Post.php'));
+        $this->assertFileExists(app_path('Http/Controllers/PostController.php'));
+
+        $routeFile = file_get_contents(base_path('routes/web.php'));
+
+        $this->assertStringContainsString("Route::resource('posts', App\Http\Controllers\PostController::class);",
+            $routeFile);
+
+        $this->removeGeneratedFiles();
+
+        $this->artisan('cray:controller MyPostController');
+
+        $routeFile = file_get_contents(base_path('routes/web.php'));
+
+        $this->assertStringContainsString("Route::resource('my-posts', App\Http\Controllers\MyPostController::class);",
+            $routeFile);
+
+        $this->artisan('cray:controller MyShinyPostController');
+
+        $routeFile = file_get_contents(base_path('routes/web.php'));
+
+        $this->assertStringContainsString("Route::resource('my-shiny-posts', App\Http\Controllers\MyShinyPostController::class);",
+            $routeFile);
+
+    }
+
     public function test_it_gives_an_error_if_controller_exists()
     {
-        $this->artisan('cray:controller PostController');
-        $this->artisan('cray:controller PostController');
-        $output = Artisan::output();
-        $this->assertSame('Controller already exists!'.PHP_EOL, $output);
+        $this->removeGeneratedFiles();
+
+        $this->artisan('cray:controller PostController')->assertSuccessful();
+        $this->artisan('cray:controller PostController')->assertExitCode(0);
     }
 
     public function test_generates_a_resource_controller_for_the_given_model_if_models_directory_does_not_exist(
