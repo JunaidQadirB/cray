@@ -165,11 +165,30 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         string $route,
         string $controllerClassPath
     ) {
+        $confirm = false;
         $base = base_path($this->option('base')) ?? base_path();
 
         $routeFile = $base.'/routes/web.php';
 
-        if (! file_exists($routeFile)) {
+        if (!file_exists($base.'/routes')) {
+            $confirm = $this
+                ->confirm("$routeFile does not exist. Do you want to create it?");
+
+            if ($confirm) {
+                if (!mkdir($concurrentDirectory = $base.'/routes')
+                    && !is_dir($concurrentDirectory)
+                ) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created',
+                        $concurrentDirectory));
+                }
+
+                file_put_contents($routeFile, "<?php\n");
+
+                $this->info('Route created at '.$this->option('base').'/routes/web.php');
+            }
+        }
+
+        if (file_exists($routeFile)) {
             file_put_contents($routeFile, <<<'DATA'
 <?php
 

@@ -232,7 +232,10 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
 
-        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog');
+
+        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog')
+            ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
+                .' does not exist. Do you want to create it?', 'yes');
 
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
         $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
@@ -246,7 +249,10 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
 
-        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --controller-dir=dashboard ');
+        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --controller-dir=dashboard ')
+            ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
+                .' does not exist. Do you want to create it?', 'yes')
+            ->expectsOutput('Route created at Modules/blog/routes/web.php');
 
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
         $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
@@ -263,7 +269,10 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
 
-        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --namespace=My/Blog/ --controller-dir=dashboard ');
+        $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --namespace=My/Blog/ --controller-dir=dashboard ')
+            ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
+                .' does not exist. Do you want to create it?', 'yes')
+            ->expectsOutput('Route created at Modules/blog/routes/web.php');
 
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
         $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/Dashboard/PostController.php'));
@@ -309,5 +318,24 @@ class ControllerMakeCommandTest extends TestCase
             = file_get_contents(app_path('/Http/Controllers/Dashboard/PostController.php'));
         $this->assertStringContainsStringIgnoringCase("return \$this->success('Post added successfully!', 'dashboard.posts.index');",
             $controllerContents);
+    }
+
+    public function test_it_prompts_to_create_the_route_file_when_the_route_does_not_exist(
+    )
+    {
+        $this->removeGeneratedFiles();
+
+        $this->assertDirectoryDoesNotExist(base_path('Modules'));
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
+        $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
+        $this->assertFileDoesNotExist(base_path('Modules/blog/routes/web.php'));
+        $this->artisan('cray Post --base=Modules/blog')
+            ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
+                .' does not exist. Do you want to create it?', 'yes')
+            ->expectsOutput('Route created at Modules/blog/routes/web.php')
+            ->assertSuccessful();
+
+        $this->assertDirectoryExists(base_path('Modules/blog/routes'));
+        $this->assertFileExists(base_path('Modules/blog/routes/web.php'));
     }
 }
