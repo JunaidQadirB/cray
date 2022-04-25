@@ -21,11 +21,7 @@ class TestCase extends Testbench
         ];
 
         $this->rmdirRecursive(base_path('Modules'));
-        mkdir(base_path('Modules/blog'), 0777, true);
 
-        foreach ($packageDirs as $packageDir) {
-            mkdir(base_path('Modules/blog/'.$packageDir), 0777, true);
-        }
         if (file_exists(base_path('routes/web.php'))) {
             unlink(base_path('routes/web.php'));
             file_put_contents(base_path('routes/web.php'), "<?php\n\n");
@@ -59,12 +55,24 @@ class TestCase extends Testbench
             rmdir('Models');
         }
 
+        if (file_exists(resource_path('views/blog'))) {
+            $this->rmdirRecursive(resource_path('views/blog'));
+        }
+
         if (file_exists(resource_path('views/posts'))) {
             $this->rmdirRecursive(resource_path('views/posts'));
         }
 
+        if (file_exists(resource_path('views/dashboard/system'))) {
+            $this->rmdirRecursive(resource_path('views/dashboard/system'));
+        }
+
         if (file_exists(resource_path('views/dashboard/posts'))) {
             $this->rmdirRecursive(resource_path('views/dashboard/posts'));
+        }
+
+        if (file_exists(resource_path('views/dashboard'))) {
+            $this->rmdirRecursive(resource_path('views/dashboard'));
         }
 
         if (file_exists(base_path('database/factories/PostFactory.php'))) {
