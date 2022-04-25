@@ -68,15 +68,12 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         }
     }
 
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
+    public function formatNamespace(): void
     {
-        return is_dir(app_path('Models')) ? $rootNamespace.'\\Models' : $rootNamespace;
+        if ($this->option('namespace')) {
+            $this->input->setOption('namespace',
+                str_replace('/', '\\', $this->option('namespace')));
+        }
     }
 
     /**
@@ -159,42 +156,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
     }
 
     /**
-     * Replace the class name for the given stub.
-     *
-     * @param  string  $stub
-     * @param  string  $name
-     * @return string
-     */
-    protected function replaceClass($stub, $name)
-    {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
-        $this->class = $name.'::class';
-
-        return str_replace('DummyClass', $class, $stub);
-    }
-
-    /**
-     * Get the full namespace for a given class, without the class name.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function getNamespace($name)
-    {
-        return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)), '\\');
-    }
-
-    /**
-     * Get the desired class name from the input.
-     *
-     * @return string
-     */
-    protected function getRelativePath($path)
-    {
-        return str_replace(base_path().'/', '', $path);
-    }
-
-    /**
      * Add route for the generated resource to the relevant routes file.
      *
      * @param  string  $route
@@ -216,27 +177,20 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 DATA
             );
         }
-        $routeContent = file_get_contents($routeFile);
+        $routeContent = file_exists($routeFile)
+            ? file_get_contents($routeFile)
+            : null;
+
         $route = str_replace('.', '/', $route);
 
         $routeToAdd = "Route::resource('".Str::kebab($route)."', ".$controllerClassPath
             .");\n";
 
-        if (strpos($routeContent, $routeToAdd) === false) {
+        if ($routeContent && strpos($routeContent, $routeToAdd) === false) {
             file_put_contents($routeFile, $routeToAdd, FILE_APPEND);
             $this->info('Route added successfully!');
             $this->info('Click to open: '.url($route));
         }
-    }
-
-    /**
-     * Get the root namespace for the class.
-     *
-     * @return string
-     */
-    protected function rootNamespace()
-    {
-        return $this->option('namespace') ?? $this->laravel->getNamespace();
     }
 
     public function getCommonArguments()
@@ -273,10 +227,42 @@ DATA
         return $arguments;
     }
 
-    public function formatNamespace(): void
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     *
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
     {
-        if ($this->option('namespace')) {
-            $this->input->setOption('namespace', str_replace('/', '\\', $this->option('namespace')));
-        }
+        return is_dir(app_path('Models')) ? $rootNamespace.'\\Models'
+            : $rootNamespace;
+    }
+
+    /**
+     * Replace the class name for the given stub.
+     *
+     * @param  string  $stub
+     * @param  string  $name
+     *
+     * @return string
+     */
+    protected function replaceClass($stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $this->class = $name.'::class';
+
+        return str_replace('DummyClass', $class, $stub);
+    }
+
+    /**
+     * Get the desired class name from the input.
+     *
+     * @return string
+     */
+    protected function getRelativePath($path)
+    {
+        return str_replace(base_path().'/', '', $path);
     }
 }
