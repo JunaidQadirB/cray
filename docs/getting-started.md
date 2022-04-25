@@ -9,7 +9,7 @@ composer require jq/cray --dev
 Or specify specific version, for example to try a beta
 
 ```bash
-composer require "jq/cray:3.2.0-beta3" --dev
+composer require "jq/cray:3.2.0-beta5" --dev
 ```
 
 Then publish the stubs
