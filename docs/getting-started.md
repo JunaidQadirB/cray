@@ -18,7 +18,7 @@ Then publish the stubs
 php artisan vendor:publish --tag=cray
 ```
 
-It will generate `stubs` to `resources/vendor/cray/stubs` directory.
+It will generate `stubs` to `resources/stubs` directory.
 
 
 ## Usage
