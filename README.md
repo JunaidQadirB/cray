@@ -104,6 +104,9 @@ And that saved you an hour worth of repetitive and boring work which you can spe
 ### Optional Packages
  - [Blade Components](https://github.com/JunaidQadirB/blade-components)
 
+## Documentation
+You can read the documentation [here](https://junaidqadirb.github.io/cray/).
+
 ### Changelog
 
 ## Contributing
@@ -116,6 +119,7 @@ If you discover any security related issues, please email junaidqadirb@gmail.com
 
 ## Credits
 
+- [Laravel](https://github.com/laravel)
 - [Junaid Qadir](https://github.com/junaidqadirb)
 - [All Contributors](../../contributors)
 
