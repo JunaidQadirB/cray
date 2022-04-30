@@ -2,10 +2,9 @@
 
 namespace JunaidQadirB\Cray\Console\Contracts;
 
+use function base_path;
 use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
-
-use function base_path;
 
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {
@@ -44,7 +43,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((!$this->hasOption('force') || !$this->option('force'))
+        if ((! $this->hasOption('force') || ! $this->option('force'))
             && $this->alreadyExists($this->getNameInput())
         ) {
             $this->error($this->type.' already exists!');
@@ -80,7 +79,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Determine if the class already exists.
      *
      * @param  string  $rawName
-     *
      * @return bool
      */
 
@@ -88,7 +86,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Get the destination class path.
      *
      * @param  string  $name
-     *
      * @return string
      */
     protected function getPath($name)
@@ -117,7 +114,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
      * Get the full namespace for a given class, without the class name.
      *
      * @param  string  $name
-     *
      * @return string
      */
     protected function getNamespace($name)
@@ -170,13 +166,13 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 
         $routeFile = $base.'/routes/web.php';
 
-        if (!file_exists($base.'/routes')) {
+        if (! file_exists($base.'/routes')) {
             $confirm = $this
                 ->confirm("$routeFile does not exist. Do you want to create it?");
 
             if ($confirm) {
-                if (!mkdir($concurrentDirectory = $base.'/routes')
-                    && !is_dir($concurrentDirectory)
+                if (! mkdir($concurrentDirectory = $base.'/routes')
+                    && ! is_dir($concurrentDirectory)
                 ) {
                     throw new \RuntimeException(sprintf('Directory "%s" was not created',
                         $concurrentDirectory));
@@ -250,7 +246,6 @@ DATA
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
@@ -264,7 +259,6 @@ DATA
      *
      * @param  string  $stub
      * @param  string  $name
-     *
      * @return string
      */
     protected function replaceClass($stub, $name)
