@@ -52,7 +52,7 @@ class CrayCommandTest extends TestCase
     )
     {
         //Make sure no artifact related to Post exists
-        if (!file_exists(app_path('Models'))) {
+        if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
 
@@ -86,12 +86,11 @@ class CrayCommandTest extends TestCase
     }
 
     public function test_it_generates_views_and_the_controller_under_the_given_directory_when_controller_directory_is_specified(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         //Make sure no artifact related to Post exists
-        if (!file_exists(app_path('Models'))) {
+        if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
         $this->assertFileDoesNotExist(app_path('Models/Post.php'));
@@ -174,7 +173,7 @@ class CrayCommandTest extends TestCase
 
     public function test_it_adds_route_for_the_controller()
     {
-        if (!file_exists(base_path('routes/web.php'))) {
+        if (! file_exists(base_path('routes/web.php'))) {
             touch(base_path('routes/web.php'));
             file_put_contents(base_path('routes/web.php'), "<?php\n\n");
         }
