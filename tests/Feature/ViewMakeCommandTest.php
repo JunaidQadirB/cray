@@ -29,6 +29,46 @@ class ViewMakeCommandTest extends TestCase
         $this->assertFileExists(resource_path('views/posts/modals/delete.blade.php'));
         $this->assertStringContainsString('Posts', file_get_contents(resource_path('views/posts/index.blade.php')));
         $this->assertStringContainsStringIgnoringCase("route('posts.create')", file_get_contents(resource_path('views/posts/index.blade.php')));
+
+        return Artisan::output();
+    }
+
+    public function test_cray_view_command_generates_all_views_in_the_specified_directory()
+    {
+        $this->removeGeneratedFiles();
+
+        $this->withoutMockingConsoleOutput();
+        $this->assertDirectoryDoesNotExist(resource_path('views/blog'));
+
+        $this->artisan('cray:view Post --dir=blog');
+
+        $this->assertDirectoryExists(resource_path('views/blog'));
+        $this->assertFileExists(resource_path('views/blog/index.blade.php'));
+        $this->assertFileExists(resource_path('views/blog/edit.blade.php'));
+        $this->assertFileExists(resource_path('views/blog/show.blade.php'));
+        $this->assertFileExists(resource_path('views/blog/_form.blade.php'));
+        $this->assertFileExists(resource_path('views/blog/modals/delete.blade.php'));
+        $this->assertStringContainsString('Posts', file_get_contents(resource_path('views/blog/index.blade.php')));
+        $this->assertStringContainsStringIgnoringCase("route('posts.create')", file_get_contents(resource_path('views/blog/index.blade.php')));
+    }
+
+    public function test_cray_view_command_generates_all_views_in_the_specified_subdirectory()
+    {
+        $this->removeGeneratedFiles();
+
+        $this->withoutMockingConsoleOutput();
+        $this->assertDirectoryDoesNotExist(resource_path('views/dashboard/blog'));
+
+        $this->artisan('cray:view Post --dir=dashboard/blog');
+
+        $this->assertDirectoryExists(resource_path('views/dashboard/blog'));
+        $this->assertFileExists(resource_path('views/dashboard/blog/index.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/blog/edit.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/blog/show.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/blog/_form.blade.php'));
+        $this->assertFileExists(resource_path('views/dashboard/blog/modals/delete.blade.php'));
+        $this->assertStringContainsString('Posts', file_get_contents(resource_path('views/dashboard/blog/index.blade.php')));
+        $this->assertStringContainsStringIgnoringCase("route('posts.create')", file_get_contents(resource_path('views/dashboard/blog/index.blade.php')));
     }
 
     public function test_cray_view_command_generates_views_in_the_base()

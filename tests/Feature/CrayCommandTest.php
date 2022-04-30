@@ -10,6 +10,7 @@ class CrayCommandTest extends TestCase
     {
         parent::setUp();
         $this->removeGeneratedFiles();
+        $this->mockConsoleOutput = true;
     }
 
     public function test_it_publishes_stubs()
@@ -106,7 +107,7 @@ class CrayCommandTest extends TestCase
         $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/show.blade.php'));
         $this->assertFileDoesNotExist(resource_path('views/dashboard/posts/modals/delete.blade.php'));
 
-        $this->artisan('cray Models/Post --controller-dir=dashboard --views-dir=dashboard');
+        $this->artisan('cray Models/Post --controller-dir=dashboard --views-dir=dashboard/posts');
 
         $this->assertFileExists(app_path('Models/Post.php'));
         $this->assertFileExists(app_path('Http/Controllers/Dashboard/PostController.php'));
@@ -126,13 +127,17 @@ class CrayCommandTest extends TestCase
     )
     {
         $this->artisan('cray Models/Post --controller-dir=dashboard --views-dir=dashboard/system');
-        $createBladeView = file_get_contents(resource_path('views/dashboard/system/posts/create.blade.php'));
-        $postController = file_get_contents(app_path('Http/Controllers/Dashboard/PostController.php'));
+        $createBladeView
+            = file_get_contents(resource_path('views/dashboard/system/create.blade.php'));
+        $postController
+            = file_get_contents(app_path('Http/Controllers/Dashboard/PostController.php'));
 
-        $this->assertStringContainsString("@include('dashboard.system.posts._form')", $createBladeView,
+        $this->assertStringContainsString("@include('dashboard.system._form')",
+            $createBladeView,
             'Include path is incorrect');
 
-        $this->assertStringContainsString("return view('dashboard.system.posts.index'", $postController,
+        $this->assertStringContainsString("return view('dashboard.system.index'",
+            $postController,
             'View path is incorrect');
     }
 
@@ -173,7 +178,8 @@ class CrayCommandTest extends TestCase
             touch(base_path('routes/web.php'));
             file_put_contents(base_path('routes/web.php'), "<?php\n\n");
         }
-        $this->artisan('cray Models/Post --route-base=custom-route');
+        $this->artisan('cray Models/Post --route-base=custom-route')
+            /*->expectsQuestion('', 1)*/;
 
         $this->assertStringContainsString("Route::resource('custom-route', App\\Http\\Controllers\PostController::class)",
             file_get_contents(base_path('routes/web.php')), 'Route not added');
@@ -195,7 +201,9 @@ class CrayCommandTest extends TestCase
             .'database/factories/PostFactory.php');
         $this->assertDirectoryDoesNotExist($base.'resources/views/posts');
 
-        $this->artisan('cray Post --namespace=Blog/ --base=Modules/blog');
+        $this->artisan('cray Post --namespace=Blog/ --base=Modules/blog')
+            ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
+                .' does not exist. Do you want to create it?', 'yes');
 
         $this->assertFileExists($base.'src/Post.php');
         $this->assertFileExists($base
@@ -242,7 +250,9 @@ class CrayCommandTest extends TestCase
         $this->assertFileDoesNotExist($base
             .'/src/Http/Requests/PostStoreRequest.php');
 
-        $this->artisan('cray Models/Post --namespace=Blog/ --base=Modules/blog');
+        $this->artisan('cray Models/Post --namespace=Blog/ --base=Modules/blog')
+            ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
+                .' does not exist. Do you want to create it?', 'yes');
 
         $this->assertFileExists($base
             .'/src/Http/Requests/PostUpdateRequest.php');

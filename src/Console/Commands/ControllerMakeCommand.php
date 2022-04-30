@@ -157,10 +157,18 @@ class ControllerMakeCommand extends GeneratorCommand
         $label = str_to_words(class_basename($modelClass));
 
         $modelSlug = Str::slug(Str::plural($label, 2));
-        $dir = $this->appendModelToViewDir($this->option('views-dir'), $modelSlug);
+
+        $dir = $this->hasOption('views-dir')
+            ? $this->option('views-dir')
+            : $this->appendModelToViewDir($this->option('views-dir'),
+                $modelSlug);
 
         $dir = str_replace('/', '.', $dir);
         $dir = ltrim($dir, '.');
+
+        if ($dir === '') {
+            $dir = $modelSlug;
+        }
 
         if ($this->option('base')) {
             $dir = $modelSlug.'::'.$dir;

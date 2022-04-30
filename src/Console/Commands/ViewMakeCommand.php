@@ -103,7 +103,7 @@ class ViewMakeCommand extends GeneratorCommand
         $path = $viewPath.'/'.$viewDirSlug;
 
         if ($dir) {
-            $path = $viewPath.'/'.$dir.'/'.$viewDirSlug;
+            $path = $viewPath.'/'.$dir;
         }
 
         if (! file_exists($path)) {
