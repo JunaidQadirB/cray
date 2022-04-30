@@ -49,8 +49,7 @@ class CrayCommandTest extends TestCase
     }
 
     public function test_it_scaffolds_crud_artifacts_model_in_models_dir_with_namespace(
-    )
-    {
+    ) {
         //Make sure no artifact related to Post exists
         if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
@@ -123,8 +122,7 @@ class CrayCommandTest extends TestCase
     }
 
     public function test_it_generates_view_paths_correctly_when_subdirectory_is_specified_for_the_controller(
-    )
-    {
+    ) {
         $this->artisan('cray Models/Post --controller-dir=dashboard --views-dir=dashboard/system');
         $createBladeView
             = file_get_contents(resource_path('views/dashboard/system/create.blade.php'));
@@ -221,8 +219,7 @@ class CrayCommandTest extends TestCase
     }
 
     public function test_it_scaffolds_crud_artifacts_with_namespaces_form_requests(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->assertFileDoesNotExist(app_path('Http/Requests/PostUpdateRequest.php'));
@@ -267,8 +264,7 @@ class CrayCommandTest extends TestCase
     }
 
     public function test_it_should_have_no_reference_to_cray_in_generated_files(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->removeGeneratedFiles();
@@ -320,8 +316,7 @@ class CrayCommandTest extends TestCase
     }
 
     public function test_it_does_not_create_views_when_no_views_option_is_passed(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
         $this->assertFileDoesNotExist('Post.php');
         $this->assertFileDoesNotExist('app/Http/Controllers/PostController.php');
