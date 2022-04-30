@@ -64,7 +64,6 @@ class ControllerMakeCommandTest extends TestCase
 
         $this->assertStringContainsString("Route::resource('my-shiny-posts', App\Http\Controllers\MyShinyPostController::class);",
             $routeFile);
-
     }
 
     public function test_it_gives_an_error_if_controller_exists()
@@ -76,8 +75,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_generates_a_resource_controller_for_the_given_model_if_models_directory_does_not_exist(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->assertDirectoryDoesNotExist(app_path('Models'));
@@ -94,8 +92,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_generates_a_resource_controller_for_the_given_model_if_models_directory_exists(
-    )
-    {
+    ) {
         mkdir(app_path('Models'));
 
         $this->assertDirectoryExists(app_path('Models'));
@@ -109,8 +106,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario1(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
         //Scenario 1
         $this->artisan('cray:controller PostController --model=Post --views-dir=posts');
@@ -127,8 +123,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario2(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         //Scenario 2
@@ -146,8 +141,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario3(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         //Scenario 3
@@ -165,8 +159,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_scenario4(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         //Scenario 4
@@ -186,8 +179,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_uses_views_path_specified_in_views_dir_option_in_the_contoller_scenario5(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->assertDirectoryDoesNotExist(resource_path('views/dashboard/system'));
@@ -208,8 +200,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_uses_the_specified_route_or_falls_back_to_model_slug(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         //Scenario 1
@@ -234,7 +225,6 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
 
-
         $this->artisan('cray:controller PostController --model=Post --base=Modules/blog')
             ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
                 .' does not exist. Do you want to create it?', 'yes');
@@ -244,8 +234,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_creates_the_controller_in_the_specified_base_with_custom_controller_dir(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
@@ -264,8 +253,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_creates_the_controller_in_the_specified_base_with_custom_controller_dir_and_namespace(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/Post.php'));
@@ -285,8 +273,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_creates_the_controller_in_the_specified_directory_namespace(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->assertFileDoesNotExist(app_path('Post.php'));
@@ -298,7 +285,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Controllers/Dashboard/PostController.php'));
 
         $this->removeGeneratedFiles();
-        if (!file_exists(app_path('Models'))) {
+        if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
 
@@ -312,8 +299,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_creates_the_controller_with_the_specified_route_base(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
         $this->artisan('cray:controller PostController --model=Post --controller-dir=Dashboard --route-base=dashboard.posts');
         $controllerContents
@@ -323,8 +309,7 @@ class ControllerMakeCommandTest extends TestCase
     }
 
     public function test_it_prompts_to_create_the_route_file_when_the_route_does_not_exist(
-    )
-    {
+    ) {
         $this->removeGeneratedFiles();
 
         $this->assertDirectoryDoesNotExist(base_path('Modules'));
