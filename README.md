@@ -37,7 +37,7 @@ So what Cray does is when you tell it the model name, it will do all those borin
 - `PostStoreRequest.php` and `PostUpdateRequest.php` 
 - Timestamped `create_posts_table.php` migration file
 - `PostFactory.php`
-- `posts` views directory with `index.blade.php`, `create.blade.php`, `edit.blade.php`, `show.blade.php`, `modals/delete.balde.php`as well as a blank `_form.blade.php` for you to add the fields.
+- `posts` views directory with `index.blade.php`, `create.blade.php`, `edit.blade.php`, `show.blade.php`, `modals/delete.blade.php`as well as a blank `_form.blade.php` for you to add the fields.
 
 
 
