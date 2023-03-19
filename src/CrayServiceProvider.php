@@ -32,7 +32,6 @@ class CrayServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         /*
          * Optional methods to load your package assets
          */

@@ -30,7 +30,6 @@ class FactoryMakeCommandTest extends TestCase
 
     public function test_it_generates_a_factory_in_custom_path()
     {
-
         //Make sure no artifact related to Post exists
         $this->assertFileDoesNotExist(base_path('Modules/blog/src/database/factories/PostFactory.php'));
 

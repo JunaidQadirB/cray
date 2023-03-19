@@ -1,7 +1,6 @@
 <?php
 
 if (! function_exists('className')) {
-
     /**
      * Get instance class name without namespace.
      *
