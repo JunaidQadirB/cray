@@ -2,9 +2,10 @@
 
 namespace JunaidQadirB\Cray\Console\Contracts;
 
-use function base_path;
 use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
+
+use function base_path;
 
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {

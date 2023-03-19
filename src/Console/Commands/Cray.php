@@ -2,9 +2,10 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
-use function array_merge;
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
+
+use function array_merge;
 
 class Cray extends GeneratorCommand
 {
