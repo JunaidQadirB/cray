@@ -14,6 +14,10 @@ return [
          */
         'generate' => false,
 
+        /**
+         * Component paths for each field type.
+         * For example, `components.text` looks for a file in resources\views\components\text.blade.php
+         */
         'component_paths' => [
             'input_text' => 'components.text',
             'input_number' => 'components.number',
