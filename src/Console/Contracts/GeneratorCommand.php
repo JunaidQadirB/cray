@@ -186,7 +186,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
             }
         }
 
-
         $routeContent = file_exists($routeFile)
             ? file_get_contents($routeFile)
             : null;
