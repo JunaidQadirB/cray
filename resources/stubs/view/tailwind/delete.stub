@@ -1,0 +1,26 @@
+@component('components.themes.tailwind.modal', ['id' => $id])
+    Are you sure you wish to delete this $label$?
+    @slot('footer')
+        <div class="flex justify-end px-3 py-2 border-t">
+            <form action="" method="post">
+                {{csrf_field()}}
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit" class="py-2 px-3 mx-1 rounded bg-red-500 text-white hover:bg-red-600 focus:bg-red-600">Delete</button>
+            </form>
+            <button type="button" @click="showModal=false" class="py-2 px-3 rounded bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-600">Cancel</button>
+        </div>
+    @endslot
+@endcomponent
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            jQuery(document).ready(function ($) {
+                $('#{{$id}}').on('show.bs.modal', function (event) {
+                    const id = $(event.relatedTarget).data('id');
+                    $('#{{$id}}').find('form').attr('action', `{{route('$routeBase$.index')}}/${id}`);
+                });
+            });
+        });
+    </script>
+@endpush
