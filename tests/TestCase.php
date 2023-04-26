@@ -83,7 +83,15 @@ class TestCase extends Testbench
 
         if (file_exists(base_path('routes/web.php'))) {
             unlink(base_path('routes/web.php'));
-            file_put_contents(base_path('routes/web.php'), "<?php\n\n");
+            file_put_contents(base_path('routes/web.php'), <<<'DATA'
+<?php
+
+Route::get('/home', function(){
+    return 'Dummy Page';
+});
+
+DATA
+            );
         }
 
         if (file_exists(app_path('Http/Controllers/PostController.php'))) {

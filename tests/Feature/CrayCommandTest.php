@@ -164,12 +164,7 @@ class CrayCommandTest extends TestCase
 
     public function test_it_adds_route_for_the_controller()
     {
-        if (! file_exists(base_path('routes/web.php'))) {
-            touch(base_path('routes/web.php'));
-            file_put_contents(base_path('routes/web.php'), "<?php\n\n");
-        }
-        $this->artisan('cray Models/Post --route-base=custom-route')/*->expectsQuestion('', 1)*/
-;
+        $this->artisan('cray Models/Post --route-base=custom-route');
 
         $this->assertStringContainsString("Route::resource('custom-route', App\\Http\\Controllers\PostController::class)",
             file_get_contents(base_path('routes/web.php')), 'Route not added');

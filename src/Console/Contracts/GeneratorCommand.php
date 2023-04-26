@@ -186,14 +186,7 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
             }
         }
 
-        if (file_exists($routeFile)) {
-            file_put_contents($routeFile, <<<'DATA'
-<?php
 
-
-DATA
-            );
-        }
         $routeContent = file_exists($routeFile)
             ? file_get_contents($routeFile)
             : null;
