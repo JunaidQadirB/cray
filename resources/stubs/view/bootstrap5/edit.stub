@@ -1,0 +1,42 @@
+@extends('layouts.app')
+
+{{--
+@section('sidebar')
+    @if(auth()->check())
+        // include sidebar here
+    @endif
+@endsection
+--}}
+
+@section('title')
+    Edit $label$
+@endsection
+
+@section('content')
+    <div class="row my-5">
+        <div class="col text-start">
+            <h2>Edit $label$</h2>
+        </div>
+        <div class="col text-end">
+            <div class="btn-toolbar" role="toolbar" aria-label="$modelSlug$ Context Toolbar">
+               <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="">
+                   <a href="{{route('$routeBase$.index')}}" class="btn btn-outline-primary">Back to list</a>
+               </div>
+            </div>
+        </div>
+    </div>
+    <form action="{{route('$routeBase$.update', $row$->id)}}" method="post">
+        <div class="row">
+            {{csrf_field()}}
+            {{method_field('patch')}}
+            <div class="col-md-8">
+                @include('$viewDir$._form')
+                <div class="row mb-3 ">
+                    <div class="col-sm-12 d-grid">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+@endsection
