@@ -2,6 +2,11 @@
 
 return [
     'stubs_dir' => resource_path('stubs'),
+    /**
+     * When generating views, the views will be generated in the directory specified by the views_template key.
+     * The views can be found in [stubs_dir]/views.
+     */
+    'views_template' => 'bootstrap5',
 
     'fields' => [
         /**
