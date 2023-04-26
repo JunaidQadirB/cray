@@ -130,7 +130,7 @@ class TestCase extends Testbench
 
     public function rmdirRecursive($dir)
     {
-        if (! file_exists($dir)) {
+        if (!file_exists($dir)) {
             return;
         }
 
@@ -141,7 +141,7 @@ class TestCase extends Testbench
             }
 
             $file = "$dir/$file";
-            if (! file_exists($file)) {
+            if (!file_exists($file)) {
                 continue;
             }
             if (is_dir($file) && file_exists($file)) {
@@ -150,7 +150,7 @@ class TestCase extends Testbench
                 unlink($file);
             }
         }
-        if (! file_exists($dir)) {
+        if (!file_exists($dir)) {
             return;
         }
         rmdir($dir);
