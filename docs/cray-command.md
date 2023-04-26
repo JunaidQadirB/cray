@@ -50,6 +50,7 @@ using the following command:
 ```bash
 php artisan vendor:publish --tag cray
 ```
+
 > **Note:** Do not overwrite your Laravel stubs with Cray ones, or vice-versa because both have different placeholders.
 
 ## The `no-views` Option

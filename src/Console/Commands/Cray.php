@@ -4,7 +4,6 @@ namespace JunaidQadirB\Cray\Console\Commands;
 
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
-
 use function array_merge;
 
 class Cray extends GeneratorCommand
@@ -70,17 +69,17 @@ class Cray extends GeneratorCommand
          */
         $this->type = 'Model';
 
-        if (! $this->option('no-factory')) {
+        if (!$this->option('no-factory')) {
             $this->createFactory();
         }
 
-        if (! $this->option('no-migration')) {
+        if (!$this->option('no-migration')) {
             $this->createMigration();
         }
 
         $this->createController();
 
-        if (! $this->option('no-views')) {
+        if (!$this->option('no-views')) {
             $this->createViews();
         }
 
@@ -122,7 +121,7 @@ class Cray extends GeneratorCommand
         $arguments = [
             'name' => "create_{$table}_table",
             '--create' => $table,
-            '--path' => $this->option('base').'/database/migrations',
+            '--path' => $this->option('base') . '/database/migrations',
         ];
 
         $this->call('cray:migration', $arguments);
@@ -177,7 +176,7 @@ class Cray extends GeneratorCommand
     /**
      * Create a controller for the model.
      *
-     * @param  string  $requestType
+     * @param string $requestType
      * @return void
      */
     protected function createRequest($requestType)
@@ -203,13 +202,13 @@ class Cray extends GeneratorCommand
      */
     protected function getStub()
     {
-        return config('cray.stubs_dir').'/'.Str::slug($this->type).'.stub';
+        return config('cray.stubs_dir') . '/' . Str::slug($this->type) . '.stub';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)

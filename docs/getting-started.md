@@ -1,4 +1,3 @@
-
 # Getting Started
 
 ## Installation
@@ -6,6 +5,7 @@
 ```bash
 composer require jq/cray --dev
 ```
+
 Or specify specific version, for example to try a beta
 
 ```bash
@@ -19,7 +19,6 @@ php artisan vendor:publish --tag=cray
 ```
 
 It will generate `stubs` to `resources/stubs` directory.
-
 
 ## Usage
 
@@ -50,7 +49,9 @@ Now add the necessary fields and run
 php artisan migrate
 ```
 
-And that saved you an hour worth of repetitive and boring work which you can spend on more important development challenges.
+And that saved you an hour worth of repetitive and boring work which you can spend on more important development
+challenges.
 
 ### Optional Packages
+
 - [Blade Components](https://github.com/JunaidQadirB/blade-components)

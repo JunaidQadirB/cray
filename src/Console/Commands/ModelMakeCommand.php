@@ -36,7 +36,7 @@ class ModelMakeCommand extends GeneratorCommand
      */
     public function handle()
     {
-        if (parent::handle() === false && ! $this->option('force')) {
+        if (parent::handle() === false && !$this->option('force')) {
             return;
         }
 
@@ -114,10 +114,10 @@ class ModelMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         if ($this->option('pivot')) {
-            return config('cray.stubs_dir').'/pivot.model.stub';
+            return config('cray.stubs_dir') . '/pivot.model.stub';
         }
 
-        return config('cray.stubs_dir').'/model.stub';
+        return config('cray.stubs_dir') . '/model.stub';
     }
 
     /**

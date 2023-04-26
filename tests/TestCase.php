@@ -8,6 +8,65 @@ use Orchestra\Testbench\TestCase as Testbench;
 
 class TestCase extends Testbench
 {
+    public function deleteStubs()
+    {
+        $this->rmdirRecursive(resource_path('stubs'));
+    }
+
+    public function rmdirRecursive($dir)
+    {
+        if (!file_exists($dir)) {
+            return;
+        }
+
+        $files = scandir($dir);
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $file = "$dir/$file";
+            if (!file_exists($file)) {
+                continue;
+            }
+            if (is_dir($file) && file_exists($file)) {
+                $this->rmdirRecursive($file);
+            } elseif (file_exists($file)) {
+                unlink($file);
+            }
+        }
+        if (!file_exists($dir)) {
+            return;
+        }
+        rmdir($dir);
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [CrayServiceProvider::class];
+    }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+
+        Artisan::call('vendor:publish', ['--tag' => 'cray']);
+    }
+
+    protected function resolveApplicationConsoleKernel($app)
+    {
+        $app->singleton('Illuminate\Contracts\Console\Kernel', 'JunaidQadirB\Cray\Console\Kernel');
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutMockingConsoleOutput();
+
+        $this->removeGeneratedFiles();
+    }
+
     public function removeGeneratedFiles()
     {
         $packageDirs = [
@@ -87,65 +146,6 @@ class TestCase extends Testbench
         if (file_exists(base_path('database/factories/PostFactory.php'))) {
             unlink(base_path('database/factories/PostFactory.php'));
         }
-    }
-
-    public function deleteStubs()
-    {
-        $this->rmdirRecursive(resource_path('stubs'));
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [CrayServiceProvider::class];
-    }
-
-    protected function getEnvironmentSetUp($app)
-    {
-        parent::getEnvironmentSetUp($app);
-
-        Artisan::call('vendor:publish', ['--tag' => 'cray']);
-    }
-
-    protected function resolveApplicationConsoleKernel($app)
-    {
-        $app->singleton('Illuminate\Contracts\Console\Kernel', 'JunaidQadirB\Cray\Console\Kernel');
-    }
-
-    public function rmdirRecursive($dir)
-    {
-        if (!file_exists($dir)) {
-            return;
-        }
-
-        $files = scandir($dir);
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..') {
-                continue;
-            }
-
-            $file = "$dir/$file";
-            if (!file_exists($file)) {
-                continue;
-            }
-            if (is_dir($file) && file_exists($file)) {
-                $this->rmdirRecursive($file);
-            } elseif (file_exists($file)) {
-                unlink($file);
-            }
-        }
-        if (!file_exists($dir)) {
-            return;
-        }
-        rmdir($dir);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutMockingConsoleOutput();
-
-        $this->removeGeneratedFiles();
     }
 
     protected function tearDown(): void

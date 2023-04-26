@@ -2,6 +2,7 @@
 
 namespace JunaidQadirB\Cray\Console\Commands;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 use JunaidQadirB\Cray\Console\Contracts\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
@@ -30,7 +31,7 @@ class RequestMakeCommand extends GeneratorCommand
     protected $type = 'Request';
 
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function handle()
     {
@@ -39,7 +40,7 @@ class RequestMakeCommand extends GeneratorCommand
         // language and that the class name will actually be valid. If it is not valid we
         // can error now and prevent from polluting the filesystem using invalid files.
         if ($this->isReservedName($this->getNameInput())) {
-            $this->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
+            $this->error('The name "' . $this->getNameInput() . '" is reserved by PHP.');
 
             return false;
         }
@@ -51,10 +52,10 @@ class RequestMakeCommand extends GeneratorCommand
         // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((! $this->hasOption('force') ||
-                ! $this->option('force')) &&
+        if ((!$this->hasOption('force') ||
+                !$this->option('force')) &&
             $this->alreadyExists($this->getNameInput())) {
-            $this->error($this->type.' already exists!');
+            $this->error($this->type . ' already exists!');
 
             return false;
         }
@@ -68,45 +69,7 @@ class RequestMakeCommand extends GeneratorCommand
 
         $displayPath = str_replace($this->laravel->basePath(), '', $path);
 
-        $this->info($this->type.' created successfully in '.$displayPath);
-    }
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub(): string
-    {
-        if (! $this->option('type') || $this->option('type') === 'store') {
-            return config('cray.stubs_dir').'/request.stub';
-        }
-
-        return config('cray.stubs_dir').'/request.update.stub';
-    }
-
-    /**
-     * Resolve the fully-qualified path to the stub.
-     *
-     * @param  string  $stub
-     * @return string
-     */
-    protected function resolveStubPath(string $stub): string
-    {
-        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
-                        ? $customPath
-                        : __DIR__.$stub;
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace): string
-    {
-        return $rootNamespace.'\Http\Requests';
+        $this->info($this->type . ' created successfully in ' . $displayPath);
     }
 
     protected function buildClass($name)
@@ -124,6 +87,44 @@ class RequestMakeCommand extends GeneratorCommand
             array_values($replace),
             parent::buildClass($name)
         );
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub(): string
+    {
+        if (!$this->option('type') || $this->option('type') === 'store') {
+            return config('cray.stubs_dir') . '/request.stub';
+        }
+
+        return config('cray.stubs_dir') . '/request.update.stub';
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+     *
+     * @param string $stub
+     * @return string
+     */
+    protected function resolveStubPath(string $stub): string
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__ . $stub;
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param string $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace): string
+    {
+        return $rootNamespace . '\Http\Requests';
     }
 
     /**
