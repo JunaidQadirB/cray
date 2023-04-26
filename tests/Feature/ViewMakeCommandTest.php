@@ -7,9 +7,10 @@ use JunaidQadirB\Cray\Tests\TestCase;
 
 class ViewMakeCommandTest extends TestCase
 {
+    public $template ='tailwind';
     public function test_stubs_must_exist()
     {
-        $this->assertFileExists(resource_path('/stubs/view/index.stub'));
+        $this->assertFileExists(resource_path("/stubs/view/{$this->template}/index.stub"));
     }
 
     public function test_cray_view_command_generates_all_views()
