@@ -12,7 +12,7 @@ class Cray
         $fields = [];
         $table = static::getTable($tableName);
 
-        if (!$table) {
+        if (! $table) {
             return $fields;
         }
 
@@ -26,9 +26,9 @@ class Cray
             $label = Str::of($name)->replace('_', ' ')->title;
             if (config('cray.fields.localization.enabled')) {
                 if (config('cray.fields.localization.render')) {
-                    $label = __(config('cray.fields.localization.key_container') . '.' . $name);
+                    $label = __(config('cray.fields.localization.key_container').'.'.$name);
                 } else {
-                    $label = "__('" . config('cray.fields.localization.key_container') . '.' . $name . "')";
+                    $label = "__('".config('cray.fields.localization.key_container').'.'.$name."')";
                 }
             }
 
@@ -107,7 +107,7 @@ class Cray
             }
             $labelAttribute = "label=\"{$field['label']}\"";
 
-            if (config('cray.fields.localization.enabled') && !config('cray.fields.localization.render')) {
+            if (config('cray.fields.localization.enabled') && ! config('cray.fields.localization.render')) {
                 $labelAttribute = ":label=\"{$field['label']}\"";
             }
             $typeAttribute = '';

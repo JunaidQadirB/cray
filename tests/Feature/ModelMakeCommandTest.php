@@ -20,7 +20,7 @@ class ModelMakeCommandTest extends TestCase
 
         $actualOutput = Artisan::output();
 
-        $expectedOutput = 'Model created successfully in /app/Post.php' . PHP_EOL;
+        $expectedOutput = 'Model created successfully in /app/Post.php'.PHP_EOL;
         $this->assertSame($expectedOutput, $actualOutput);
     }
 
@@ -36,7 +36,7 @@ class ModelMakeCommandTest extends TestCase
 
         $actualOutput = Artisan::output();
 
-        $expectedOutput = 'Model created successfully in /app/Models/Post.php' . PHP_EOL;
+        $expectedOutput = 'Model created successfully in /app/Models/Post.php'.PHP_EOL;
         $this->assertSame($expectedOutput, $actualOutput);
     }
 

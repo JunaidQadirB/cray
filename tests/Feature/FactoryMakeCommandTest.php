@@ -18,7 +18,7 @@ class FactoryMakeCommandTest extends TestCase
 
         $actualOutput = Artisan::output();
 
-        $expectedOutput = 'Factory created successfully in /database/factories/PostFactory.php' . PHP_EOL;
+        $expectedOutput = 'Factory created successfully in /database/factories/PostFactory.php'.PHP_EOL;
         $this->assertSame($expectedOutput, $actualOutput);
     }
 

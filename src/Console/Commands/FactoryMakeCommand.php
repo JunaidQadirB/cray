@@ -37,7 +37,7 @@ class FactoryMakeCommand extends GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
     protected function buildClass($name)
@@ -59,13 +59,13 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return config('cray.stubs_dir') . '/factory.stub';
+        return config('cray.stubs_dir').'/factory.stub';
     }
 
     /**
      * Get the destination class path.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
     protected function getPath($name)
@@ -78,13 +78,13 @@ class FactoryMakeCommand extends GeneratorCommand
 
         $path = base_path($this->option('base'));
 
-        return $this->getDatabasePath($path) . "/factories/{$name}.php";
+        return $this->getDatabasePath($path)."/factories/{$name}.php";
     }
 
     private function getDatabasePath($path): string
     {
         if ($this->option('base')) {
-            return base_path($this->option('base')) . '/database';
+            return base_path($this->option('base')).'/database';
         }
 
         return database_path();
