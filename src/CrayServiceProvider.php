@@ -42,7 +42,7 @@ class CrayServiceProvider extends ServiceProvider
 
 //        if ($this->app->runningInConsole()) {
         $this->publishes([
-            __DIR__ . '/../config/config.php' => config_path('cray.php'),
+            __DIR__.'/../config/config.php' => config_path('cray.php'),
         ], 'cray');
 
         // Publishing the views.
@@ -52,7 +52,7 @@ class CrayServiceProvider extends ServiceProvider
 
         // Publishing assets.
         $this->publishes([
-            __DIR__ . '/../resources/stubs' => resource_path('stubs'),
+            __DIR__.'/../resources/stubs' => resource_path('stubs'),
         ], 'cray');
 
         // Publishing the translation files.
@@ -77,7 +77,7 @@ class CrayServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'cray');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'cray');
 
         // Register the main class to use with the facade
         $this->app->singleton('cray', function (Container $container) {

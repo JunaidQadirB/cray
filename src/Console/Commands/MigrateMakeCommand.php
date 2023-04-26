@@ -46,8 +46,8 @@ class MigrateMakeCommand extends BaseCommand
     /**
      * Create a new migration install command instance.
      *
-     * @param MigrationCreator $creator
-     * @param Composer $composer
+     * @param  MigrationCreator  $creator
+     * @param  Composer  $composer
      * @return void
      */
     public function __construct(MigrationCreator $creator, Composer $composer)
@@ -77,7 +77,7 @@ class MigrateMakeCommand extends BaseCommand
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-        if (!$table && is_string($create)) {
+        if (! $table && is_string($create)) {
             $table = $create;
 
             $create = true;
@@ -86,7 +86,7 @@ class MigrateMakeCommand extends BaseCommand
         // Next, we will attempt to guess the table name if this the migration has
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
-        if (!$table) {
+        if (! $table) {
             [$table, $create] = TableGuesser::guess($name);
         }
 
@@ -101,9 +101,9 @@ class MigrateMakeCommand extends BaseCommand
     /**
      * Write the migration file to disk.
      *
-     * @param string $name
-     * @param string $table
-     * @param bool $create
+     * @param  string  $name
+     * @param  string  $table
+     * @param  bool  $create
      * @return string
      */
     protected function writeMigration($name, $table, $create)
@@ -116,7 +116,7 @@ class MigrateMakeCommand extends BaseCommand
                 $create
             );
 
-            if (!$this->option('fullpath')) {
+            if (! $this->option('fullpath')) {
                 $file = pathinfo($file, PATHINFO_FILENAME);
             }
 
@@ -133,9 +133,9 @@ class MigrateMakeCommand extends BaseCommand
      */
     protected function getMigrationPath()
     {
-        if (!is_null($targetPath = $this->input->getOption('path'))) {
-            return !$this->usingRealPath()
-                ? $this->laravel->basePath() . '/' . $targetPath
+        if (! is_null($targetPath = $this->input->getOption('path'))) {
+            return ! $this->usingRealPath()
+                ? $this->laravel->basePath().'/'.$targetPath
                 : $targetPath;
         }
 
