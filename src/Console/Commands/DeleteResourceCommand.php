@@ -90,7 +90,7 @@ class DeleteResourceCommand extends Command
 
         $model = $this->anticipate('Select the model', $this->modles);
         foreach ($workOn as $item) {
-            $this->process('delete' . $item['name'], $model);
+            $this->process('delete'.$item['name'], $model);
         }
     }
 
@@ -98,7 +98,7 @@ class DeleteResourceCommand extends Command
     {
         $modules = $this->getModules();
         $composer = json_decode(file_get_contents(base_path('composer.json')), true);
-        $psrNamespaces = (array)data_get($composer, 'autoload.psr-4');
+        $psrNamespaces = (array) data_get($composer, 'autoload.psr-4');
         $namespaces = array_merge($psrNamespaces, $modules);
 
         return \JunaidQadirB\Cray\Cray::getModels($namespaces);
@@ -127,7 +127,7 @@ class DeleteResourceCommand extends Command
             })->toArray();
 
         foreach ($modules as $index => $module) {
-            $modules[$index] = $module . DIRECTORY_SEPARATOR . $sources;
+            $modules[$index] = $module.DIRECTORY_SEPARATOR.$sources;
         }
 
         return array_combine($namespaces, $modules);
@@ -152,7 +152,7 @@ class DeleteResourceCommand extends Command
     private function deleteModel($model)
     {
         dd($model);
-        $this->info('Deleting model ' . $model . '...');
+        $this->info('Deleting model '.$model.'...');
     }
 
     private function deleteController($model)
@@ -168,10 +168,10 @@ class DeleteResourceCommand extends Command
             $name = str_replace($namespacePrefix, '', $name);
         }
 
-        $controllerName = $controllerNamespace . $name . 'Controller';
-        $controllerFile = app_path('Http/Controllers/' . $name . 'Controller.php');
-        if (!file_exists($controllerFile)) {
-            $this->error('Controller ' . $controllerName . ' does not exist.');
+        $controllerName = $controllerNamespace.$name.'Controller';
+        $controllerFile = app_path('Http/Controllers/'.$name.'Controller.php');
+        if (! file_exists($controllerFile)) {
+            $this->error('Controller '.$controllerName.' does not exist.');
             exit(0);
         }
         $confirmation = $this->confirm('Are you sure you want to delete this controller?');

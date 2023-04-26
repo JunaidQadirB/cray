@@ -221,7 +221,7 @@ class ControllerMakeCommandTest extends TestCase
 
         $this->artisan('cray:controller PostController --model=Post --base=Modules/blog')
             ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
-                . ' does not exist. Do you want to create it?', 'yes');
+                .' does not exist. Do you want to create it?', 'yes');
 
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
         $this->assertFileExists(base_path('Modules/blog/src/Http/Controllers/PostController.php'));
@@ -236,7 +236,7 @@ class ControllerMakeCommandTest extends TestCase
 
         $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --controller-dir=dashboard ')
             ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
-                . ' does not exist. Do you want to create it?', 'yes')
+                .' does not exist. Do you want to create it?', 'yes')
             ->expectsOutput('Route created at Modules/blog/routes/web.php');
 
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
@@ -255,7 +255,7 @@ class ControllerMakeCommandTest extends TestCase
 
         $this->artisan('cray:controller PostController --model=Post --base=Modules/blog --namespace=My/Blog/ --controller-dir=dashboard ')
             ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
-                . ' does not exist. Do you want to create it?', 'yes')
+                .' does not exist. Do you want to create it?', 'yes')
             ->expectsOutput('Route created at Modules/blog/routes/web.php');
 
         $this->assertFileExists(base_path('Modules/blog/src/Post.php'));
@@ -279,7 +279,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileExists(app_path('Http/Controllers/Dashboard/PostController.php'));
 
         $this->removeGeneratedFiles();
-        if (!file_exists(app_path('Models'))) {
+        if (! file_exists(app_path('Models'))) {
             mkdir(app_path('Models'));
         }
 
@@ -312,7 +312,7 @@ class ControllerMakeCommandTest extends TestCase
         $this->assertFileDoesNotExist(base_path('Modules/blog/routes/web.php'));
         $this->artisan('cray Post --base=Modules/blog')
             ->expectsConfirmation(base_path('Modules/blog/routes/web.php')
-                . ' does not exist. Do you want to create it?', 'yes')
+                .' does not exist. Do you want to create it?', 'yes')
             ->expectsOutput('Route created at Modules/blog/routes/web.php')
             ->assertSuccessful();
 

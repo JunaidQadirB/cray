@@ -73,24 +73,24 @@ class RequestMakeCommandTest extends TestCase
         $base = base_path('Modules/blog/');
         $this->removeGeneratedFiles();
 
-        $this->assertFileDoesNotExist($base . 'src/Post.php');
-        $this->assertFileDoesNotExist($base . 'src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist($base.'src/Post.php');
+        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostStoreRequest.php');
 
         $this->artisan('cray:request PostStoreRequest --model=Post --type=Store --base=Modules/blog --namespace=Blog/');
 
-        $this->assertFileDoesNotExist($base . 'src/Http/Requests/PostUpdateRequest.php');
-        $this->assertFileExists($base . 'src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileExists($base.'src/Http/Requests/PostStoreRequest.php');
 
         $base = base_path('Modules/blog/');
         $this->removeGeneratedFiles();
 
-        $this->assertFileDoesNotExist($base . 'src/Post.php');
-        $this->assertFileDoesNotExist($base . 'src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileDoesNotExist($base.'src/Post.php');
+        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostStoreRequest.php');
 
         $this->artisan('cray:request PostUpdateRequest --model=Post --type=Update --base=Modules/blog --namespace=Blog/');
 
-        $this->assertFileDoesNotExist($base . 'src/Http/Requests/PostStoreRequest.php');
-        $this->assertFileExists($base . 'src/Http/Requests/PostUpdateRequest.php');
+        $this->assertFileDoesNotExist($base.'src/Http/Requests/PostStoreRequest.php');
+        $this->assertFileExists($base.'src/Http/Requests/PostUpdateRequest.php');
     }
 
     public function test_the_form_request_has_correct_namespace()
@@ -99,7 +99,7 @@ class RequestMakeCommandTest extends TestCase
         $this->artisan('cray:request PostStoreRequest --model=Post --type=Store --base=Modules/blog --namespace=Blog/');
 
         $expectedNamespace = 'namespace Blog\Http\Requests;';
-        $requestClassContents = file_get_contents($base . 'src/Http/Requests/PostStoreRequest.php');
+        $requestClassContents = file_get_contents($base.'src/Http/Requests/PostStoreRequest.php');
         $this->assertStringContainsStringIgnoringCase($expectedNamespace, $requestClassContents);
     }
 
