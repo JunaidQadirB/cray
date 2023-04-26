@@ -91,24 +91,7 @@ class TestCase extends Testbench
 
     public function deleteStubs()
     {
-        if (file_exists(resource_path('stubs'))) {
-            $stubs = glob(resource_path('stubs').'/*.stub');
-            foreach ($stubs as $stub) {
-                if (! file_exists($stub)) {
-                    continue;
-                }
-                unlink($stub);
-            }
-            $stubs = glob(resource_path('stubs').'/view/*.stub');
-            foreach ($stubs as $stub) {
-                if (! file_exists($stub)) {
-                    continue;
-                }
-                unlink($stub);
-            }
-            rmdir(resource_path('stubs/view'));
-            rmdir(resource_path('stubs'));
-        }
+        $this->rmdirRecursive(resource_path('stubs'));
     }
 
     protected function getPackageProviders($app)
