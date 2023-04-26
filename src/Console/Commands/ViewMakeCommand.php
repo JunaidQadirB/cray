@@ -231,7 +231,8 @@ class ViewMakeCommand extends GeneratorCommand
         $modelSlug = Str::slug(Str::plural(str_to_words($name), 2));
 
         $routeBase = $this->option('route-base') ?? $modelSlug;
-
+        $routeBase = str_replace('/', '.', $routeBase);
+        
         $viewLabel = str_to_words($name);
         $viewLabelPlural = Str::plural(str_to_words($name));
         $viewName = Str::camel($name);
