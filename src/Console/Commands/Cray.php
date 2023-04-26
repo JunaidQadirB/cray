@@ -23,6 +23,7 @@ class Cray extends GeneratorCommand
     protected $signature = 'cray
     {name : Model name. Controller, factory, migration, views will be based on this name.}
     {--views-dir= : Place views in a sub-directory under the views directory. It can be any nested directory structure}
+    {--views-template= : Specify a custom views template. if not specified, default will be picked up from config from the views_template key.}
     {--controller-dir= : Place controller in a sub-directory under the Http/Controllers directory. It can be any nested directory structure}
     {--route-base= : Base name for the route. Example: dashboard.analytics}
     {--stubs-dir= : Specify a custom stubs directory}

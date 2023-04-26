@@ -17,6 +17,23 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected $name = 'cray:view';
 
+    protected $signature = 'cray:view
+    {name : file name of the view with or with extension }
+    {--a|all : Generate all CRUD views}
+    {--c|create : Generate create view}
+    {--e|edit : Generate edit view}
+    {--s|show : Generate show view}
+    {--i|index : Generate index view}
+    {--b|base= : base path}
+    {--dir= : base path}
+    {--stubs= }
+    {--route-base= : The base route to use for the controller}
+    {--model= : The model to use for the controller}
+    {--namespace= : The namespace to use for the controller}
+    {--force : Overwrite if view already exists}
+    {--views-dir= : The directory to create the views in. if not specified, default will be picked up from config from the views_dir key}
+    {--views-template= : The templates to use to generate index, show, edit, create views. if not specified, default will be picked up from config from the views_template key}';
+
     /**
      * The console command description.
      *
@@ -205,7 +222,9 @@ class ViewMakeCommand extends GeneratorCommand
         if (isset($fileName)) {
             $this->fileName = $fileName;
         }
-        $stubsPath = "stubs/view/{$this->fileName}.stub";
+        $template = $this->option('views-template') ?? 'tailwind';
+        $stubsPath = "stubs/view/{$template}/{$this->fileName}.stub";
+
         $stubs = $this->option('stubs');
 
         if ($stubs) {
