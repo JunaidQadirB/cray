@@ -43,12 +43,14 @@ class DeleteResourceCommand extends Command
             'path' => 'database/factories',
         ],
     ];
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
     protected $signature = 'cray:rm';
+
     /**
      * The console command description.
      *

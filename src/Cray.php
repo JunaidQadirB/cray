@@ -39,7 +39,7 @@ class Cray
                         'type' => 'text',
                         'label' => $label,
                         'name' => $name,
-                        'value' => $model->$name ?? null,
+                        'value' => "$$model->$name",
                     ];
                     break;
                 case 'text':
@@ -103,7 +103,7 @@ class Cray
             $valueAttribute = ":value=\"old('{$field['name']}')\"";
 
             if (trim($field['value']) != '') {
-                $valueAttribute = ":value=\"old('{$field['name']}'), '{$field['value']}')\"";
+                $valueAttribute = ":value=\"old('{$field['name']}', {$field['value']})\"";
             }
             $labelAttribute = "label=\"{$field['label']}\"";
 

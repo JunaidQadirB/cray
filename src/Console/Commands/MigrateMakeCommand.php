@@ -46,8 +46,6 @@ class MigrateMakeCommand extends BaseCommand
     /**
      * Create a new migration install command instance.
      *
-     * @param  MigrationCreator  $creator
-     * @param  Composer  $composer
      * @return void
      */
     public function __construct(MigrationCreator $creator, Composer $composer)

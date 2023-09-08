@@ -40,7 +40,7 @@ class CrayServiceProvider extends ServiceProvider
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
-//        if ($this->app->runningInConsole()) {
+        //        if ($this->app->runningInConsole()) {
         $this->publishes([
             __DIR__.'/../config/config.php' => config_path('cray.php'),
         ], 'cray');
@@ -68,7 +68,7 @@ class CrayServiceProvider extends ServiceProvider
 
         // Registering package commands.
         $this->commands($this->commands);
-//        }
+        //        }
     }
 
     /**

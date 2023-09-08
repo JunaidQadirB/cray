@@ -202,7 +202,7 @@ class ControllerMakeCommandTest extends TestCase
         $controllerContents = file_get_contents(app_path('/Http/Controllers/PostController.php'));
         $this->assertStringContainsStringIgnoringCase("return \$this->success('Post added successfully!', 'my-posts.index');", $controllerContents);*/
 
-//        unlink(app_path('Http/Controllers/PostController.php'));
+        //        unlink(app_path('Http/Controllers/PostController.php'));
 
         //Scenario 1
         $this->artisan('cray:controller PostController --model=Post --views-dir=posts');

@@ -160,7 +160,7 @@ DATA
     {
         parent::tearDown();
         if (file_exists(resource_path('views/posts'))) {
-//            $this->rmdirRecursive(resource_path('views/posts'));
+            //            $this->rmdirRecursive(resource_path('views/posts'));
         }
     }
 }

@@ -15,6 +15,7 @@ class Cray extends GeneratorCommand
      * @var string
      */
     protected $name = 'cray';
+
     /**
      * The name and signature of the console command.
      *

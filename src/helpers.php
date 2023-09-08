@@ -6,7 +6,6 @@ if (! function_exists('className')) {
     /**
      * Get instance class name without namespace.
      *
-     * @param $instance
      * @return string
      */
     function className($instance)

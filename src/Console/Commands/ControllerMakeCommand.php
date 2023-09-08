@@ -12,18 +12,21 @@ class ControllerMakeCommand extends GeneratorCommand
      * @var mixed|string
      */
     public $routeBase;
+
     /**
      * The console command name.
      *
      * @var string
      */
     protected $name = 'cray:controller';
+
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Create a new controller class';
+
     /**
      * The type of class being generated.
      *
@@ -140,7 +143,6 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * Build the model replacement values.
      *
-     * @param  array  $replace
      * @return array
      */
     protected function buildModelReplacements(array $replace)

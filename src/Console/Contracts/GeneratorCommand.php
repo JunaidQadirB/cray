@@ -155,9 +155,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 
     /**
      * Add route for the generated resource to the relevant routes file.
-     *
-     * @param  string  $route
-     * @param  string  $controllerClassPath
      */
     public function addRoute(
         string $route,
@@ -185,7 +182,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
                 $this->info('Route created at '.$this->option('base').'/routes/web.php');
             }
         }
-
 
         $routeContent = file_exists($routeFile)
             ? file_get_contents($routeFile)
