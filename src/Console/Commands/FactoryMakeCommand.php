@@ -22,10 +22,10 @@ class FactoryMakeCommand extends GeneratorCommand
     protected $description = 'Create a new model factory';
 
     protected $signature = 'cray:factory {name}
-    {-m|--model= : Name of the model}
-    {-b|--base= : Base to create paths from}
-    {-n|--namespace= : Namespace to use}
-    {-f|--force : Overwrite if factory class already exists}';
+    {--model= : Name of the model}
+    {--base= : Base to create paths from}
+    {--namespace= : Namespace to use}
+    {--force : Overwrite if factory class already exists}';
 
     /**
      * The type of class being generated.
