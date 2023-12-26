@@ -1,4 +1,4 @@
-@component('components.themes.tailwind.modal', ['id' => $id])
+@component('components.tailwind.modal', ['id' => $id])
     Are you sure you wish to delete this $label$?
     @slot('footer')
         <div class="flex justify-end px-3 py-2 border-t">

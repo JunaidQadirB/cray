@@ -1,35 +1,30 @@
-@extends('layouts.app')
+<x-app-layout>
 
-{{--
-@section('sidebar')
-    @if(auth()->check())
-        // include sidebar here
-    @endif
-@endsection
---}}
-
-@section('content')
-    <div class="text-primary w-full flex flex-wrap items-center justify-between my-6">
-        <div class="justify-start">
-            <h2 class="text-3xl font-bold">$label$</h2>
-        </div>
-        <div class="justify-end">
-            <div class="flex flex-wrap justify-start" role="toolbar" aria-label="$modelSlug$ Context Toolbar">
-                <div class="relative inline-flex items-center" role="group" aria-label="">
-                    <a href="{{route('$routeBase$.index')}} class="py-1.5 px-2 text-sm text-primary border border-primary hover:bg-primary hover:text-white focus:z-10 focus:bg-primary focus:text-white">Back to list</a>
+    {{--
+    <x-slot name="sidebar">
+        @if(auth()->check())
+            // include sidebar here
+        @endif
+    </x-slot>--}}
+    <div class="max-w-7xl mx-auto">
+        <div class="text-primary w-full flex flex-wrap items-center justify-between my-6">
+            <div class="justify-start">
+                <h2 class="text-3xl font-bold">$label$</h2>
+            </div>
+            <div class="justify-end">
+                <div class="flex flex-wrap justify-start" role="toolbar" aria-label="$modelSlug$ Context Toolbar">
+                    <div class="relative inline-flex items-center" role="group" aria-label="">
+                        <a href="{{route('$routeBase$.index')}} class="py-1.5 px-2 text-sm text-primary border border-primary hover:bg-primary hover:text-white focus:z-10 focus:bg-primary focus:text-white">Back to list</a>
+                    </div>
                 </div>
             </div>
         </div>
+        <x-components.record-navigator
+            :heading="$row$->name"
+            route="$routeBase$.show"
+            previous="$previous,"
+            next="$next"/>
+
+        <p>Display fields here.</p>
     </div>
-    @component('components.record-navigator', [
-        'heading'=> $row$->name,
-        'route' => '$routeBase$.show',
-        'previous' => $previous,
-        'next' => $next
-    ])@endcomponent
-
-    <p>Display fields here.</p>
-@endsection
-
-
-
+</x-app-layout>
